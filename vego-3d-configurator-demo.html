@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VEGO Garden Bed Builder Demo</title>
+    <style>
+      :root {
+        --ink: #17351f;
+        --text: #31513a;
+        --muted: #687a67;
+        --cream: #fbf4df;
+        --oat: #f4ead0;
+        --mist: #f5f8ef;
+        --panel: #ffffff;
+        --pale: #eaf2e3;
+        --line: #d9dec3;
+        --green: #2f663b;
+        --green-dark: #1e4f2d;
+        --forest: #164d5d;
+        --sage: #8aa970;
+        --lime: #d9e88b;
+        --cta: #ffd976;
+        --clay: #a9502e;
+        --orange: #ffad4f;
+        --red: #b84b3f;
+        --shadow: rgba(23, 53, 31, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--text);
+        font-family: Arial, "Helvetica Neue", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      input {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: grid;
+        background: var(--cream);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .announcement {
+        padding: 8px clamp(16px, 4vw, 48px);
+        background: var(--forest);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .nav-row {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+        padding: 15px clamp(16px, 4vw, 48px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink);
+        font-weight: 800;
+      }
+
+      .brand-logo {
+        display: block;
+        width: 112px;
+        height: auto;
+      }
+
+      .brand small,
+      .prototype-note {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .prototype-note {
+        text-align: right;
+        font-size: 13px;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(360px, 440px);
+        gap: 0;
+        min-height: calc(100vh - 101px);
+      }
+
+      .stage {
+        display: grid;
+        grid-template-rows: auto minmax(360px, 1fr) auto;
+        padding: clamp(20px, 4vw, 48px);
+        background: linear-gradient(180deg, var(--cream) 0%, var(--mist) 100%);
+      }
+
+      .intro {
+        display: grid;
+        grid-template-columns: minmax(260px, 680px) auto;
+        justify-content: space-between;
+        gap: 28px;
+        align-items: end;
+        max-width: 1080px;
+      }
+
+      .product-kicker {
+        display: inline-flex;
+        width: fit-content;
+        margin-bottom: 16px;
+        padding: 7px 10px;
+        background: var(--green);
+        color: white;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin: 0;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(38px, 5vw, 76px);
+        line-height: 0.96;
+        letter-spacing: 0;
+        text-wrap: balance;
+      }
+
+      .intro p {
+        max-width: 38ch;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      .product-card {
+        display: grid;
+        gap: 10px;
+        min-width: 250px;
+        padding: 16px;
+        background: var(--green);
+        color: white;
+      }
+
+      .product-card span {
+        color: #eef7ea;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .product-card strong {
+        font-size: 20px;
+        line-height: 1.15;
+      }
+
+      .product-card em {
+        color: var(--cta);
+        font-style: normal;
+        font-weight: 900;
+      }
+
+      .trust-list {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        color: #eef7ea;
+        font-size: 13px;
+      }
+
+      .trust-list li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .trust-list li::before {
+        content: "";
+        width: 7px;
+        height: 7px;
+        flex: 0 0 auto;
+        background: var(--cta);
+      }
+
+      .view-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: flex-start;
+        margin-top: 14px;
+      }
+
+      .icon-btn,
+      .chip,
+      .primary,
+      .secondary {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        cursor: pointer;
+        transition: background 160ms ease, border-color 160ms ease;
+      }
+
+      .icon-btn {
+        width: 44px;
+        font-size: 20px;
+      }
+
+      .icon-btn:hover,
+      .chip:hover,
+      .secondary:hover {
+        border-color: var(--sage);
+        background: #fbfdf8;
+      }
+
+      .icon-btn:focus-visible,
+      .chip:focus-visible,
+      .primary:focus-visible,
+      .secondary:focus-visible,
+      .swatch:focus-visible {
+        outline: 3px solid rgba(47, 102, 59, 0.35);
+        outline-offset: 2px;
+      }
+
+      .viewer-wrap {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 500px;
+        margin: 24px 0 18px;
+      }
+
+      canvas {
+        width: min(100%, 1080px);
+        height: min(61vh, 620px);
+        min-height: 360px;
+        background:
+          linear-gradient(rgba(47, 102, 59, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(47, 102, 59, 0.045) 1px, transparent 1px),
+          #fffef7;
+        background-size: 42px 42px;
+        border: 1px solid var(--line);
+        touch-action: none;
+      }
+
+      .canvas-label {
+        position: absolute;
+        left: clamp(12px, 4vw, 34px);
+        bottom: clamp(12px, 4vw, 34px);
+        display: grid;
+        gap: 4px;
+        max-width: 280px;
+        padding: 14px 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+
+      .canvas-label strong {
+        color: var(--ink);
+      }
+
+      .canvas-label span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .fit-panel {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 18px;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+
+      .fit-panel h2 {
+        margin: 0;
+        color: var(--ink);
+        font-size: 18px;
+        line-height: 1.2;
+      }
+
+      .fit-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .fit-item {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        background: var(--mist);
+        border: 1px solid var(--line);
+      }
+
+      .fit-item span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .fit-item strong {
+        color: var(--ink);
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .stat {
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+      }
+
+      .stat strong {
+        display: block;
+        color: var(--ink);
+        font-size: 20px;
+        line-height: 1.1;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .panel {
+        display: grid;
+        align-content: start;
+        gap: 22px;
+        padding: clamp(18px, 3vw, 30px);
+        background: var(--panel);
+        border-left: 1px solid var(--line);
+        overflow-y: auto;
+      }
+
+      .panel-header {
+        display: grid;
+        gap: 8px;
+      }
+
+      .panel-header h2 {
+        margin: 0;
+        color: var(--ink);
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 30px;
+        line-height: 1.15;
+      }
+
+      .panel-header p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .group {
+        display: grid;
+        gap: 10px;
+      }
+
+      .group-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--ink);
+        font-size: 15px;
+        font-weight: 800;
+      }
+
+      .group-title span {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .choice-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .chip {
+        display: grid;
+        gap: 4px;
+        min-height: 72px;
+        padding: 12px;
+        text-align: left;
+      }
+
+      .chip strong {
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .chip span {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.3;
+      }
+
+      .chip[aria-pressed="true"] {
+        border-color: var(--green);
+        background: var(--mist);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .swatch {
+        display: grid;
+        gap: 8px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .swatch i {
+        display: block;
+        height: 34px;
+        border: 1px solid rgba(23, 53, 31, 0.18);
+      }
+
+      .swatch span {
+        font-size: 12px;
+      }
+
+      .swatch[aria-pressed="true"] {
+        border-color: var(--green);
+        background: var(--mist);
+      }
+
+      .bundle-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .bundle {
+        display: grid;
+        gap: 6px;
+        min-height: 72px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      .bundle:hover {
+        border-color: var(--sage);
+        background: #fbfdf8;
+      }
+
+      .bundle:focus-visible {
+        outline: 3px solid rgba(47, 102, 59, 0.35);
+        outline-offset: 2px;
+      }
+
+      .bundle[aria-pressed="true"] {
+        border-color: var(--green);
+        background: var(--mist);
+      }
+
+      .bundle-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: var(--ink);
+        font-weight: 900;
+      }
+
+      .bundle em {
+        color: var(--clay);
+        font-style: normal;
+        font-size: 13px;
+      }
+
+      .bundle span {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .addons {
+        display: grid;
+        gap: 8px;
+      }
+
+      .addon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        cursor: pointer;
+      }
+
+      .addon:hover {
+        background: #fbfdf8;
+      }
+
+      .addon input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--green);
+      }
+
+      .addon strong {
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .addon span {
+        margin-left: auto;
+        color: var(--green-dark);
+        font-weight: 800;
+      }
+
+      .summary {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        background: var(--mist);
+        border: 1px solid var(--line);
+      }
+
+      .lead-card {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .lead-card h3 {
+        margin: 0;
+        color: var(--ink);
+        font-size: 17px;
+        line-height: 1.2;
+      }
+
+      .lead-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .lead-form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .lead-form label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      .lead-form input {
+        width: 100%;
+        padding: 10px 12px;
+      }
+
+      .lead-form input:focus-visible {
+        outline: 3px solid rgba(47, 102, 59, 0.35);
+        outline-offset: 2px;
+      }
+
+      .lead-form button {
+        min-height: 44px;
+        padding: 0 14px;
+        border: 1px solid var(--green);
+        background: var(--green);
+        color: white;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .summary-row strong {
+        color: var(--ink);
+        text-align: right;
+      }
+
+      .total {
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+      }
+
+      .total strong {
+        color: var(--ink);
+        font-size: 26px;
+      }
+
+      .primary {
+        width: 100%;
+        padding: 14px 18px;
+        border-color: #e7bd46;
+        background: var(--cta);
+        color: #2f2a16;
+        font-weight: 900;
+      }
+
+      .primary:hover {
+        background: #ffcf4d;
+      }
+
+      .secondary {
+        width: 100%;
+        padding: 13px 18px;
+        font-weight: 800;
+        color: var(--green);
+      }
+
+      .toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 30;
+        max-width: 340px;
+        padding: 14px 16px;
+        background: var(--ink);
+        color: white;
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .mobile-sticky-cta {
+        display: none;
+      }
+
+      @media (max-width: 980px) {
+        .shell {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          border-left: 0;
+          border-top: 1px solid var(--line);
+        }
+
+        .intro {
+          display: grid;
+          align-items: start;
+          grid-template-columns: 1fr;
+        }
+
+        .product-card {
+          min-width: 0;
+          max-width: 420px;
+        }
+
+        .nav-row {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .brand-logo {
+          width: 106px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 14px;
+        }
+
+        .prototype-note {
+          text-align: left;
+        }
+
+        .view-tools {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 620px) {
+        .topbar {
+          position: static;
+        }
+
+        .brand-logo {
+          width: 104px;
+        }
+
+        .stage {
+          padding: 16px;
+        }
+
+        canvas {
+          height: 380px;
+          min-height: 320px;
+        }
+
+        .quick-stats,
+        .choice-grid,
+        .fit-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .swatches {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .canvas-label {
+          position: static;
+          margin-top: -10px;
+        }
+
+        .lead-form {
+          grid-template-columns: 1fr;
+        }
+
+        body {
+          padding-bottom: 86px;
+        }
+
+        .mobile-sticky-cta {
+          position: fixed;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 25;
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 12px;
+          align-items: center;
+          padding: 12px 14px;
+          background: var(--panel);
+          border-top: 1px solid var(--line);
+        }
+
+        .mobile-sticky-cta strong {
+          display: block;
+          color: var(--ink);
+          font-size: 18px;
+          line-height: 1.1;
+        }
+
+        .mobile-sticky-cta span {
+          display: block;
+          color: var(--muted);
+          font-size: 12px;
+          line-height: 1.25;
+        }
+
+        .mobile-sticky-cta button {
+          min-height: 48px;
+          padding: 0 14px;
+          border: 1px solid #e7bd46;
+          background: var(--cta);
+          color: #2f2a16;
+          font-weight: 900;
+          cursor: pointer;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="announcement">Free shipping on raised garden beds. Build your layout before checkout.</div>
+        <div class="nav-row">
+          <div class="brand">
+            <img class="brand-logo" src="assets/logo.png" alt="VEGO Garden" />
+            <small>Garden Bed Builder</small>
+          </div>
+          <nav class="nav-links" aria-label="Demo navigation">
+            <span>Raised Beds</span>
+            <span>Planters</span>
+            <span>Accessories</span>
+            <span>Garden Guide</span>
+          </nav>
+          <div class="prototype-note">Single-product prototype: 9-in-1 Modular Raised Garden Bed Kit</div>
+        </div>
+      </header>
+
+      <div class="shell">
+        <section class="stage" aria-label="3D preview">
+          <div class="intro">
+            <div>
+              <div class="product-kicker">3D Builder for Raised Beds</div>
+              <h1>Build your 9-in-1 raised bed in 3D before checkout.</h1>
+              <p>Pick the layout that fits your yard, see what it grows, then add the exact kit and accessories to cart.</p>
+              <div class="view-tools" aria-label="View controls">
+                <button class="icon-btn" id="rotateLeft" type="button" aria-label="Rotate left">↺</button>
+                <button class="icon-btn" id="rotateRight" type="button" aria-label="Rotate right">↻</button>
+                <button class="icon-btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+                <button class="icon-btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+              </div>
+            </div>
+            <div class="product-card">
+              <span>Current kit</span>
+              <strong>9-in-1 Modular Metal Raised Garden Bed</strong>
+              <em id="heroPrice">$249 base</em>
+              <ul class="trust-list" aria-label="Purchase reassurance">
+                <li>Free shipping on raised beds</li>
+                <li>Modular steel panels</li>
+                <li>Cart-ready parts list</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="viewer-wrap">
+            <canvas id="scene" width="1200" height="760" aria-label="3D garden bed preview"></canvas>
+            <div class="canvas-label">
+              <strong id="modelLabel">Classic Rectangle</strong>
+              <span id="modelHint">Best for a first backyard vegetable setup.</span>
+            </div>
+          </div>
+
+          <section class="fit-panel" aria-label="Garden fit guidance">
+            <h2>This setup at a glance</h2>
+            <div class="fit-grid">
+              <div class="fit-item">
+                <span>Best for</span>
+                <strong id="bestFor">First vegetable garden</strong>
+              </div>
+              <div class="fit-item">
+                <span>Grows well</span>
+                <strong id="grows">Tomatoes, herbs, leafy greens</strong>
+              </div>
+              <div class="fit-item">
+                <span>Fits</span>
+                <strong id="fits">Backyard or patio edge</strong>
+              </div>
+              <div class="fit-item">
+                <span>Support note</span>
+                <strong id="supportNote">Share this layout with VEGO before buying</strong>
+              </div>
+            </div>
+          </section>
+
+          <div class="quick-stats" aria-label="Configuration highlights">
+            <div class="stat">
+              <strong id="footprint">6.5 x 3.5 ft</strong>
+              <span>Estimated footprint</span>
+            </div>
+            <div class="stat">
+              <strong id="plants">8-10</strong>
+              <span>Vegetable plants</span>
+            </div>
+            <div class="stat">
+              <strong id="soil">31 cu ft</strong>
+              <span>Recommended soil</span>
+            </div>
+          </div>
+        </section>
+
+        <aside class="panel" aria-label="Configurator controls">
+          <div class="panel-header">
+            <h2>Configure the 9-in-1 kit</h2>
+            <p>Start with the yard layout, then use a recommended setup to add the parts shoppers usually ask support about.</p>
+          </div>
+
+          <section class="group">
+            <div class="group-title">Layout <span>Step 1</span></div>
+            <div class="choice-grid" id="layouts"></div>
+          </section>
+
+          <section class="group">
+            <div class="group-title">Color <span>Step 2</span></div>
+            <div class="swatches" id="colors"></div>
+          </section>
+
+          <section class="group">
+            <div class="group-title">Recommended setup <span>Fast add</span></div>
+            <div class="bundle-grid" id="bundles"></div>
+          </section>
+
+          <section class="group">
+            <div class="group-title">Add-ons <span>Step 3</span></div>
+            <div class="addons" id="addons"></div>
+          </section>
+
+          <section class="summary" aria-label="Configuration summary">
+            <div class="summary-row">
+              <span>Product</span>
+              <strong>9-in-1 Modular Kit</strong>
+            </div>
+            <div class="summary-row">
+              <span>Layout</span>
+              <strong id="summaryLayout">Classic Rectangle</strong>
+            </div>
+            <div class="summary-row">
+              <span>Color</span>
+              <strong id="summaryColor">Olive Green</strong>
+            </div>
+            <div class="summary-row">
+              <span>Add-ons</span>
+              <strong id="summaryAddons">None selected</strong>
+            </div>
+            <div class="summary-row">
+              <span>Setup</span>
+              <strong id="summaryBundle">Custom</strong>
+            </div>
+            <div class="summary-row total">
+              <span>Estimated total</span>
+              <strong id="summaryTotal">$249</strong>
+            </div>
+          </section>
+
+          <section class="lead-card" aria-label="Send layout by email">
+            <h3>Not ready to buy?</h3>
+            <p>Email this configuration or send it to a VEGO garden expert with the layout, color, footprint, and parts list attached.</p>
+            <div class="lead-form">
+              <label for="leadEmail">Email address</label>
+              <input id="leadEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
+              <button id="sendLayoutBtn" type="button">Send layout</button>
+            </div>
+          </section>
+
+          <button class="primary" id="cartBtn" type="button">Add configured kit to cart</button>
+          <button class="secondary" id="expertBtn" type="button">Send setup to garden expert</button>
+        </aside>
+      </div>
+    </main>
+
+    <div class="mobile-sticky-cta" aria-label="Mobile checkout bar">
+      <div>
+        <strong id="mobilePrice">$249</strong>
+        <span id="mobileSummary">Classic Rectangle, Olive Green</span>
+      </div>
+      <button id="mobileCartBtn" type="button">Add to cart</button>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const layouts = [
+        {
+          id: "rectangle",
+          name: "Classic Rectangle",
+          hint: "First backyard vegetable setup.",
+          footprint: "6.5 x 3.5 ft",
+          plants: "8-10",
+          soil: "31 cu ft",
+          bestFor: "First vegetable garden",
+          grows: "Tomatoes, herbs, leafy greens",
+          fits: "Backyard or patio edge",
+          support: "Good starter size for new raised-bed growers",
+          price: 249,
+          beds: [[0, 0, 4, 2]],
+        },
+        {
+          id: "sideyard",
+          name: "Narrow Side Yard",
+          hint: "Long layout for fences and walkways.",
+          footprint: "8 x 2 ft",
+          plants: "6-8",
+          soil: "29 cu ft",
+          bestFor: "Side yards and fences",
+          grows: "Herbs, peppers, compact greens",
+          fits: "Narrow walkway or fence line",
+          support: "Keeps planting space clear of foot traffic",
+          price: 249,
+          beds: [[0, 0, 5, 1.35]],
+        },
+        {
+          id: "corner",
+          name: "Corner L-Shape",
+          hint: "Makes better use of unused corners.",
+          footprint: "6 x 6 ft",
+          plants: "10-12",
+          soil: "36 cu ft",
+          bestFor: "Unused garden corners",
+          grows: "Tomatoes, cucumbers, companion herbs",
+          fits: "Corner yard or patio nook",
+          support: "Uses two edges without blocking access",
+          price: 279,
+          beds: [[0, 0, 4, 1.4], [-1.3, 1.3, 1.4, 3.4]],
+        },
+        {
+          id: "family",
+          name: "Family Garden",
+          hint: "Two zones for herbs and vegetables.",
+          footprint: "8 x 5 ft",
+          plants: "14-18",
+          soil: "48 cu ft",
+          bestFor: "Family vegetable garden",
+          grows: "Tomatoes, greens, herbs, peppers",
+          fits: "Open backyard planting zone",
+          support: "Two zones make crop rotation easier",
+          price: 329,
+          beds: [[-1.15, 0, 3.1, 1.6], [1.65, 0, 3.1, 1.6]],
+        },
+      ];
+
+      const colors = [
+        { id: "olive", name: "Olive Green", wall: "#5f7f4a", trim: "#405f34" },
+        { id: "white", name: "Classic White", wall: "#f4f2e6", trim: "#c9c8b7" },
+        { id: "grey", name: "Pearl Grey", wall: "#aeb7ad", trim: "#788278" },
+        { id: "black", name: "Modern Black", wall: "#303734", trim: "#151d1a" },
+      ];
+
+      const addons = [
+        { id: "trellis", name: "Tomato Trellis", price: 49 },
+        { id: "cover", name: "Cover System", price: 69 },
+        { id: "irrigation", name: "Drip Irrigation Kit", price: 39 },
+        { id: "compost", name: "Worm Composting Insert", price: 59 },
+      ];
+
+      const bundles = [
+        {
+          id: "starter",
+          name: "Beginner vegetable setup",
+          note: "Adds tomato support for a first planting season.",
+          addonIds: ["trellis"],
+          badge: "Most approachable",
+        },
+        {
+          id: "tomato",
+          name: "Tomato growing setup",
+          note: "Adds support and drip watering for taller crops.",
+          addonIds: ["trellis", "irrigation"],
+          badge: "Higher yield",
+        },
+        {
+          id: "protection",
+          name: "Pest protection setup",
+          note: "Adds cover protection for young greens and herbs.",
+          addonIds: ["cover"],
+          badge: "Protect seedlings",
+        },
+        {
+          id: "lowcare",
+          name: "Low-maintenance setup",
+          note: "Adds watering and composting for easier care.",
+          addonIds: ["irrigation", "compost"],
+          badge: "Less daily work",
+        },
+      ];
+
+      const state = {
+        layout: layouts[0],
+        color: colors[0],
+        addons: new Set(),
+        bundle: null,
+        yaw: -0.72,
+        zoom: 72,
+        dragging: false,
+        lastX: 0,
+      };
+
+      const canvas = document.getElementById("scene");
+      const ctx = canvas.getContext("2d");
+
+      const $ = (id) => document.getElementById(id);
+
+      function project(x, y, z) {
+        const cy = Math.cos(state.yaw);
+        const sy = Math.sin(state.yaw);
+        const rx = x * cy - y * sy;
+        const ry = x * sy + y * cy;
+        return {
+          x: canvas.width / 2 + (rx - ry) * state.zoom * 0.72,
+          y: canvas.height / 2 + (rx + ry) * state.zoom * 0.34 - z * state.zoom,
+          depth: rx + ry + z * 2,
+        };
+      }
+
+      function poly(points, fill, stroke) {
+        ctx.beginPath();
+        points.forEach((p, index) => {
+          if (index === 0) ctx.moveTo(p.x, p.y);
+          else ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.fill();
+        ctx.strokeStyle = stroke;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+      }
+
+      function shade(hex, amount) {
+        const n = parseInt(hex.slice(1), 16);
+        const r = Math.max(0, Math.min(255, (n >> 16) + amount));
+        const g = Math.max(0, Math.min(255, ((n >> 8) & 255) + amount));
+        const b = Math.max(0, Math.min(255, (n & 255) + amount));
+        return `rgb(${r}, ${g}, ${b})`;
+      }
+
+      function drawBox(cx, cy, w, d, h, fill, trim) {
+        const x0 = cx - w / 2;
+        const x1 = cx + w / 2;
+        const y0 = cy - d / 2;
+        const y1 = cy + d / 2;
+        const top = [project(x0, y0, h), project(x1, y0, h), project(x1, y1, h), project(x0, y1, h)];
+        const left = [project(x0, y0, 0), project(x0, y1, 0), project(x0, y1, h), project(x0, y0, h)];
+        const right = [project(x1, y0, 0), project(x1, y1, 0), project(x1, y1, h), project(x1, y0, h)];
+        const front = [project(x0, y1, 0), project(x1, y1, 0), project(x1, y1, h), project(x0, y1, h)];
+        const back = [project(x0, y0, 0), project(x1, y0, 0), project(x1, y0, h), project(x0, y0, h)];
+
+        [back, left, right, front].forEach((face, index) => {
+          poly(face, shade(fill, [-18, -8, 4, 12][index]), trim);
+        });
+        poly(top, "#5a3926", "#49301f");
+
+        const railH = h + 0.05;
+        const rail = [project(x0, y0, railH), project(x1, y0, railH), project(x1, y1, railH), project(x0, y1, railH)];
+        poly(rail, "rgba(255,255,255,0.08)", trim);
+      }
+
+      function drawTrellis(cx, cy, w, d) {
+        const x = cx + w / 2 - 0.22;
+        const y0 = cy - d / 2 + 0.1;
+        const y1 = cy + d / 2 - 0.1;
+        const posts = [y0, (y0 + y1) / 2, y1];
+        ctx.strokeStyle = "#415d37";
+        ctx.lineWidth = 4;
+        posts.forEach((y) => {
+          const a = project(x, y, 0.72);
+          const b = project(x, y, 2.25);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        });
+        for (let i = 0; i < 4; i += 1) {
+          const z = 1 + i * 0.33;
+          const a = project(x, y0, z);
+          const b = project(x, y1, z);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+
+      function drawCover(cx, cy, w, d) {
+        ctx.strokeStyle = "rgba(88, 118, 79, 0.72)";
+        ctx.lineWidth = 3;
+        for (let i = 0; i < 3; i += 1) {
+          const x = cx - w / 2 + (w / 2) * i;
+          const a = project(x, cy - d / 2, 0.82);
+          const b = project(x, cy, 1.7);
+          const c = project(x, cy + d / 2, 0.82);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.quadraticCurveTo(b.x, b.y, c.x, c.y);
+          ctx.stroke();
+        }
+      }
+
+      function drawIrrigation(cx, cy, w, d) {
+        ctx.strokeStyle = "#2c6270";
+        ctx.lineWidth = 3;
+        const rows = [-0.25, 0.25];
+        rows.forEach((offset) => {
+          const a = project(cx - w / 2 + 0.25, cy + offset * d, 0.78);
+          const b = project(cx + w / 2 - 0.25, cy + offset * d, 0.78);
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        });
+      }
+
+      function drawCompost(cx, cy, w, d) {
+        const p = project(cx - w / 2 + 0.45, cy + d / 2 - 0.45, 0.9);
+        ctx.fillStyle = "#7f4b2d";
+        ctx.strokeStyle = "#59331f";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.ellipse(p.x, p.y, 20, 12, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      function drawPlants(cx, cy, w, d) {
+        const count = Math.max(4, Math.round(w * d));
+        ctx.fillStyle = "#4f8b45";
+        for (let i = 0; i < count; i += 1) {
+          const x = cx - w / 2 + 0.45 + ((i * 0.73) % Math.max(0.8, w - 0.8));
+          const y = cy - d / 2 + 0.35 + ((i * 0.47) % Math.max(0.7, d - 0.7));
+          const p = project(x, y, 0.82);
+          ctx.beginPath();
+          ctx.ellipse(p.x - 4, p.y, 8, 4, -0.5, 0, Math.PI * 2);
+          ctx.ellipse(p.x + 5, p.y - 2, 8, 4, 0.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function drawScene() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const ground = [project(-5, -3.6, -0.04), project(5, -3.6, -0.04), project(5, 3.6, -0.04), project(-5, 3.6, -0.04)];
+        poly(ground, "#eef5e8", "#d5e1cf");
+
+        state.layout.beds.forEach((bed) => {
+          const [cx, cy, w, d] = bed;
+          drawBox(cx, cy, w, d, 0.72, state.color.wall, state.color.trim);
+          drawPlants(cx, cy, w, d);
+          if (state.addons.has("trellis")) drawTrellis(cx, cy, w, d);
+          if (state.addons.has("cover")) drawCover(cx, cy, w, d);
+          if (state.addons.has("irrigation")) drawIrrigation(cx, cy, w, d);
+          if (state.addons.has("compost")) drawCompost(cx, cy, w, d);
+        });
+      }
+
+      function renderControls() {
+        $("layouts").innerHTML = layouts.map((layout) => `
+          <button class="chip" type="button" data-layout="${layout.id}" aria-pressed="${state.layout.id === layout.id}">
+            <strong>${layout.name}</strong>
+            <span>${layout.hint}</span>
+          </button>
+        `).join("");
+
+        $("colors").innerHTML = colors.map((color) => `
+          <button class="swatch" type="button" data-color="${color.id}" aria-pressed="${state.color.id === color.id}">
+            <i style="background:${color.wall}"></i>
+            <span>${color.name}</span>
+          </button>
+        `).join("");
+
+        $("bundles").innerHTML = bundles.map((bundle) => `
+          <button class="bundle" type="button" data-bundle="${bundle.id}" aria-pressed="${state.bundle === bundle.id}">
+            <span class="bundle-head">${bundle.name}<em>${bundle.badge}</em></span>
+            <span>${bundle.note}</span>
+          </button>
+        `).join("");
+
+        $("addons").innerHTML = addons.map((addon) => `
+          <label class="addon">
+            <input type="checkbox" data-addon="${addon.id}" ${state.addons.has(addon.id) ? "checked" : ""} />
+            <strong>${addon.name}</strong>
+            <span>+$${addon.price}</span>
+          </label>
+        `).join("");
+      }
+
+      function updateSummary() {
+        const selectedAddons = addons.filter((addon) => state.addons.has(addon.id));
+        const addonTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
+        const total = state.layout.price + addonTotal;
+        $("modelLabel").textContent = state.layout.name;
+        $("modelHint").textContent = state.layout.hint;
+        $("footprint").textContent = state.layout.footprint;
+        $("plants").textContent = state.layout.plants;
+        $("soil").textContent = state.layout.soil;
+        $("bestFor").textContent = state.layout.bestFor;
+        $("grows").textContent = state.layout.grows;
+        $("fits").textContent = state.layout.fits;
+        $("supportNote").textContent = state.layout.support;
+        $("summaryLayout").textContent = state.layout.name;
+        $("summaryColor").textContent = state.color.name;
+        $("summaryAddons").textContent = selectedAddons.length ? selectedAddons.map((addon) => addon.name).join(", ") : "None selected";
+        $("summaryBundle").textContent = state.bundle ? bundles.find((bundle) => bundle.id === state.bundle).name : "Custom";
+        $("summaryTotal").textContent = `$${total}`;
+        $("heroPrice").textContent = `$${total} configured`;
+        $("mobilePrice").textContent = `$${total}`;
+        $("mobileSummary").textContent = `${state.layout.name}, ${state.color.name}`;
+      }
+
+      function refresh() {
+        renderControls();
+        updateSummary();
+        drawScene();
+      }
+
+      document.addEventListener("click", (event) => {
+        const layoutBtn = event.target.closest("[data-layout]");
+        const colorBtn = event.target.closest("[data-color]");
+        const bundleBtn = event.target.closest("[data-bundle]");
+        if (layoutBtn) {
+          state.layout = layouts.find((layout) => layout.id === layoutBtn.dataset.layout);
+          refresh();
+        }
+        if (colorBtn) {
+          state.color = colors.find((color) => color.id === colorBtn.dataset.color);
+          refresh();
+        }
+        if (bundleBtn) {
+          const bundle = bundles.find((item) => item.id === bundleBtn.dataset.bundle);
+          state.bundle = bundle.id;
+          state.addons = new Set(bundle.addonIds);
+          refresh();
+        }
+      });
+
+      document.addEventListener("change", (event) => {
+        if (event.target.matches("[data-addon]")) {
+          state.bundle = null;
+          if (event.target.checked) state.addons.add(event.target.dataset.addon);
+          else state.addons.delete(event.target.dataset.addon);
+          refresh();
+        }
+      });
+
+      $("rotateLeft").addEventListener("click", () => {
+        state.yaw -= 0.22;
+        drawScene();
+      });
+
+      $("rotateRight").addEventListener("click", () => {
+        state.yaw += 0.22;
+        drawScene();
+      });
+
+      $("zoomIn").addEventListener("click", () => {
+        state.zoom = Math.min(100, state.zoom + 8);
+        drawScene();
+      });
+
+      $("zoomOut").addEventListener("click", () => {
+        state.zoom = Math.max(48, state.zoom - 8);
+        drawScene();
+      });
+
+      canvas.addEventListener("pointerdown", (event) => {
+        state.dragging = true;
+        state.lastX = event.clientX;
+        canvas.setPointerCapture(event.pointerId);
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        if (!state.dragging) return;
+        const dx = event.clientX - state.lastX;
+        state.lastX = event.clientX;
+        state.yaw += dx * 0.008;
+        drawScene();
+      });
+
+      canvas.addEventListener("pointerup", () => {
+        state.dragging = false;
+      });
+
+      function showToast(message) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.setTimeout(() => toast.classList.remove("show"), 2600);
+      }
+
+      $("cartBtn").addEventListener("click", () => {
+        showToast("Demo cart payload ready: layout, color, add-ons, footprint, and estimated total.");
+      });
+
+      $("mobileCartBtn").addEventListener("click", () => {
+        showToast("Mobile cart payload ready with the configured kit.");
+      });
+
+      $("expertBtn").addEventListener("click", () => {
+        showToast("Demo support summary generated for a VEGO garden expert.");
+      });
+
+      $("sendLayoutBtn").addEventListener("click", () => {
+        const email = $("leadEmail").value.trim();
+        if (!email) {
+          $("leadEmail").focus();
+          showToast("Enter an email to send this garden layout.");
+          return;
+        }
+        showToast(`Demo layout email ready for ${email}.`);
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>
