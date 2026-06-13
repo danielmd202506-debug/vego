@@ -1,0 +1,4 @@
+source,sentiment,impact,tags,title,quote,date
+site-reviews,positive,medium,"quality|assembly","Good starter kit","The raised bed was easy to assemble and feels sturdy.",2026-06-13
+support,negative,high,"soil|purchase-blocker","Soil estimate question","Customer asked how many soil bags are needed before checkout.",2026-06-13
+amazon,negative,high,"rust|competitor","Competitor rust concern","A competing metal bed review mentioned coating chips after one season.",2026-06-13

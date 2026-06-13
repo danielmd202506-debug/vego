@@ -844,7 +844,7 @@
               <h1>VEGO 用户声音动态收集系统</h1>
               <p>统一收集线上评论、社交媒体、独立站行为、Amazon 评论和客服对话，按渠道、情绪、主题和业务影响自动汇总，让团队每周知道用户真正卡在哪里。</p>
               <div class="hero-actions">
-                <button class="primary" id="runCollectBtn" type="button">Run collection</button>
+                <button class="primary" id="runCollectBtn" type="button">Sync latest data</button>
                 <button class="secondary" id="exportBtn" type="button">Export CSV</button>
                 <button class="quiet" id="resetBtn" type="button">Reset sample data</button>
               </div>
@@ -872,6 +872,7 @@
               <div class="status-line">
                 <span id="lastRun">Last run: pending</span>
                 <span id="nextRun">Next run: Monday 09:00</span>
+                <span id="dataStatus">Data source: sample</span>
               </div>
             </div>
           </section>
@@ -905,7 +906,7 @@
             <div class="section-head">
               <div>
                 <h2>渠道配置与健康</h2>
-                <p>每个渠道保留采集频率、负责人、最近同步时间和数据质量。真实上线时可替换为 Shopify、Gorgias、Amazon SP-API、社媒监听工具或 Search Console API。</p>
+                <p>每个渠道保留采集频率、负责人、最近同步时间和数据质量。当前页面已可上线展示；后续接入真实数据时，可把样例数据源替换为 Shopify、Gorgias、Amazon SP-API、社媒监听工具或 Search Console API。</p>
               </div>
               <div class="toolbar">
                 <select id="sourceFilter" aria-label="Filter sources">
@@ -1267,6 +1268,11 @@
 
       const state = {
         voices: loadVoices(),
+        dataMeta: {
+          mode: "sample",
+          generatedAt: null,
+          sources: [],
+        },
         filters: {
           sourceType: "all",
           voiceSource: "all",
@@ -1289,12 +1295,44 @@
         localStorage.setItem("vegoVocVoices", JSON.stringify(state.voices));
       }
 
+      function normalizeVoice(voice) {
+        const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "site-reviews";
+        const sentiment = ["positive", "neutral", "negative"].includes(voice.sentiment) ? voice.sentiment : "neutral";
+        const impact = ["low", "medium", "high"].includes(voice.impact) ? voice.impact : sentiment === "negative" ? "high" : "medium";
+        return {
+          source,
+          sentiment,
+          impact,
+          tags: Array.isArray(voice.tags) && voice.tags.length ? voice.tags : ["unclassified"],
+          title: voice.title || "VOC item",
+          quote: voice.quote || voice.text || voice.comment || "",
+          date: String(voice.date || new Date().toISOString().slice(0, 10)).slice(0, 10),
+        };
+      }
+
+      async function loadRemoteVocData({ silent = false } = {}) {
+        const response = await fetch(`data/voc-items.json?ts=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error(`VOC data request failed: ${response.status}`);
+        const payload = await response.json();
+        const items = Array.isArray(payload) ? payload : payload.items;
+        if (!Array.isArray(items) || !items.length) throw new Error("VOC data file has no items.");
+        state.voices = items.map(normalizeVoice).filter((voice) => voice.quote);
+        state.dataMeta = {
+          mode: payload.mode || "synced",
+          generatedAt: payload.generatedAt || new Date().toISOString(),
+          sources: Array.isArray(payload.sources) ? payload.sources : [],
+        };
+        localStorage.removeItem("vegoVocVoices");
+        renderAll();
+        if (!silent) showToast(`Loaded ${state.voices.length} VOC items from synced data.`);
+      }
+
       function $(id) {
         return document.getElementById(id);
       }
 
       function sourceById(id) {
-        return sourceConfig.find((source) => source.id === id);
+        return sourceConfig.find((source) => source.id === id) || sourceConfig[0];
       }
 
       function titleCase(value) {
@@ -1486,6 +1524,13 @@
         $("sideVoices").textContent = total;
       }
 
+      function renderDataStatus() {
+        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString() : "not synced";
+        const sourceLabel = state.dataMeta.mode === "synced" && state.dataMeta.sources.length ? `${state.dataMeta.sources.length} configured source(s)` : state.dataMeta.mode;
+        $("lastRun").textContent = `Last sync: ${generated}`;
+        $("dataStatus").textContent = `Data source: ${sourceLabel}`;
+      }
+
       function renderSchedule() {
         $("scheduleBody").innerHTML = sourceConfig.map((source) => `
           <tr>
@@ -1502,20 +1547,29 @@
         renderVoices();
         renderInsights();
         renderMetrics();
+        renderDataStatus();
         renderSchedule();
       }
 
-      function runCollection() {
-        const next = generatedVoices[Math.floor(Math.random() * generatedVoices.length)];
-        const newVoice = {
-          ...next,
-          date: new Date().toISOString().slice(0, 10),
-        };
-        state.voices = [newVoice, ...state.voices];
-        saveVoices();
-        $("lastRun").textContent = `Last run: ${new Date().toLocaleString()}`;
-        renderAll();
-        showToast("Collection complete. One new VOC item was added to the weekly queue.");
+      async function runCollection() {
+        try {
+          await loadRemoteVocData();
+        } catch (error) {
+          const next = generatedVoices[Math.floor(Math.random() * generatedVoices.length)];
+          const newVoice = {
+            ...next,
+            date: new Date().toISOString().slice(0, 10),
+          };
+          state.voices = [newVoice, ...state.voices];
+          state.dataMeta = {
+            mode: "local fallback",
+            generatedAt: new Date().toISOString(),
+            sources: [],
+          };
+          saveVoices();
+          renderAll();
+          showToast("Could not load synced data, so a local VOC item was added.");
+        }
       }
 
       function exportCsv() {
@@ -1594,6 +1648,14 @@
       renderFilters();
       bindEvents();
       renderAll();
+      loadRemoteVocData({ silent: true }).catch(() => {
+        state.dataMeta = {
+          mode: "sample",
+          generatedAt: null,
+          sources: [],
+        };
+        renderDataStatus();
+      });
     </script>
   </body>
 </html>

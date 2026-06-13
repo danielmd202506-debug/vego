@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-06-13T15:13:13.279Z",
+  "mode": "no-source-configured",
+  "sources": [
+    "seed"
+  ],
+  "items": [
+    {
+      "source": "site-reviews",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": [
+        "assembly",
+        "quality",
+        "beginner"
+      ],
+      "title": "First raised bed felt approachable",
+      "quote": "I was nervous about assembling a metal bed, but the panels lined up well and it felt like a good first vegetable garden kit.",
+      "date": "2026-06-10"
+    },
+    {
+      "source": "site-qa",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "soil",
+        "calculator",
+        "purchase-blocker"
+      ],
+      "title": "Soil volume unclear before checkout",
+      "quote": "How many bags of soil do I need for the 9-in-1 rectangle? I do not want to buy the bed and then guess at the garden center.",
+      "date": "2026-06-11"
+    },
+    {
+      "source": "amazon",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "rust",
+        "durability",
+        "competitor"
+      ],
+      "title": "Competitor rust concern",
+      "quote": "A competing metal bed looked good at first, but after one season the coating started to chip near the screws.",
+      "date": "2026-06-08"
+    },
+    {
+      "source": "support",
+      "sentiment": "neutral",
+      "impact": "high",
+      "tags": [
+        "size",
+        "patio",
+        "layout"
+      ],
+      "title": "Patio fit question",
+      "quote": "Customer has a 7 by 4 foot patio edge and wants to know if the rectangle layout leaves enough walking room.",
+      "date": "2026-06-12"
+    },
+    {
+      "source": "social",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": [
+        "tomato",
+        "trellis",
+        "ugc"
+      ],
+      "title": "Tomato setup performs well on TikTok",
+      "quote": "Comments keep asking which trellis fits this raised bed because the tomato video makes the setup look easy.",
+      "date": "2026-06-09"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "price",
+        "trust",
+        "comparison"
+      ],
+      "title": "Price justification thread",
+      "quote": "A gardening group compared cheaper beds and asked what makes VEGO worth paying more for beyond the look.",
+      "date": "2026-06-07"
+    },
+    {
+      "source": "search-console",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "tomato",
+        "content",
+        "soil"
+      ],
+      "title": "Search demand for tomato beds",
+      "quote": "Search queries around best raised bed for tomatoes and how deep for tomatoes are increasing week over week.",
+      "date": "2026-06-06"
+    },
+    {
+      "source": "post-purchase",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "instructions",
+        "assembly",
+        "support"
+      ],
+      "title": "Install guide needs clearer order",
+      "quote": "The bed is sturdy once built, but the booklet did not make the panel order obvious for the L-shape layout.",
+      "date": "2026-06-05"
+    },
+    {
+      "source": "site-reviews",
+      "sentiment": "positive",
+      "impact": "low",
+      "tags": [
+        "color",
+        "white",
+        "aesthetic"
+      ],
+      "title": "White color works for patio",
+      "quote": "The classic white bed looks clean next to our patio furniture and does not feel like a farm supply product.",
+      "date": "2026-06-03"
+    },
+    {
+      "source": "support",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "cover",
+        "pest",
+        "bundle"
+      ],
+      "title": "Cover system pre-sale question",
+      "quote": "Customer asked whether the cover system should be bought with the first bed or only after seedlings are planted.",
+      "date": "2026-06-04"
+    }
+  ]
+}
