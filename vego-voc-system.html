@@ -1272,6 +1272,7 @@
           mode: "sample",
           generatedAt: null,
           sources: [],
+          endpoint: "",
         },
         filters: {
           sourceType: "all",
@@ -1295,6 +1296,16 @@
         localStorage.setItem("vegoVocVoices", JSON.stringify(state.voices));
       }
 
+      async function loadRuntimeConfig() {
+        try {
+          const response = await fetch(`data/runtime-config.json?ts=${Date.now()}`, { cache: "no-store" });
+          if (!response.ok) return {};
+          return response.json();
+        } catch (error) {
+          return {};
+        }
+      }
+
       function normalizeVoice(voice) {
         const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "site-reviews";
         const sentiment = ["positive", "neutral", "negative"].includes(voice.sentiment) ? voice.sentiment : "neutral";
@@ -1311,16 +1322,20 @@
       }
 
       async function loadRemoteVocData({ silent = false } = {}) {
-        const response = await fetch(`data/voc-items.json?ts=${Date.now()}`, { cache: "no-store" });
+        const config = await loadRuntimeConfig();
+        const endpoint = config.vocApiEndpoint || "data/voc-items.json";
+        const separator = endpoint.includes("?") ? "&" : "?";
+        const response = await fetch(`${endpoint}${separator}ts=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`VOC data request failed: ${response.status}`);
         const payload = await response.json();
         const items = Array.isArray(payload) ? payload : payload.items;
         if (!Array.isArray(items) || !items.length) throw new Error("VOC data file has no items.");
         state.voices = items.map(normalizeVoice).filter((voice) => voice.quote);
         state.dataMeta = {
-          mode: payload.mode || "synced",
+          mode: payload.mode || (config.vocApiEndpoint ? "notion-api" : "synced"),
           generatedAt: payload.generatedAt || new Date().toISOString(),
           sources: Array.isArray(payload.sources) ? payload.sources : [],
+          endpoint,
         };
         localStorage.removeItem("vegoVocVoices");
         renderAll();
@@ -1565,6 +1580,7 @@
             mode: "local fallback",
             generatedAt: new Date().toISOString(),
             sources: [],
+            endpoint: "",
           };
           saveVoices();
           renderAll();
@@ -1653,6 +1669,7 @@
           mode: "sample",
           generatedAt: null,
           sources: [],
+          endpoint: "",
         };
         renderDataStatus();
       });

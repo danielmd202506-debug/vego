@@ -24,6 +24,41 @@ Open `vego-voc-system.html` in a browser. The dashboard includes:
 
 The live page loads VOC items from `data/voc-items.json` first. If the data file is unavailable, it falls back to the built-in sample data.
 
+The preferred live architecture is:
+
+```text
+Notion VOC Database -> serverless API -> vego-voc-system.html
+```
+
+The browser must not call Notion directly because the Notion token is secret. Use `api/notion-voc.js` as a Vercel serverless function or adapt it to another backend.
+
+### Notion API endpoint
+
+Deploy this repository to Vercel, then set these environment variables:
+
+```text
+NOTION_TOKEN=secret_xxx
+NOTION_DATABASE_ID=be906bc91f2e42be8705933023e08ffa
+ALLOWED_ORIGIN=https://danielmd202506-debug.github.io
+```
+
+After deployment, the API will be available at:
+
+```text
+https://your-vercel-app.vercel.app/api/notion-voc
+```
+
+Then update `data/runtime-config.json`:
+
+```json
+{
+  "vocApiEndpoint": "https://your-vercel-app.vercel.app/api/notion-voc",
+  "notionDatabaseUrl": "https://app.notion.com/p/be906bc91f2e42be8705933023e08ffa"
+}
+```
+
+The published VOC page will read Notion through that endpoint on load and when the user clicks `Sync latest data`.
+
 To sync real data:
 
 1. Export or publish channel data as CSV or JSON.
