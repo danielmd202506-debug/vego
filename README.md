@@ -48,7 +48,9 @@ After deployment, the API will be available at:
 https://your-vercel-app.vercel.app/api/notion-voc
 ```
 
-Then update `data/runtime-config.json`:
+If the VOC page is served from the same Vercel project, no extra front-end config is required. It will call `/api/notion-voc` automatically.
+
+If the VOC page is served from GitHub Pages and the API is served from Vercel, update `data/runtime-config.json`:
 
 ```json
 {
@@ -58,6 +60,8 @@ Then update `data/runtime-config.json`:
 ```
 
 The published VOC page will read Notion through that endpoint on load and when the user clicks `Sync latest data`.
+
+GitHub Pages cannot run the Notion API route by itself because it is a static host. Use Vercel, Netlify, or another backend host for the API token.
 
 To sync real data:
 

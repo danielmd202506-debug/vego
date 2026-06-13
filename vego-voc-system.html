@@ -1323,10 +1323,28 @@
 
       async function loadRemoteVocData({ silent = false } = {}) {
         const config = await loadRuntimeConfig();
-        const endpoint = config.vocApiEndpoint || "data/voc-items.json";
-        const separator = endpoint.includes("?") ? "&" : "?";
-        const response = await fetch(`${endpoint}${separator}ts=${Date.now()}`, { cache: "no-store" });
-        if (!response.ok) throw new Error(`VOC data request failed: ${response.status}`);
+        const endpoints = [
+          config.vocApiEndpoint || "/api/notion-voc",
+          "data/voc-items.json",
+        ].filter(Boolean);
+
+        let response;
+        let endpoint;
+        let lastError;
+        for (const candidate of endpoints) {
+          try {
+            const separator = candidate.includes("?") ? "&" : "?";
+            response = await fetch(`${candidate}${separator}ts=${Date.now()}`, { cache: "no-store" });
+            if (response.ok) {
+              endpoint = candidate;
+              break;
+            }
+            lastError = new Error(`VOC data request failed: ${response.status}`);
+          } catch (error) {
+            lastError = error;
+          }
+        }
+        if (!response || !response.ok) throw lastError || new Error("VOC data request failed.");
         const payload = await response.json();
         const items = Array.isArray(payload) ? payload : payload.items;
         if (!Array.isArray(items) || !items.length) throw new Error("VOC data file has no items.");
