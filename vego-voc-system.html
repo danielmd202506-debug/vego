@@ -1,0 +1,1599 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VEGO VOC Collection System</title>
+    <style>
+      :root {
+        --ink: #17351f;
+        --text: #31513a;
+        --muted: #687a67;
+        --cream: #fbf4df;
+        --oat: #f4ead0;
+        --mist: #f5f8ef;
+        --panel: #ffffff;
+        --pale: #eaf2e3;
+        --line: #d9dec3;
+        --green: #2f663b;
+        --green-dark: #1e4f2d;
+        --forest: #164d5d;
+        --sage: #8aa970;
+        --lime: #d9e88b;
+        --cta: #ffd976;
+        --clay: #a9502e;
+        --orange: #ffad4f;
+        --red: #b84b3f;
+        --white: #ffffff;
+        --shadow-card: 0 1px 3px rgba(23, 53, 31, 0.1);
+        --shadow-popover: 0 10px 24px rgba(23, 53, 31, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--cream);
+        color: var(--text);
+        font-family: Manrope, Arial, "Helvetica Neue", sans-serif;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      button,
+      select,
+      input,
+      textarea {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      button:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 3px solid rgba(47, 102, 59, 0.35);
+        outline-offset: 2px;
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: grid;
+        border-bottom: 1px solid var(--line);
+        background: rgba(251, 244, 223, 0.96);
+        backdrop-filter: blur(10px);
+      }
+
+      .announcement {
+        padding: 8px clamp(16px, 4vw, 48px);
+        background: var(--forest);
+        color: var(--white);
+        font-size: 13px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .nav-row {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+        padding: 14px clamp(16px, 4vw, 48px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--ink);
+        font-weight: 900;
+      }
+
+      .brand-logo {
+        display: block;
+        width: 108px;
+        height: auto;
+      }
+
+      .brand small,
+      .system-note {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 22px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        display: grid;
+        grid-template-columns: 248px minmax(0, 1fr);
+        min-height: calc(100vh - 99px);
+        min-width: 0;
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 99px;
+        align-self: start;
+        height: calc(100vh - 99px);
+        padding: 22px 18px;
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+        overflow-y: auto;
+        min-width: 0;
+      }
+
+      .side-title {
+        margin: 0 0 12px;
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .side-nav {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+
+      .side-nav a {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .side-nav a:hover,
+      .side-nav a.active {
+        border-color: var(--line);
+        background: var(--mist);
+        color: var(--ink);
+      }
+
+      .side-nav span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .sidebar-panel {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        background: var(--mist);
+        border: 1px solid var(--line);
+      }
+
+      .sidebar-panel strong {
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .sidebar-panel p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .main {
+        display: grid;
+        gap: 24px;
+        padding: clamp(18px, 3vw, 36px);
+        background: linear-gradient(180deg, var(--cream) 0%, var(--mist) 100%);
+        min-width: 0;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
+        gap: 24px;
+        align-items: stretch;
+        min-width: 0;
+      }
+
+      .hero-copy {
+        display: grid;
+        align-content: center;
+        gap: 16px;
+        min-height: 250px;
+        padding: clamp(22px, 4vw, 40px);
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+      }
+
+      .label {
+        display: inline-flex;
+        width: fit-content;
+        padding: 6px 9px;
+        background: var(--green);
+        color: var(--white);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        color: var(--ink);
+        letter-spacing: 0;
+      }
+
+      h1 {
+        max-width: 760px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 46px;
+        line-height: 1.04;
+      }
+
+      h2 {
+        font-size: 22px;
+        line-height: 1.2;
+      }
+
+      h3 {
+        font-size: 16px;
+        line-height: 1.25;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.6;
+      }
+
+      .hero-copy p {
+        max-width: 70ch;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .primary,
+      .secondary,
+      .quiet {
+        min-height: 44px;
+        padding: 0 16px;
+        font-weight: 900;
+      }
+
+      .primary {
+        border-color: #e7bd46;
+        background: var(--cta);
+        color: #2f2a16;
+      }
+
+      .primary:hover {
+        background: #ffcf4d;
+      }
+
+      .secondary {
+        border-color: var(--green);
+        background: var(--green);
+        color: var(--white);
+      }
+
+      .quiet {
+        background: var(--panel);
+        color: var(--green);
+      }
+
+      .live-panel {
+        display: grid;
+        gap: 14px;
+        padding: 20px;
+        background: var(--green);
+        color: var(--white);
+      }
+
+      .live-panel h2,
+      .live-panel strong {
+        color: var(--white);
+      }
+
+      .live-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .live-stat {
+        display: grid;
+        gap: 4px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+      }
+
+      .live-stat span {
+        color: #e6f0df;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .live-stat strong {
+        font-size: 22px;
+      }
+
+      .status-line {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        color: #e6f0df;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .section {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .section-head p {
+        max-width: 68ch;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .toolbar select,
+      .toolbar input {
+        padding: 0 12px;
+      }
+
+      .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .metric {
+        display: grid;
+        gap: 8px;
+        min-height: 116px;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+      }
+
+      .metric span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .metric strong {
+        color: var(--ink);
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .metric em {
+        color: var(--green-dark);
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 900;
+      }
+
+      .channel-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 12px;
+      }
+
+      .channel {
+        display: grid;
+        gap: 12px;
+        padding: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+      }
+
+      .channel-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .channel p {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .badge,
+      .tag,
+      .sentiment {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 26px;
+        padding: 4px 8px;
+        border: 1px solid var(--line);
+        background: var(--mist);
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .badge.good {
+        border-color: #b9d2ae;
+        background: #eef7ea;
+        color: var(--green-dark);
+      }
+
+      .badge.warn {
+        border-color: #edc286;
+        background: #fff4df;
+        color: #6c4614;
+      }
+
+      .badge.risk,
+      .sentiment.negative {
+        border-color: #e1afa8;
+        background: #fff0ed;
+        color: #8b3028;
+      }
+
+      .sentiment.positive {
+        border-color: #b9d2ae;
+        background: #eef7ea;
+        color: var(--green-dark);
+      }
+
+      .sentiment.neutral {
+        background: var(--mist);
+        color: var(--muted);
+      }
+
+      .channel-meta,
+      .voice-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .bar {
+        height: 9px;
+        overflow: hidden;
+        background: var(--mist);
+        border: 1px solid var(--line);
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        background: var(--green);
+      }
+
+      .insight-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+        gap: 12px;
+      }
+
+      .trend-panel,
+      .action-panel,
+      .source-panel,
+      .voice-list {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+        min-width: 0;
+      }
+
+      .trend-panel,
+      .action-panel,
+      .source-panel {
+        display: grid;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .trend-row,
+      .action-item,
+      .source-row {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        background: var(--mist);
+        border: 1px solid var(--line);
+      }
+
+      .trend-top,
+      .action-top,
+      .source-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .trend-row p,
+      .action-item p,
+      .source-row p {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .voice-list {
+        display: grid;
+      }
+
+      .voice-item {
+        display: grid;
+        gap: 10px;
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .voice-item:last-child {
+        border-bottom: 0;
+      }
+
+      .voice-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .voice-title {
+        display: grid;
+        gap: 5px;
+      }
+
+      .voice-title strong {
+        color: var(--ink);
+      }
+
+      .voice-title span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .quote {
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .empty {
+        padding: 22px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      .collector {
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+        gap: 12px;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+      }
+
+      textarea {
+        min-height: 112px;
+        resize: vertical;
+      }
+
+      .schedule-table {
+        width: 100%;
+        max-width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow-card);
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: var(--ink);
+        background: var(--mist);
+        font-size: 13px;
+      }
+
+      td {
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .toast {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 30;
+        max-width: 360px;
+        padding: 14px 16px;
+        background: var(--ink);
+        color: var(--white);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(12px);
+        transition: opacity 180ms ease, transform 180ms ease;
+        box-shadow: var(--shadow-popover);
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 1120px) {
+        .shell,
+        .hero,
+        .insight-layout,
+        .collector {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+
+        .side-nav {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .metric-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 680px) {
+        .nav-row {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .nav-links {
+          justify-content: flex-start;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+
+        .system-note {
+          text-align: left;
+        }
+
+        .main {
+          padding: 16px;
+        }
+
+        .hero-copy,
+        .live-panel {
+          padding: 18px;
+        }
+
+        h1 {
+          font-size: 34px;
+        }
+
+        .metric-grid,
+        .live-grid,
+        .side-nav {
+          grid-template-columns: 1fr;
+        }
+
+        .section-head,
+        .voice-top,
+        .trend-top,
+        .action-top,
+        .source-top {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        th,
+        td {
+          padding: 10px;
+          overflow-wrap: anywhere;
+        }
+
+        .schedule-table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="announcement">VEGO VOC Center: collect, classify, and route garden shopper feedback every week.</div>
+        <div class="nav-row">
+          <div class="brand">
+            <img class="brand-logo" src="assets/logo.png" alt="VEGO Garden" />
+            <small>VOC System</small>
+          </div>
+          <nav class="nav-links" aria-label="VOC navigation">
+            <a href="#sources">渠道</a>
+            <a href="#insights">洞察</a>
+            <a href="#voices">原声</a>
+            <a href="#schedule">节奏</a>
+          </nav>
+          <div class="system-note">Dynamic prototype for raised garden bed VOC</div>
+        </div>
+      </header>
+
+      <div class="shell">
+        <aside class="sidebar" aria-label="VOC sections">
+          <h2 class="side-title">VOC 工作台</h2>
+          <nav class="side-nav">
+            <a class="active" href="#overview">总览 <span id="sideTotal">0</span></a>
+            <a href="#sources">渠道健康 <span id="sideSources">0</span></a>
+            <a href="#insights">洞察标签 <span id="sideTags">0</span></a>
+            <a href="#voices">用户原声 <span id="sideVoices">0</span></a>
+            <a href="#collector">手动录入 <span>+</span></a>
+            <a href="#schedule">采集节奏 <span>周</span></a>
+          </nav>
+          <div class="sidebar-panel">
+            <strong>系统目标</strong>
+            <p>把独立站、Amazon、社媒、客服和搜索数据转成可执行的问题池，持续反哺 PDP、3D 配置器、FAQ、套装推荐和新品规划。</p>
+          </div>
+        </aside>
+
+        <div class="main">
+          <section class="hero" id="overview">
+            <div class="hero-copy">
+              <span class="label">VOC OPERATIONS</span>
+              <h1>VEGO 用户声音动态收集系统</h1>
+              <p>统一收集线上评论、社交媒体、独立站行为、Amazon 评论和客服对话，按渠道、情绪、主题和业务影响自动汇总，让团队每周知道用户真正卡在哪里。</p>
+              <div class="hero-actions">
+                <button class="primary" id="runCollectBtn" type="button">Run collection</button>
+                <button class="secondary" id="exportBtn" type="button">Export CSV</button>
+                <button class="quiet" id="resetBtn" type="button">Reset sample data</button>
+              </div>
+            </div>
+            <div class="live-panel" aria-label="Live VOC status">
+              <h2>本周 VOC 状态</h2>
+              <div class="live-grid">
+                <div class="live-stat">
+                  <span>总声量</span>
+                  <strong id="totalVoices">0</strong>
+                </div>
+                <div class="live-stat">
+                  <span>负向占比</span>
+                  <strong id="negativeRate">0%</strong>
+                </div>
+                <div class="live-stat">
+                  <span>高优先级</span>
+                  <strong id="highImpact">0</strong>
+                </div>
+                <div class="live-stat">
+                  <span>渠道覆盖</span>
+                  <strong id="sourceCount">0</strong>
+                </div>
+              </div>
+              <div class="status-line">
+                <span id="lastRun">Last run: pending</span>
+                <span id="nextRun">Next run: Monday 09:00</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" aria-label="VOC metrics">
+            <div class="metric-grid">
+              <div class="metric">
+                <span>Top issue</span>
+                <strong id="topIssue">-</strong>
+                <em>Highest mention count</em>
+              </div>
+              <div class="metric">
+                <span>Top channel</span>
+                <strong id="topChannel">-</strong>
+                <em>Most active source</em>
+              </div>
+              <div class="metric">
+                <span>Purchase blockers</span>
+                <strong id="blockerCount">0</strong>
+                <em>Needs PDP or support fix</em>
+              </div>
+              <div class="metric">
+                <span>Opportunity signals</span>
+                <strong id="opportunityCount">0</strong>
+                <em>Can become content or bundles</em>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="sources">
+            <div class="section-head">
+              <div>
+                <h2>渠道配置与健康</h2>
+                <p>每个渠道保留采集频率、负责人、最近同步时间和数据质量。真实上线时可替换为 Shopify、Gorgias、Amazon SP-API、社媒监听工具或 Search Console API。</p>
+              </div>
+              <div class="toolbar">
+                <select id="sourceFilter" aria-label="Filter sources">
+                  <option value="all">All sources</option>
+                  <option value="Owned">Owned</option>
+                  <option value="Marketplace">Marketplace</option>
+                  <option value="Social">Social</option>
+                  <option value="Search">Search</option>
+                  <option value="Support">Support</option>
+                </select>
+              </div>
+            </div>
+            <div class="channel-grid" id="channelGrid"></div>
+          </section>
+
+          <section class="section" id="insights">
+            <div class="section-head">
+              <div>
+                <h2>主题趋势与行动建议</h2>
+                <p>系统把 VOC 归类为购买阻碍、体验问题、内容机会和产品机会。每条洞察都对应一个建议动作，便于运营、产品、客服和设计协同。</p>
+              </div>
+            </div>
+            <div class="insight-layout">
+              <div class="trend-panel">
+                <h3>高频主题</h3>
+                <div id="trendList"></div>
+              </div>
+              <div class="action-panel">
+                <h3>Action backlog</h3>
+                <div id="actionList"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="voices">
+            <div class="section-head">
+              <div>
+                <h2>用户原声汇总</h2>
+                <p>按渠道、情绪和关键词筛选原始 VOC。这里保留真实表达，方便后续提炼 PDP 文案、FAQ、配置器提示和客服脚本。</p>
+              </div>
+              <div class="toolbar">
+                <select id="voiceSourceFilter" aria-label="Filter voices by source">
+                  <option value="all">All channels</option>
+                </select>
+                <select id="sentimentFilter" aria-label="Filter voices by sentiment">
+                  <option value="all">All sentiment</option>
+                  <option value="positive">Positive</option>
+                  <option value="neutral">Neutral</option>
+                  <option value="negative">Negative</option>
+                </select>
+                <input id="searchInput" type="search" placeholder="Search keyword, tag, quote" aria-label="Search VOC" />
+              </div>
+            </div>
+            <div class="voice-list" id="voiceList"></div>
+          </section>
+
+          <section class="section" id="collector">
+            <div class="section-head">
+              <div>
+                <h2>手动录入与补充</h2>
+                <p>用于记录客服口头反馈、达人回访、线下活动观察，或者暂时没有 API 的渠道。录入后会进入同一套标签和统计。</p>
+              </div>
+            </div>
+            <div class="collector">
+              <form class="source-panel form-grid" id="manualForm">
+                <h3>新增 VOC</h3>
+                <label>
+                  渠道
+                  <select id="manualSource" required></select>
+                </label>
+                <label>
+                  情绪
+                  <select id="manualSentiment" required>
+                    <option value="negative">Negative</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="positive">Positive</option>
+                  </select>
+                </label>
+                <label>
+                  主题标签
+                  <input id="manualTags" type="text" placeholder="soil, assembly, sizing" required />
+                </label>
+                <label>
+                  用户原声
+                  <textarea id="manualQuote" placeholder="Paste or summarize the user voice" required></textarea>
+                </label>
+                <button class="secondary" type="submit">Add VOC item</button>
+              </form>
+              <div class="source-panel">
+                <h3>字段规则</h3>
+                <div class="source-row">
+                  <div class="source-top"><strong>渠道</strong><span class="badge good">Required</span></div>
+                  <p>建议覆盖 Owned、Marketplace、Social、Search、Support 五类，避免只看评论区。</p>
+                </div>
+                <div class="source-row">
+                  <div class="source-top"><strong>标签</strong><span class="badge good">3 to 5 tags</span></div>
+                  <p>优先使用业务标签：soil、size、rust、assembly、color、shipping、tomato、cover、irrigation。</p>
+                </div>
+                <div class="source-row">
+                  <div class="source-top"><strong>动作</strong><span class="badge warn">Weekly review</span></div>
+                  <p>每周把高频负向问题转入 PDP、FAQ、客服话术和配置器需求池。</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" id="schedule">
+            <div class="section-head">
+              <div>
+                <h2>定期收集节奏</h2>
+                <p>先用周更机制跑通，再逐步自动化。高频渠道每天拉取，研究型渠道每周或每月做主题分析。</p>
+              </div>
+            </div>
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th>渠道</th>
+                  <th>采集频率</th>
+                  <th>关键字段</th>
+                  <th>输出用途</th>
+                </tr>
+              </thead>
+              <tbody id="scheduleBody"></tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const sourceConfig = [
+        {
+          id: "site-reviews",
+          name: "Independent site reviews",
+          type: "Owned",
+          cadence: "Daily",
+          owner: "Ecommerce Ops",
+          health: 92,
+          status: "good",
+          fields: "rating, product, layout, color, verified buyer",
+          use: "PDP proof, product objections, conversion copy",
+          description: "VEGO 独立站产品评论，最接近购买后真实体验。",
+        },
+        {
+          id: "site-qa",
+          name: "PDP Q&A and search",
+          type: "Owned",
+          cadence: "Daily",
+          owner: "Content",
+          health: 84,
+          status: "good",
+          fields: "question, search term, product handle, no-result term",
+          use: "FAQ, configurator hints, navigation",
+          description: "购买前疑虑库，适合判断用户在下单前缺什么信息。",
+        },
+        {
+          id: "amazon",
+          name: "Amazon reviews and Q&A",
+          type: "Marketplace",
+          cadence: "Twice weekly",
+          owner: "Marketplace",
+          health: 76,
+          status: "warn",
+          fields: "rating, verified, helpful votes, competitor tag",
+          use: "Competitive gaps, quality issues, listing content",
+          description: "自有和竞品评论，用来观察外部市场对材质、价格和安装的判断。",
+        },
+        {
+          id: "social",
+          name: "Instagram, TikTok, YouTube",
+          type: "Social",
+          cadence: "Weekly",
+          owner: "Brand",
+          health: 68,
+          status: "warn",
+          fields: "post URL, creator, comments, visual scenario",
+          use: "UGC themes, creator briefs, installation content",
+          description: "捕捉用户晒图、安装过程、种植成果和强情绪反馈。",
+        },
+        {
+          id: "community",
+          name: "Reddit and Facebook Groups",
+          type: "Social",
+          cadence: "Weekly",
+          owner: "Research",
+          health: 61,
+          status: "warn",
+          fields: "thread, subreddit/group, region, concern",
+          use: "Unfiltered objections, regional needs, trust gaps",
+          description: "非品牌化讨论，适合发现尖锐问题和长期耐用性顾虑。",
+        },
+        {
+          id: "support",
+          name: "Support chat, email, tickets",
+          type: "Support",
+          cadence: "Daily",
+          owner: "CX",
+          health: 88,
+          status: "good",
+          fields: "intent, product, resolution, CSAT, ticket tag",
+          use: "Support scripts, FAQ, defect escalation",
+          description: "用户卡点最密集的来源，尤其适合建立问题标签体系。",
+        },
+        {
+          id: "search-console",
+          name: "Google Search Console",
+          type: "Search",
+          cadence: "Weekly",
+          owner: "SEO",
+          health: 73,
+          status: "good",
+          fields: "query, landing page, clicks, impressions, CTR",
+          use: "Content roadmap, category naming, education gaps",
+          description: "反映用户购买前在搜索引擎里的真实问题和词汇。",
+        },
+        {
+          id: "post-purchase",
+          name: "7/30/90 day surveys",
+          type: "Owned",
+          cadence: "Weekly",
+          owner: "Lifecycle",
+          health: 56,
+          status: "risk",
+          fields: "day window, NPS, install effort, crop outcome",
+          use: "Lifecycle email, product quality, accessory upsell",
+          description: "分阶段了解安装、开始种植和长期使用满意度。",
+        },
+      ];
+
+      const defaultVoices = [
+        {
+          source: "site-reviews",
+          sentiment: "positive",
+          impact: "medium",
+          tags: ["assembly", "quality", "beginner"],
+          title: "First raised bed felt approachable",
+          quote: "I was nervous about assembling a metal bed, but the panels lined up well and it felt like a good first vegetable garden kit.",
+          date: "2026-06-10",
+        },
+        {
+          source: "site-qa",
+          sentiment: "negative",
+          impact: "high",
+          tags: ["soil", "calculator", "purchase-blocker"],
+          title: "Soil volume unclear before checkout",
+          quote: "How many bags of soil do I need for the 9-in-1 rectangle? I do not want to buy the bed and then guess at the garden center.",
+          date: "2026-06-11",
+        },
+        {
+          source: "amazon",
+          sentiment: "negative",
+          impact: "high",
+          tags: ["rust", "durability", "competitor"],
+          title: "Competitor rust concern",
+          quote: "A competing metal bed looked good at first, but after one season the coating started to chip near the screws.",
+          date: "2026-06-08",
+        },
+        {
+          source: "support",
+          sentiment: "neutral",
+          impact: "high",
+          tags: ["size", "patio", "layout"],
+          title: "Patio fit question",
+          quote: "Customer has a 7 by 4 foot patio edge and wants to know if the rectangle layout leaves enough walking room.",
+          date: "2026-06-12",
+        },
+        {
+          source: "social",
+          sentiment: "positive",
+          impact: "medium",
+          tags: ["tomato", "trellis", "ugc"],
+          title: "Tomato setup performs well on TikTok",
+          quote: "Comments keep asking which trellis fits this raised bed because the tomato video makes the setup look easy.",
+          date: "2026-06-09",
+        },
+        {
+          source: "community",
+          sentiment: "negative",
+          impact: "medium",
+          tags: ["price", "trust", "comparison"],
+          title: "Price justification thread",
+          quote: "A gardening group compared cheaper beds and asked what makes VEGO worth paying more for beyond the look.",
+          date: "2026-06-07",
+        },
+        {
+          source: "search-console",
+          sentiment: "neutral",
+          impact: "medium",
+          tags: ["tomato", "content", "soil"],
+          title: "Search demand for tomato beds",
+          quote: "Search queries around best raised bed for tomatoes and how deep for tomatoes are increasing week over week.",
+          date: "2026-06-06",
+        },
+        {
+          source: "post-purchase",
+          sentiment: "negative",
+          impact: "high",
+          tags: ["instructions", "assembly", "support"],
+          title: "Install guide needs clearer order",
+          quote: "The bed is sturdy once built, but the booklet did not make the panel order obvious for the L-shape layout.",
+          date: "2026-06-05",
+        },
+        {
+          source: "site-reviews",
+          sentiment: "positive",
+          impact: "low",
+          tags: ["color", "white", "aesthetic"],
+          title: "White color works for patio",
+          quote: "The classic white bed looks clean next to our patio furniture and does not feel like a farm supply product.",
+          date: "2026-06-03",
+        },
+        {
+          source: "support",
+          sentiment: "neutral",
+          impact: "medium",
+          tags: ["cover", "pest", "bundle"],
+          title: "Cover system pre-sale question",
+          quote: "Customer asked whether the cover system should be bought with the first bed or only after seedlings are planted.",
+          date: "2026-06-04",
+        },
+      ];
+
+      const generatedVoices = [
+        {
+          source: "site-qa",
+          sentiment: "negative",
+          impact: "high",
+          tags: ["soil", "calculator", "pdp"],
+          title: "Soil bag estimate requested",
+          quote: "Can the product page show a soil bag estimate by layout instead of only cubic feet?",
+        },
+        {
+          source: "amazon",
+          sentiment: "neutral",
+          impact: "medium",
+          tags: ["assembly", "tools", "listing"],
+          title: "Tool requirement question",
+          quote: "Does the kit come with tools, or should I prepare a socket wrench before delivery?",
+        },
+        {
+          source: "social",
+          sentiment: "positive",
+          impact: "medium",
+          tags: ["before-after", "ugc", "patio"],
+          title: "Before and after post saved often",
+          quote: "Users are saving patio transformation posts that show the bed, soil fill, and first seedlings in one sequence.",
+        },
+        {
+          source: "support",
+          sentiment: "negative",
+          impact: "high",
+          tags: ["shipping", "missing-parts", "cx"],
+          title: "Missing hardware escalation",
+          quote: "Customer reports one fastener pack missing and wants a faster replacement path before the weekend planting window.",
+        },
+      ];
+
+      const state = {
+        voices: loadVoices(),
+        filters: {
+          sourceType: "all",
+          voiceSource: "all",
+          sentiment: "all",
+          search: "",
+        },
+      };
+
+      function loadVoices() {
+        const stored = localStorage.getItem("vegoVocVoices");
+        if (!stored) return defaultVoices;
+        try {
+          return JSON.parse(stored);
+        } catch (error) {
+          return defaultVoices;
+        }
+      }
+
+      function saveVoices() {
+        localStorage.setItem("vegoVocVoices", JSON.stringify(state.voices));
+      }
+
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function sourceById(id) {
+        return sourceConfig.find((source) => source.id === id);
+      }
+
+      function titleCase(value) {
+        return value.charAt(0).toUpperCase() + value.slice(1);
+      }
+
+      function showToast(message) {
+        const toast = $("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.setTimeout(() => toast.classList.remove("show"), 2600);
+      }
+
+      function renderSources() {
+        const filtered = sourceConfig.filter((source) => {
+          return state.filters.sourceType === "all" || source.type === state.filters.sourceType;
+        });
+        $("channelGrid").innerHTML = filtered.map((source) => {
+          const count = state.voices.filter((voice) => voice.source === source.id).length;
+          return `
+            <article class="channel">
+              <div class="channel-head">
+                <div>
+                  <h3>${source.name}</h3>
+                  <p>${source.description}</p>
+                </div>
+                <span class="badge ${source.status}">${source.status === "good" ? "Healthy" : source.status === "warn" ? "Watch" : "Needs setup"}</span>
+              </div>
+              <div class="channel-meta">
+                <span class="tag">${source.type}</span>
+                <span class="tag">${source.cadence}</span>
+                <span class="tag">${source.owner}</span>
+                <span class="tag">${count} items</span>
+              </div>
+              <div class="bar" aria-label="${source.name} health ${source.health}%"><span style="width:${source.health}%"></span></div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      function renderFilters() {
+        const options = sourceConfig.map((source) => `<option value="${source.id}">${source.name}</option>`).join("");
+        $("voiceSourceFilter").innerHTML = `<option value="all">All channels</option>${options}`;
+        $("manualSource").innerHTML = options;
+      }
+
+      function filteredVoices() {
+        const term = state.filters.search.trim().toLowerCase();
+        return state.voices.filter((voice) => {
+          const source = sourceById(voice.source);
+          const sourceMatch = state.filters.voiceSource === "all" || voice.source === state.filters.voiceSource;
+          const sentimentMatch = state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment;
+          const searchTarget = `${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name}`.toLowerCase();
+          const searchMatch = !term || searchTarget.includes(term);
+          return sourceMatch && sentimentMatch && searchMatch;
+        });
+      }
+
+      function renderVoices() {
+        const voices = filteredVoices();
+        if (!voices.length) {
+          $("voiceList").innerHTML = `<div class="empty">No VOC items match the current filters.</div>`;
+          return;
+        }
+        $("voiceList").innerHTML = voices.map((voice) => {
+          const source = sourceById(voice.source);
+          return `
+            <article class="voice-item">
+              <div class="voice-top">
+                <div class="voice-title">
+                  <strong>${voice.title}</strong>
+                  <span>${source.name} / ${voice.date}</span>
+                </div>
+                <span class="sentiment ${voice.sentiment}">${titleCase(voice.sentiment)}</span>
+              </div>
+              <p class="quote">${voice.quote}</p>
+              <div class="voice-meta">
+                <span class="badge ${voice.impact === "high" ? "risk" : voice.impact === "medium" ? "warn" : "good"}">${titleCase(voice.impact)} impact</span>
+                ${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      function getTagCounts() {
+        const counts = new Map();
+        state.voices.forEach((voice) => {
+          voice.tags.forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1));
+        });
+        return [...counts.entries()].sort((a, b) => b[1] - a[1]);
+      }
+
+      function renderInsights() {
+        const tags = getTagCounts();
+        $("trendList").innerHTML = tags.slice(0, 7).map(([tag, count]) => {
+          const related = state.voices.filter((voice) => voice.tags.includes(tag));
+          const negative = related.filter((voice) => voice.sentiment === "negative").length;
+          const percent = Math.max(8, Math.round((count / Math.max(1, state.voices.length)) * 100));
+          return `
+            <div class="trend-row">
+              <div class="trend-top">
+                <strong>${tag}</strong>
+                <span class="badge ${negative ? "warn" : "good"}">${count} mentions</span>
+              </div>
+              <div class="bar"><span style="width:${percent}%"></span></div>
+              <p>${negative ? `${negative} negative signals need review.` : "Mostly neutral or positive signals."}</p>
+            </div>
+          `;
+        }).join("");
+
+        const actions = buildActions(tags);
+        $("actionList").innerHTML = actions.map((action) => `
+          <div class="action-item">
+            <div class="action-top">
+              <strong>${action.title}</strong>
+              <span class="badge ${action.priority === "High" ? "risk" : "warn"}">${action.priority}</span>
+            </div>
+            <p>${action.detail}</p>
+          </div>
+        `).join("");
+      }
+
+      function buildActions(tags) {
+        const tagSet = new Set(tags.map(([tag]) => tag));
+        const actions = [];
+        if (tagSet.has("soil")) {
+          actions.push({
+            title: "Add soil calculator to PDP and configurator",
+            priority: "High",
+            detail: "Show cubic feet, bag estimate, and recommended soil mix by layout.",
+          });
+        }
+        if (tagSet.has("assembly") || tagSet.has("instructions")) {
+          actions.push({
+            title: "Improve layout-specific assembly guidance",
+            priority: "High",
+            detail: "Create separate panel order steps for rectangle, side yard, L-shape, and family layouts.",
+          });
+        }
+        if (tagSet.has("tomato") || tagSet.has("trellis")) {
+          actions.push({
+            title: "Promote tomato growing setup",
+            priority: "Medium",
+            detail: "Turn recurring tomato questions into a recommended bundle and seasonal content path.",
+          });
+        }
+        if (tagSet.has("price") || tagSet.has("trust")) {
+          actions.push({
+            title: "Clarify premium value proof",
+            priority: "Medium",
+            detail: "Use comparison content to explain coating, modularity, warranty, and long-term durability.",
+          });
+        }
+        if (!actions.length) {
+          actions.push({
+            title: "Review top VOC manually",
+            priority: "Medium",
+            detail: "No automated rule matched yet. Review the highest impact items and create a new action.",
+          });
+        }
+        return actions;
+      }
+
+      function renderMetrics() {
+        const total = state.voices.length;
+        const negative = state.voices.filter((voice) => voice.sentiment === "negative").length;
+        const high = state.voices.filter((voice) => voice.impact === "high").length;
+        const channels = new Set(state.voices.map((voice) => voice.source)).size;
+        const topTag = getTagCounts()[0]?.[0] || "-";
+        const sourceCounts = sourceConfig.map((source) => [
+          source.name,
+          state.voices.filter((voice) => voice.source === source.id).length,
+        ]).sort((a, b) => b[1] - a[1]);
+        const blockerCount = state.voices.filter((voice) => voice.tags.includes("purchase-blocker") || ["soil", "size", "shipping"].some((tag) => voice.tags.includes(tag))).length;
+        const opportunityCount = state.voices.filter((voice) => ["tomato", "ugc", "bundle", "content", "cover", "irrigation"].some((tag) => voice.tags.includes(tag))).length;
+
+        $("totalVoices").textContent = total;
+        $("negativeRate").textContent = `${Math.round((negative / Math.max(1, total)) * 100)}%`;
+        $("highImpact").textContent = high;
+        $("sourceCount").textContent = channels;
+        $("topIssue").textContent = topTag;
+        $("topChannel").textContent = sourceCounts[0]?.[0].split(" ")[0] || "-";
+        $("blockerCount").textContent = blockerCount;
+        $("opportunityCount").textContent = opportunityCount;
+        $("sideTotal").textContent = total;
+        $("sideSources").textContent = sourceConfig.length;
+        $("sideTags").textContent = getTagCounts().length;
+        $("sideVoices").textContent = total;
+      }
+
+      function renderSchedule() {
+        $("scheduleBody").innerHTML = sourceConfig.map((source) => `
+          <tr>
+            <td><strong>${source.name}</strong><br /><span class="tag">${source.type}</span></td>
+            <td>${source.cadence}<br />Owner: ${source.owner}</td>
+            <td>${source.fields}</td>
+            <td>${source.use}</td>
+          </tr>
+        `).join("");
+      }
+
+      function renderAll() {
+        renderSources();
+        renderVoices();
+        renderInsights();
+        renderMetrics();
+        renderSchedule();
+      }
+
+      function runCollection() {
+        const next = generatedVoices[Math.floor(Math.random() * generatedVoices.length)];
+        const newVoice = {
+          ...next,
+          date: new Date().toISOString().slice(0, 10),
+        };
+        state.voices = [newVoice, ...state.voices];
+        saveVoices();
+        $("lastRun").textContent = `Last run: ${new Date().toLocaleString()}`;
+        renderAll();
+        showToast("Collection complete. One new VOC item was added to the weekly queue.");
+      }
+
+      function exportCsv() {
+        const rows = [
+          ["date", "source", "source_type", "sentiment", "impact", "tags", "title", "quote"],
+          ...state.voices.map((voice) => {
+            const source = sourceById(voice.source);
+            return [
+              voice.date,
+              source.name,
+              source.type,
+              voice.sentiment,
+              voice.impact,
+              voice.tags.join("|"),
+              voice.title,
+              voice.quote,
+            ];
+          }),
+        ];
+        const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "vego-voc-export.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast("CSV export is ready.");
+      }
+
+      function bindEvents() {
+        $("sourceFilter").addEventListener("change", (event) => {
+          state.filters.sourceType = event.target.value;
+          renderSources();
+        });
+        $("voiceSourceFilter").addEventListener("change", (event) => {
+          state.filters.voiceSource = event.target.value;
+          renderVoices();
+        });
+        $("sentimentFilter").addEventListener("change", (event) => {
+          state.filters.sentiment = event.target.value;
+          renderVoices();
+        });
+        $("searchInput").addEventListener("input", (event) => {
+          state.filters.search = event.target.value;
+          renderVoices();
+        });
+        $("runCollectBtn").addEventListener("click", runCollection);
+        $("exportBtn").addEventListener("click", exportCsv);
+        $("resetBtn").addEventListener("click", () => {
+          state.voices = defaultVoices;
+          saveVoices();
+          $("lastRun").textContent = "Last run: sample data reset";
+          renderAll();
+          showToast("Sample VOC data has been reset.");
+        });
+        $("manualForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const tags = $("manualTags").value.split(",").map((tag) => tag.trim()).filter(Boolean);
+          state.voices = [{
+            source: $("manualSource").value,
+            sentiment: $("manualSentiment").value,
+            impact: $("manualSentiment").value === "negative" ? "high" : "medium",
+            tags,
+            title: tags.slice(0, 2).join(" / ") || "Manual VOC",
+            quote: $("manualQuote").value.trim(),
+            date: new Date().toISOString().slice(0, 10),
+          }, ...state.voices];
+          saveVoices();
+          event.target.reset();
+          renderAll();
+          showToast("Manual VOC item added.");
+        });
+      }
+
+      renderFilters();
+      bindEvents();
+      renderAll();
+    </script>
+  </body>
+</html>
