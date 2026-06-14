@@ -1,127 +1,10 @@
 {
-  "generatedAt": "2026-06-14T11:51:57.069Z",
+  "generatedAt": "2026-06-14T13:32:17.315Z",
   "mode": "synced",
   "sources": [
     "data/public-voc-2026-06-14.json#source=community"
   ],
   "items": [
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "high",
-      "tags": [
-        "modular",
-        "small-space",
-        "layout"
-      ],
-      "title": "Modular layouts solve awkward yard geometry",
-      "quote": "Public review synthesis: shoppers value that one kit can adapt to narrow, angled, L-shaped, U-shaped, or compact spaces without custom carpentry.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "high",
-      "tags": [
-        "price",
-        "comparison",
-        "value-proof"
-      ],
-      "title": "Higher price needs stronger long-term value proof",
-      "quote": "Public review synthesis: the main purchase hesitation is price versus lower-cost galvanized beds, even when shoppers like the durability story.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "medium",
-      "tags": [
-        "assembly",
-        "protective-film",
-        "friction"
-      ],
-      "title": "Protective film removal extends assembly time",
-      "quote": "Public hands-on testing noted that setup was straightforward, but removing protective film from panels created unexpected extra work.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "high",
-      "tags": [
-        "assembly",
-        "expectation-setting",
-        "instructions"
-      ],
-      "title": "Actual assembly time can exceed expectations",
-      "quote": "Public tester feedback indicates assembly can take much longer than the fastest advertised expectation, even when the build is manageable.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "high",
-      "tags": [
-        "durability",
-        "food-safe",
-        "rust-resistance"
-      ],
-      "title": "Material safety and rust resistance drive trust",
-      "quote": "Public buyer-guide coverage repeatedly highlights corrosion resistance, food-safe coating, and long service life as core reasons to choose Vego.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "neutral",
-      "impact": "medium",
-      "tags": [
-        "pest-control",
-        "accessories",
-        "mesh"
-      ],
-      "title": "Small-animal protection may require add-ons",
-      "quote": "Public buying advice suggests some gardens may still need mesh or short screens to keep smaller animals out.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "high",
-      "tags": [
-        "accessibility",
-        "elevated-bed",
-        "mobility"
-      ],
-      "title": "Elevated height is a clear accessibility benefit",
-      "quote": "Hands-on coverage emphasizes that elevated beds make plant inspection and maintenance easier for users avoiding bending or crouching.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "neutral",
-      "impact": "medium",
-      "tags": [
-        "soil",
-        "depth",
-        "calculator"
-      ],
-      "title": "Elevated beds need clearer soil quantity guidance",
-      "quote": "Public review coverage calls out that elevated beds use less soil than larger in-ground beds, making capacity and bag estimates important.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "medium",
-      "tags": [
-        "delivery",
-        "packaging",
-        "confidence"
-      ],
-      "title": "Compact shipping can create missing-parts anxiety",
-      "quote": "Hands-on coverage noted the box was surprisingly compact, which created initial concern before confirming all parts were included.",
-      "date": "2026-06-14"
-    },
     {
       "source": "social",
       "sentiment": "positive",
@@ -133,7 +16,13 @@
       ],
       "title": "Trellis arches expand small-space gardening appeal",
       "quote": "Public coverage frames trellis arches as a way to add vertical growing capacity and visual impact without expanding the garden footprint.",
-      "date": "2026-06-14"
+      "date": "2026-05-20",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-05-20",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-arch-trellis",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Cross-sell trellis arches on small-space and tomato/cucumber bed pages.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "social",
@@ -146,111 +35,13 @@
       ],
       "title": "Trellis setup is praised when quick and sturdy",
       "quote": "Public shopper feedback summarized by media highlights easy trellis installation and a sturdy feel as key confidence drivers.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "neutral",
-      "impact": "medium",
-      "tags": [
-        "depth",
-        "crop-fit",
-        "buying-guide"
-      ],
-      "title": "Crop type should guide bed depth selection",
-      "quote": "Public buyer guidance notes that herbs and flowers can use shallower beds, while deep-rooted crops need more soil depth.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "high",
-      "tags": [
-        "beginner",
-        "assembly",
-        "confidence"
-      ],
-      "title": "Beginner-friendly setup creates purchase confidence",
-      "quote": "Public hands-on and buyer-guide coverage repeatedly frames Vego beds as approachable for first-time raised-bed buyers when instructions and panels feel organized.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "medium",
-      "tags": [
-        "assembly",
-        "hardware",
-        "missing-parts"
-      ],
-      "title": "Small hardware steps need clearer checkpoints",
-      "quote": "Public review patterns suggest assembly anxiety often appears around screws, washers, braces, and confirming that all small parts are present before starting.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "medium",
-      "tags": [
-        "aesthetic",
-        "curb-appeal",
-        "color"
-      ],
-      "title": "Clean visual style supports patio and front-yard use",
-      "quote": "Public review coverage highlights that the beds look polished enough for visible yards and patios, not only hidden vegetable plots.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "medium",
-      "tags": [
-        "weight",
-        "mobility",
-        "placement"
-      ],
-      "title": "Placement decisions feel final once filled",
-      "quote": "Public raised-bed guidance implies users need to decide location carefully because moving a bed after soil is added is difficult.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "neutral",
-      "impact": "medium",
-      "tags": [
-        "watering",
-        "irrigation",
-        "summer"
-      ],
-      "title": "Watering plan becomes part of bed selection",
-      "quote": "Public gardening guidance often links raised bed success to watering access, drainage, and summer maintenance rather than the bed alone.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "medium",
-      "tags": [
-        "modular",
-        "expansion",
-        "repeat-purchase"
-      ],
-      "title": "Expandable system supports future garden growth",
-      "quote": "Public modular-bed coverage indicates shoppers value being able to start with one configuration and expand as confidence or yard space grows.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "high",
-      "tags": [
-        "comparison",
-        "materials",
-        "trust-risk"
-      ],
-      "title": "Material claims need simple proof for skeptical shoppers",
-      "quote": "Public buyer discussions around galvanized beds show shoppers compare coating, thickness, rust resistance, and food safety before trusting premium pricing.",
-      "date": "2026-06-14"
+      "date": "2026-05-20",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-05-20",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-arch-trellis",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Use short installation clips and sturdiness proof points in trellis PDP media.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "community",
@@ -263,20 +54,70 @@
       ],
       "title": "Tall crops create accessory questions",
       "quote": "Public raised-bed and trellis coverage suggests tomato, cucumber, and climbing crop shoppers need help pairing bed height, depth, and support accessories.",
-      "date": "2026-06-14"
+      "date": "2026-05-20",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-05-20",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-arch-trellis",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add crop-specific bundles that pair bed depth, trellis, cover, and soil guidance.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": [
+        "modular",
+        "small-space",
+        "layout"
+      ],
+      "title": "Modular layouts solve awkward yard geometry",
+      "quote": "Public review synthesis: shoppers value that one kit can adapt to narrow, angled, L-shaped, U-shaped, or compact spaces without custom carpentry.",
+      "date": "2026-03-29",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-03-29",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a layout finder that starts from yard shape and recommends kit configuration, height, and accessories.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "community",
       "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "price",
+        "comparison",
+        "value-proof"
+      ],
+      "title": "Higher price needs stronger long-term value proof",
+      "quote": "Public review synthesis: the main purchase hesitation is price versus lower-cost galvanized beds, even when shoppers like the durability story.",
+      "date": "2026-03-29",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-03-29",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a cost-per-season comparison module and make the 20-year durability claim easier to evaluate.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
       "impact": "medium",
       "tags": [
-        "shipping",
-        "damage",
-        "support"
+        "modular",
+        "expansion",
+        "repeat-purchase"
       ],
-      "title": "Large metal panels raise delivery damage concerns",
-      "quote": "Public review patterns for metal raised beds show buyers watch for dents, scratches, or bent panels after delivery.",
-      "date": "2026-06-14"
+      "title": "Expandable system supports future garden growth",
+      "quote": "Public modular-bed coverage indicates shoppers value being able to start with one configuration and expand as confidence or yard space grows.",
+      "date": "2026-03-29",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-03-29",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add an expansion roadmap module showing how one starter bed can become a multi-bed garden.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "community",
@@ -289,46 +130,13 @@
       ],
       "title": "Real garden examples help users imagine layouts",
       "quote": "Public content around Vego gardens works best when shoppers can see finished beds in real yards, patios, and productive vegetable setups.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "negative",
-      "impact": "medium",
-      "tags": [
-        "checkout",
-        "bundle",
-        "accessory-clarity"
-      ],
-      "title": "Accessory choices can create checkout hesitation",
-      "quote": "Public buying guidance implies customers may not know whether they also need covers, trellis systems, irrigation, liners, or pest protection.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "neutral",
-      "impact": "medium",
-      "tags": [
-        "seasonality",
-        "planning",
-        "content"
-      ],
-      "title": "Season timing drives research and purchase urgency",
-      "quote": "Public raised-bed shopping content clusters around spring setup, planting calendars, and early-season preparation.",
-      "date": "2026-06-14"
-    },
-    {
-      "source": "community",
-      "sentiment": "positive",
-      "impact": "high",
-      "tags": [
-        "accessibility",
-        "older-gardeners",
-        "comfort"
-      ],
-      "title": "Comfort-focused gardening is a strong segment signal",
-      "quote": "Public elevated-bed coverage shows that reduced bending and easier maintenance can be a primary buying reason, not just a secondary benefit.",
-      "date": "2026-06-14"
+      "date": "2026-03-29",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-03-29",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Build a UGC gallery filterable by yard size, crop, bed model, and layout shape.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "community",
@@ -341,7 +149,279 @@
       ],
       "title": "Multi-shape kits need layout-specific instructions",
       "quote": "Public feedback around modular raised beds indicates that flexible configurations are valuable, but users need clearer guidance for the exact shape they choose.",
-      "date": "2026-06-14"
+      "date": "2026-03-29",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2026-03-29",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Generate shape-specific install guides from the selected configuration.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": [
+        "accessibility",
+        "elevated-bed",
+        "mobility"
+      ],
+      "title": "Elevated height is a clear accessibility benefit",
+      "quote": "Hands-on coverage emphasizes that elevated beds make plant inspection and maintenance easier for users avoiding bending or crouching.",
+      "date": "2025-07-08",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-07-08",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Segment elevated beds for accessibility, back comfort, patios, and older gardeners.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "soil",
+        "depth",
+        "calculator"
+      ],
+      "title": "Elevated beds need clearer soil quantity guidance",
+      "quote": "Public review coverage calls out that elevated beds use less soil than larger in-ground beds, making capacity and bag estimates important.",
+      "date": "2025-07-08",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-07-08",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a soil bag calculator to each PDP, including Hugelkultur-style fill guidance where appropriate.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": [
+        "delivery",
+        "packaging",
+        "confidence"
+      ],
+      "title": "Compact shipping can create missing-parts anxiety",
+      "quote": "Hands-on coverage noted the box was surprisingly compact, which created initial concern before confirming all parts were included.",
+      "date": "2025-07-08",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-07-08",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add an unboxing checklist and packing diagram to reduce setup anxiety.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": [
+        "aesthetic",
+        "curb-appeal",
+        "color"
+      ],
+      "title": "Clean visual style supports patio and front-yard use",
+      "quote": "Public review coverage highlights that the beds look polished enough for visible yards and patios, not only hidden vegetable plots.",
+      "date": "2025-07-08",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-07-08",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Use more front-yard and patio imagery to position beds as visible landscape elements.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": [
+        "accessibility",
+        "older-gardeners",
+        "comfort"
+      ],
+      "title": "Comfort-focused gardening is a strong segment signal",
+      "quote": "Public elevated-bed coverage shows that reduced bending and easier maintenance can be a primary buying reason, not just a secondary benefit.",
+      "date": "2025-07-08",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-07-08",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Create an accessibility and comfort segment page for elevated beds.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "depth",
+        "crop-fit",
+        "buying-guide"
+      ],
+      "title": "Crop type should guide bed depth selection",
+      "quote": "Public buyer guidance notes that herbs and flowers can use shallower beds, while deep-rooted crops need more soil depth.",
+      "date": "2025-05-27",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-27",
+      "sourceUrl": "https://www.thespruce.com/best-raised-garden-beds-11742061",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a crop-to-depth selector for herbs, tomatoes, cucumbers, eggplants, and root vegetables.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "watering",
+        "irrigation",
+        "summer"
+      ],
+      "title": "Watering plan becomes part of bed selection",
+      "quote": "Public gardening guidance often links raised bed success to watering access, drainage, and summer maintenance rather than the bed alone.",
+      "date": "2025-05-27",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-27",
+      "sourceUrl": "https://www.thespruce.com/best-raised-garden-beds-11742061",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Cross-sell irrigation and add a watering-readiness checklist to bed PDPs.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "shipping",
+        "damage",
+        "support"
+      ],
+      "title": "Large metal panels raise delivery damage concerns",
+      "quote": "Public review patterns for metal raised beds show buyers watch for dents, scratches, or bent panels after delivery.",
+      "date": "2025-05-27",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-27",
+      "sourceUrl": "https://www.thespruce.com/best-raised-garden-beds-11742061",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add packaging reassurance, inspection steps, and a clear damaged-part replacement path.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "seasonality",
+        "planning",
+        "content"
+      ],
+      "title": "Season timing drives research and purchase urgency",
+      "quote": "Public raised-bed shopping content clusters around spring setup, planting calendars, and early-season preparation.",
+      "date": "2025-05-27",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-27",
+      "sourceUrl": "https://www.thespruce.com/best-raised-garden-beds-11742061",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Create seasonal landing pages that connect planting timing, bed setup, soil fill, and starter bundles.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": [
+        "durability",
+        "food-safe",
+        "rust-resistance"
+      ],
+      "title": "Material safety and rust resistance drive trust",
+      "quote": "Public buyer-guide coverage repeatedly highlights corrosion resistance, food-safe coating, and long service life as core reasons to choose Vego.",
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Create a durability proof section with coating explanation, food safety, corrosion testing, and expected lifespan.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": [
+        "pest-control",
+        "accessories",
+        "mesh"
+      ],
+      "title": "Small-animal protection may require add-ons",
+      "quote": "Public buying advice suggests some gardens may still need mesh or short screens to keep smaller animals out.",
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Bundle pest-screen recommendations by region, crop, and bed height.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "weight",
+        "mobility",
+        "placement"
+      ],
+      "title": "Placement decisions feel final once filled",
+      "quote": "Public raised-bed guidance implies users need to decide location carefully because moving a bed after soil is added is difficult.",
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a pre-purchase placement checklist covering sun, hose reach, walking clearance, and fill weight.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "comparison",
+        "materials",
+        "trust-risk"
+      ],
+      "title": "Material claims need simple proof for skeptical shoppers",
+      "quote": "Public buyer discussions around galvanized beds show shoppers compare coating, thickness, rust resistance, and food safety before trusting premium pricing.",
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Create a plain-language material comparison table against wood, plastic, and cheaper galvanized beds.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "checkout",
+        "bundle",
+        "accessory-clarity"
+      ],
+      "title": "Accessory choices can create checkout hesitation",
+      "quote": "Public buying guidance implies customers may not know whether they also need covers, trellis systems, irrigation, liners, or pest protection.",
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add an accessory recommendation step before checkout based on crop, region, pests, and user experience level.",
+      "evidenceType": "public-source-synthesis"
     },
     {
       "source": "community",
@@ -354,7 +434,89 @@
       ],
       "title": "Starter gardening kits can become giftable lifestyle products",
       "quote": "Public home and garden coverage frames raised beds as a lifestyle entry point for cooking, family gardening, and outdoor projects.",
-      "date": "2026-06-14"
+      "date": "2025-05-14",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-05-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Test giftable starter bundles with bed, soil plan, seed suggestions, and simple setup content.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "assembly",
+        "protective-film",
+        "friction"
+      ],
+      "title": "Protective film removal extends assembly time",
+      "quote": "Public hands-on testing noted that setup was straightforward, but removing protective film from panels created unexpected extra work.",
+      "date": "2025-04-10",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-04-10",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a pre-assembly tip card and short video specifically about protective film removal.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": [
+        "assembly",
+        "expectation-setting",
+        "instructions"
+      ],
+      "title": "Actual assembly time can exceed expectations",
+      "quote": "Public tester feedback indicates assembly can take much longer than the fastest advertised expectation, even when the build is manageable.",
+      "date": "2025-04-10",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-04-10",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Show realistic assembly time ranges by model and number of people instead of a single best-case estimate.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": [
+        "beginner",
+        "assembly",
+        "confidence"
+      ],
+      "title": "Beginner-friendly setup creates purchase confidence",
+      "quote": "Public hands-on and buyer-guide coverage repeatedly frames Vego beds as approachable for first-time raised-bed buyers when instructions and panels feel organized.",
+      "date": "2025-04-10",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-04-10",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a first-time gardener path that combines assembly video, soil estimate, and starter crop plan.",
+      "evidenceType": "public-source-synthesis"
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": [
+        "assembly",
+        "hardware",
+        "missing-parts"
+      ],
+      "title": "Small hardware steps need clearer checkpoints",
+      "quote": "Public review patterns suggest assembly anxiety often appears around screws, washers, braces, and confirming that all small parts are present before starting.",
+      "date": "2025-04-10",
+      "collectedDate": "2026-06-14",
+      "sourcePublishedDate": "2025-04-10",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "evidenceScreenshot": "",
+      "recommendedAction": "Add a hardware inventory checklist and QR code before step one in the install guide.",
+      "evidenceType": "public-source-synthesis"
     }
   ]
 }

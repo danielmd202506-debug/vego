@@ -833,7 +833,7 @@
 
       table {
         width: 100%;
-        min-width: 1880px;
+        min-width: 2380px;
         border-collapse: collapse;
       }
 
@@ -877,6 +877,36 @@
       .action-cell {
         max-width: 300px;
         line-height: 1.45;
+      }
+
+      .evidence-cell {
+        min-width: 150px;
+      }
+
+      .evidence-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 7px;
+      }
+
+      .evidence-links a,
+      .evidence-links span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 3px 8px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--ink);
+        font-size: 11px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .evidence-links a:hover {
+        border-color: #b9d2ae;
+        background: #eef7ea;
       }
 
       .inline-select {
@@ -1106,7 +1136,7 @@
                   <div class="section-head">
                     <div>
                       <h2>VOC 趋势 / VOC Trend</h2>
-                      <p>按日期聚合正向、中性、负向反馈，用于判断近期是否有异常波动。 / Track positive, neutral, and negative feedback by date.</p>
+                      <p>按 VOC 日期聚合，优先使用来源发布时间，避免把老文章当作今日新反馈。 / Aggregates by VOC date, preferring source published date over collection date.</p>
                     </div>
                     <div class="trend-legend" aria-label="VOC trend legend">
                       <span class="legend-item"><span class="legend-dot positive"></span>正向 / Positive</span>
@@ -1297,8 +1327,12 @@
                     <select id="manualSource" required></select>
                   </label>
                   <label>
-                    日期 / Date
+                    VOC 日期 / VOC Date
                     <input id="manualDate" type="date" required />
+                  </label>
+                  <label>
+                    来源发布日期 / Source Published
+                    <input id="manualSourcePublishedDate" type="date" />
                   </label>
                   <label>
                     情绪 / Sentiment
@@ -1364,6 +1398,14 @@
                     AI 建议动作 / AI Suggested Action
                     <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器 / Add soil bag calculator to PDP" />
                   </label>
+                  <label>
+                    原文链接 / Source Link
+                    <input id="manualSourceUrl" type="url" placeholder="https://..." />
+                  </label>
+                  <label>
+                    证据截图 / Evidence Screenshot
+                    <input id="manualEvidenceScreenshot" type="url" placeholder="Notion, Drive, or image URL" />
+                  </label>
                   <label class="wide">
                     洞察沉淀链接 / Insight Link
                     <input id="manualInsightLink" placeholder="Notion insight card, research note, or experiment link" />
@@ -1380,7 +1422,10 @@
                 <table>
                   <thead>
                     <tr>
-                      <th><button type="button" data-sort="date">日期 / Date <span id="sortDate"></span></button></th>
+                      <th><button type="button" data-sort="date">VOC 日期 / VOC Date <span id="sortDate"></span></button></th>
+                      <th><button type="button" data-sort="sourcePublishedDate">来源发布时间 / Published <span id="sortSourcePublishedDate"></span></button></th>
+                      <th><button type="button" data-sort="collectedDate">采集日期 / Collected <span id="sortCollectedDate"></span></button></th>
+                      <th>时效性 / Freshness</th>
                       <th><button type="button" data-sort="source">渠道 / Channel <span id="sortSource"></span></button></th>
                       <th><button type="button" data-sort="sentiment">情绪 / Sentiment <span id="sortSentiment"></span></button></th>
                       <th><button type="button" data-sort="impact">影响 / Impact <span id="sortImpact"></span></button></th>
@@ -1392,6 +1437,8 @@
                       <th><button type="button" data-sort="workflowStatus">闭环状态 / Status <span id="sortWorkflowStatus"></span></button></th>
                       <th><button type="button" data-sort="verification">验证 / Validation <span id="sortVerification"></span></button></th>
                       <th><button type="button" data-sort="decisionStatus">决策状态 / Decision <span id="sortDecisionStatus"></span></button></th>
+                      <th>证据 / Evidence</th>
+                      <th>来源可信度 / Confidence</th>
                       <th>用户原声 / User Voice</th>
                       <th>标签 / Tags</th>
                       <th>AI 建议动作 / AI Suggested Action</th>
@@ -1607,6 +1654,9 @@
         const reviewResult = normalizeOption(voice.reviewResult || voice.result, reviewResultOptions, "pending");
         const decisionStatus = normalizeOption(voice.decisionStatus || voice.decision_status, decisionStatusOptions, "pending-review");
         const priority = voice.priority || calculatePriority({ impact, sentiment, tags, workflowStatus });
+        const collectedDate = String(voice.collectedDate || voice.collected_date || voice.collectedAt || voice.collected_at || new Date().toISOString().slice(0, 10)).slice(0, 10);
+        const sourcePublishedDate = String(voice.sourcePublishedDate || voice.source_published_date || voice.publishedDate || voice.published_date || "").slice(0, 10);
+        const vocDate = String(sourcePublishedDate || voice.date || voice.vocDate || voice.voc_date || collectedDate).slice(0, 10);
         const normalized = {
           source,
           sentiment,
@@ -1615,8 +1665,11 @@
           tags,
           title: voice.title || "VOC item",
           quote: voice.quote || voice.text || voice.comment || "",
-          date: String(voice.date || new Date().toISOString().slice(0, 10)).slice(0, 10),
-          sourceUrl: voice.sourceUrl || "",
+          date: vocDate,
+          collectedDate,
+          sourcePublishedDate,
+          sourceUrl: voice.sourceUrl || voice.source_url || voice.url || "",
+          evidenceScreenshot: voice.evidenceScreenshot || voice.evidence_screenshot || voice.screenshotUrl || voice.screenshot_url || "",
           status: workflowStatus,
           workflowStatus,
           userType,
@@ -1645,6 +1698,52 @@
 
       function labelById(options, id) {
         return (options.find((option) => option.id === id) || options.find((option) => option.id === "unknown") || { label: id }).label;
+      }
+
+      function evidenceConfidence(voice) {
+        if (voice.sourceUrl && voice.evidenceScreenshot) return "high";
+        if (voice.sourceUrl || voice.evidenceScreenshot) return "medium";
+        return "low";
+      }
+
+      function evidenceConfidenceLabel(level) {
+        if (level === "high") return "High";
+        if (level === "medium") return "Medium";
+        return "Low";
+      }
+
+      function getFreshnessLevel(voice) {
+        const date = voice.sourcePublishedDate || voice.date;
+        if (!date) return "unknown";
+        const timestamp = new Date(`${date}T00:00:00`).getTime();
+        if (Number.isNaN(timestamp)) return "unknown";
+        const ageDays = Math.floor((Date.now() - timestamp) / 86400000);
+        if (ageDays <= 90) return "fresh";
+        if (ageDays <= 180) return "recent";
+        if (ageDays <= 365) return "aging";
+        return "historical";
+      }
+
+      function freshnessLabel(level) {
+        if (level === "fresh") return "Fresh / 90天内";
+        if (level === "recent") return "Recent / 180天内";
+        if (level === "aging") return "Aging / 1年内";
+        if (level === "historical") return "Historical / 超1年";
+        return "Unknown / 待核验";
+      }
+
+      function freshnessBadgeClass(level) {
+        if (level === "fresh" || level === "recent") return "good";
+        if (level === "aging") return "warn";
+        if (level === "historical") return "risk";
+        return "medium";
+      }
+
+      function renderEvidenceLinks(voice) {
+        const links = [];
+        if (voice.sourceUrl) links.push(`<a href="${voice.sourceUrl}" target="_blank" rel="noreferrer">原文 / Source</a>`);
+        if (voice.evidenceScreenshot) links.push(`<a href="${voice.evidenceScreenshot}" target="_blank" rel="noreferrer">截图 / Screenshot</a>`);
+        return links.length ? `<div class="evidence-links">${links.join("")}</div>` : `<div class="evidence-links"><span>待补充 / Missing</span></div>`;
       }
 
       function inferUserType(tags, text) {
@@ -1806,7 +1905,7 @@
         const term = state.filters.search.trim().toLowerCase();
         return state.voices.filter((voice) => {
           const source = sourceById(voice.source);
-          const text = `${voice.date} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction} ${voice.userType} ${voice.journeyStage} ${voice.issueType} ${voice.workflowStatus} ${voice.verification} ${voice.owner} ${voice.linkedProject}`.toLowerCase();
+          const text = `${voice.date} ${voice.sourcePublishedDate} ${voice.collectedDate} ${freshnessLabel(getFreshnessLevel(voice))} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction} ${voice.userType} ${voice.journeyStage} ${voice.issueType} ${voice.workflowStatus} ${voice.verification} ${voice.owner} ${voice.linkedProject}`.toLowerCase();
           return (!term || text.includes(term))
             && (state.filters.source === "all" || voice.source === state.filters.source)
             && (state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment)
@@ -2267,7 +2366,7 @@
       }
 
       function renderSortIndicators() {
-        ["Date", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification", "DecisionStatus"].forEach((name) => {
+        ["Date", "SourcePublishedDate", "CollectedDate", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification", "DecisionStatus"].forEach((name) => {
           $(`sort${name}`).textContent = "";
         });
         const id = `sort${state.sort.key.charAt(0).toUpperCase()}${state.sort.key.slice(1)}`;
@@ -2282,9 +2381,13 @@
         const pageItems = filtered.slice(start, start + state.pageSize);
         $("vocTableBody").innerHTML = pageItems.map((voice) => {
           const source = sourceById(voice.source);
+          const freshness = getFreshnessLevel(voice);
           return `
             <tr>
               <td>${voice.date}</td>
+              <td>${voice.sourcePublishedDate || "待核验 / Unknown"}</td>
+              <td>${voice.collectedDate || "待核验 / Unknown"}</td>
+              <td><span class="badge ${freshnessBadgeClass(freshness)}">${freshnessLabel(freshness)}</span></td>
               <td><strong>${source.name}</strong><br><span class="tag">${source.type}</span></td>
               <td><span class="badge ${voice.sentiment}">${titleCase(voice.sentiment)}</span></td>
               <td><span class="badge ${voice.impact}">${titleCase(voice.impact)}</span></td>
@@ -2300,6 +2403,8 @@
                   ${decisionStatusOptions.map((option) => `<option value="${option.id}" ${option.id === voice.decisionStatus ? "selected" : ""}>${option.label}</option>`).join("")}
                 </select>
               </td>
+              <td class="evidence-cell">${renderEvidenceLinks(voice)}</td>
+              <td><span class="badge ${evidenceConfidence(voice) === "high" ? "good" : evidenceConfidence(voice) === "medium" ? "warn" : "risk"}">${evidenceConfidenceLabel(evidenceConfidence(voice))}</span></td>
               <td class="quote-cell">${voice.quote}</td>
               <td><div class="tag-list">${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div></td>
               <td class="action-cell">${voice.recommendedAction || "待补充 / To be added"}${voice.linkedProject ? `<br><span class="tag">${voice.linkedProject}</span>` : ""}</td>
@@ -2307,7 +2412,7 @@
               <td>${labelById(reviewResultOptions, voice.reviewResult)}${voice.insightLink ? `<br><a href="${voice.insightLink}" target="_blank" rel="noreferrer">Insight</a>` : ""}</td>
             </tr>
           `;
-        }).join("") || `<tr><td colspan="17">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
+        }).join("") || `<tr><td colspan="22">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
         $("tableSummary").textContent = `${filtered.length} 条 VOC / ${filtered.length} VOC items, 第 ${state.page} / ${totalPages} 页 / page ${state.page} of ${totalPages}`;
         $("prevPageBtn").disabled = state.page <= 1;
         $("nextPageBtn").disabled = state.page >= totalPages;
@@ -2366,9 +2471,12 @@
 
       function exportCsv() {
         const rows = [
-          ["date", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "decision_status", "owner", "linked_project", "review_result", "tags", "title", "quote", "ai_suggested_action", "insight_link"],
+          ["date", "source_published_date", "collected_date", "freshness", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "decision_status", "source_url", "evidence_screenshot", "source_confidence", "owner", "linked_project", "review_result", "tags", "title", "quote", "ai_suggested_action", "insight_link"],
           ...sortedVoices(filteredVoices()).map((voice) => [
             voice.date,
+            voice.sourcePublishedDate,
+            voice.collectedDate,
+            freshnessLabel(getFreshnessLevel(voice)),
             sourceById(voice.source).name,
             voice.sentiment,
             voice.impact,
@@ -2379,6 +2487,9 @@
             voice.workflowStatus,
             voice.verification,
             voice.decisionStatus,
+            voice.sourceUrl,
+            voice.evidenceScreenshot,
+            evidenceConfidence(voice),
             voice.owner,
             voice.linkedProject,
             voice.reviewResult,
@@ -2499,6 +2610,7 @@
             $("createDrawer").classList.add("open");
             setRoute("list");
             $("manualDate").value = new Date().toISOString().slice(0, 10);
+            $("manualSourcePublishedDate").value = "";
           });
         });
         $("closeCreateBtn").addEventListener("click", () => $("createDrawer").classList.remove("open"));
@@ -2521,6 +2633,10 @@
             title: $("manualTitle").value.trim(),
             quote: $("manualQuote").value.trim(),
             date: $("manualDate").value,
+            sourcePublishedDate: $("manualSourcePublishedDate").value,
+            collectedDate: new Date().toISOString().slice(0, 10),
+            sourceUrl: $("manualSourceUrl").value.trim(),
+            evidenceScreenshot: $("manualEvidenceScreenshot").value.trim(),
             recommendedAction: $("manualAction").value.trim(),
             insightLink: $("manualInsightLink").value.trim(),
             manual: true,

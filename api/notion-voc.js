@@ -24,7 +24,9 @@ function normalizePage(page) {
   const sentiment = getPlainText(properties.Sentiment) || "neutral";
   const impact = getPlainText(properties.Impact) || "medium";
   const quote = getPlainText(properties.Quote);
-  const date = getPlainText(properties.Date) || page.created_time?.slice(0, 10) || new Date().toISOString().slice(0, 10);
+  const collectedDate = getPlainText(properties["Collected Date"]) || page.created_time?.slice(0, 10) || new Date().toISOString().slice(0, 10);
+  const sourcePublishedDate = getPlainText(properties["Source Published Date"]) || getPlainText(properties["Published Date"]);
+  const date = getPlainText(properties.Date) || sourcePublishedDate || collectedDate;
 
   return {
     source,
@@ -34,7 +36,10 @@ function normalizePage(page) {
     title,
     quote,
     date,
+    collectedDate,
+    sourcePublishedDate,
     sourceUrl: getPlainText(properties["Source URL"]),
+    evidenceScreenshot: getPlainText(properties["Evidence Screenshot"]) || getPlainText(properties.Screenshot),
     status: getPlainText(properties.Status),
     recommendedAction: getPlainText(properties["Recommended Action"]),
   };

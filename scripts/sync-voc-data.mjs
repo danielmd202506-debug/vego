@@ -105,7 +105,13 @@ function normalizeRecord(record, fallbackSource) {
   const impact = pick(normalized, ["impact", "priority"], sentiment === "negative" ? "high" : "medium").toLowerCase();
   const quote = pick(normalized, ["quote", "body", "comment", "text", "message", "question", "review"]);
   const title = pick(normalized, ["title", "summary", "subject"], quote.slice(0, 72) || "VOC item");
-  const date = pick(normalized, ["date", "created_at", "updated_at"], new Date().toISOString().slice(0, 10)).slice(0, 10);
+  const collectedDate = pick(normalized, ["collected_date", "collectedDate", "collected_at"], new Date().toISOString().slice(0, 10)).slice(0, 10);
+  const sourcePublishedDate = pick(normalized, ["source_published_date", "sourcePublishedDate", "published_date", "publishedDate"]);
+  const date = pick(normalized, ["date", "voc_date", "created_at", "updated_at"], sourcePublishedDate || collectedDate).slice(0, 10);
+  const sourceUrl = pick(normalized, ["source_url", "sourceUrl", "url", "link", "permalink"]);
+  const evidenceScreenshot = pick(normalized, ["evidence_screenshot", "evidenceScreenshot", "screenshot", "screenshot_url", "screenshotUrl"]);
+  const recommendedAction = pick(normalized, ["recommended_action", "recommendedAction", "action", "next_step"]);
+  const evidenceType = pick(normalized, ["evidence_type", "evidenceType"], sourceUrl ? "public-source-synthesis" : "manual-note");
   const tags = normalizeTags(normalized.tags || normalized.tag || normalized.topic || normalized.topics);
 
   if (!quote) return null;
@@ -118,6 +124,12 @@ function normalizeRecord(record, fallbackSource) {
     title,
     quote,
     date,
+    collectedDate,
+    sourcePublishedDate: sourcePublishedDate ? sourcePublishedDate.slice(0, 10) : "",
+    sourceUrl,
+    evidenceScreenshot,
+    recommendedAction,
+    evidenceType,
   };
 }
 
