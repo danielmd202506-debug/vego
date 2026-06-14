@@ -6,21 +6,22 @@
     <title>VEGO VOC Management System</title>
     <style>
       :root {
-        --bg: #f6f7f2;
+        --bg: #f5f8ef;
         --surface: #ffffff;
-        --surface-2: #eef3e9;
-        --ink: #16351f;
-        --text: #2f4636;
-        --muted: #687567;
-        --line: #d9dfd0;
-        --green: #2e6b3f;
-        --green-dark: #1f4f2e;
-        --blue: #245f73;
-        --yellow: #f1c85c;
-        --red: #b64b3f;
-        --orange: #b86b2c;
-        --shadow: 0 1px 3px rgba(22, 53, 31, 0.09);
-        --focus: 0 0 0 3px rgba(46, 107, 63, 0.24);
+        --surface-2: #f5f8ef;
+        --ink: #17351f;
+        --text: #31513a;
+        --muted: #687a67;
+        --line: #d9dec3;
+        --green: #2f663b;
+        --green-dark: #1e4f2d;
+        --blue: #164d5d;
+        --yellow: #ffd976;
+        --red: #b84b3f;
+        --orange: #ffad4f;
+        --shadow-card: 0 1px 3px rgba(23, 53, 31, 0.1);
+        --shadow-popover: 0 10px 24px rgba(23, 53, 31, 0.16);
+        --focus: 0 0 0 3px rgba(47, 102, 59, 0.28);
       }
 
       * {
@@ -35,7 +36,7 @@
         margin: 0;
         background: var(--bg);
         color: var(--text);
-        font-family: Inter, Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-family: Manrope, Arial, "Helvetica Neue", sans-serif;
       }
 
       button,
@@ -81,8 +82,10 @@
       }
 
       .brand img {
-        width: 120px;
+        width: auto;
+        max-width: 120px;
         height: auto;
+        max-height: 36px;
       }
 
       .brand strong {
@@ -96,7 +99,7 @@
       }
 
       .nav button {
-        min-height: 42px;
+        min-height: 44px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -158,7 +161,6 @@
         padding: 16px clamp(18px, 3vw, 34px);
         background: rgba(246, 247, 242, 0.96);
         border-bottom: 1px solid var(--line);
-        backdrop-filter: blur(8px);
       }
 
       .page-title {
@@ -208,7 +210,7 @@
       }
 
       .btn {
-        min-height: 40px;
+        min-height: 44px;
         padding: 0 14px;
         border: 1px solid var(--line);
         background: var(--surface);
@@ -230,6 +232,11 @@
 
       .btn:hover {
         filter: brightness(0.98);
+      }
+
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.58;
       }
 
       .content {
@@ -272,7 +279,7 @@
         padding: 16px;
         border: 1px solid var(--line);
         background: var(--surface);
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow-card);
         text-align: left;
       }
 
@@ -311,7 +318,7 @@
         min-width: 0;
         border: 1px solid var(--line);
         background: var(--surface);
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow-card);
       }
 
       .panel {
@@ -378,9 +385,17 @@
       .list-row {
         display: grid;
         gap: 8px;
+        width: 100%;
         padding: 12px;
         background: var(--surface-2);
         border: 1px solid var(--line);
+        color: var(--text);
+        text-align: left;
+      }
+
+      button.list-row:hover {
+        border-color: #b9d2ae;
+        background: #eef7ea;
       }
 
       .row-top {
@@ -468,7 +483,7 @@
         padding: 14px;
         border: 1px solid var(--line);
         background: var(--surface);
-        box-shadow: var(--shadow);
+        box-shadow: var(--shadow-card);
       }
 
       .filter-grid {
@@ -489,7 +504,7 @@
       select,
       textarea {
         width: 100%;
-        min-height: 40px;
+        min-height: 44px;
         padding: 9px 10px;
         border: 1px solid var(--line);
         background: var(--surface);
@@ -533,7 +548,7 @@
       }
 
       th button {
-        min-height: 26px;
+        min-height: 44px;
         padding: 0;
         border: 0;
         background: transparent;
