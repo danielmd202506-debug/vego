@@ -93,7 +93,7 @@ export default async function handler(request, response) {
   }
 
   const token = process.env.NOTION_TOKEN;
-  const databaseId = process.env.NOTION_DATABASE_ID || "be906bc91f2e42be8705933023e08ffa";
+  const databaseId = process.env.NOTION_DATABASE_ID || "37f1c0df7c158167afcbdc0555b0ed2b";
 
   if (!token) {
     response.status(500).json({

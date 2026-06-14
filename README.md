@@ -38,7 +38,7 @@ Deploy this repository to Vercel, then set these environment variables:
 
 ```text
 NOTION_TOKEN=secret_xxx
-NOTION_DATABASE_ID=be906bc91f2e42be8705933023e08ffa
+NOTION_DATABASE_ID=37f1c0df7c158167afcbdc0555b0ed2b
 ALLOWED_ORIGIN=https://danielmd202506-debug.github.io
 ```
 
@@ -55,7 +55,7 @@ If the VOC page is served from GitHub Pages and the API is served from Vercel, u
 ```json
 {
   "vocApiEndpoint": "https://your-vercel-app.vercel.app/api/notion-voc",
-  "notionDatabaseUrl": "https://app.notion.com/p/be906bc91f2e42be8705933023e08ffa"
+  "notionDatabaseUrl": "https://app.notion.com/p/37f1c0df7c158167afcbdc0555b0ed2b"
 }
 ```
 
