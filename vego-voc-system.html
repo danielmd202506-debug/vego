@@ -333,7 +333,8 @@
       .trend-chart {
         display: grid;
         grid-template-columns: repeat(7, minmax(0, 1fr));
-        gap: 10px;
+        column-gap: 18px;
+        row-gap: 12px;
         align-items: end;
         min-height: 190px;
         padding-top: 8px;
@@ -342,16 +343,21 @@
       .trend-day {
         display: grid;
         align-content: end;
-        gap: 8px;
+        justify-items: center;
+        gap: 10px;
         min-width: 0;
+        padding: 0 8px;
+        border-left: 1px solid var(--line);
       }
 
       .trend-bars {
         height: 132px;
+        width: 44px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 3px;
+        grid-template-columns: repeat(3, 12px);
+        gap: 4px;
         align-items: end;
+        justify-content: center;
       }
 
       .trend-bars span {
@@ -376,6 +382,40 @@
         color: var(--muted);
         font-size: 11px;
         text-align: center;
+      }
+
+      .trend-legend {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 12px;
+      }
+
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .legend-dot {
+        width: 10px;
+        height: 10px;
+        border: 1px solid rgba(23, 53, 31, 0.12);
+      }
+
+      .legend-dot.positive {
+        background: #8dbc76;
+      }
+
+      .legend-dot.neutral {
+        background: #b7c0b0;
+      }
+
+      .legend-dot.negative {
+        background: #d77367;
       }
 
       .sync-list,
@@ -746,7 +786,12 @@
                       <h2>VOC 趋势 / VOC Trend</h2>
                       <p>按日期聚合正向、中性、负向反馈，用于判断近期是否有异常波动。 / Track positive, neutral, and negative feedback by date.</p>
                     </div>
-                    <span class="badge" id="trendWindowLabel">最近 7 天 / Last 7 days</span>
+                    <div class="trend-legend" aria-label="VOC trend legend">
+                      <span class="legend-item"><span class="legend-dot positive"></span>正向 / Positive</span>
+                      <span class="legend-item"><span class="legend-dot neutral"></span>中性 / Neutral</span>
+                      <span class="legend-item"><span class="legend-dot negative"></span>负向 / Negative</span>
+                      <span class="badge" id="trendWindowLabel">最近 7 天 / Last 7 days</span>
+                    </div>
                   </div>
                   <div class="trend-chart" id="trendChart"></div>
                 </div>
