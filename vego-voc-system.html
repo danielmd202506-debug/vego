@@ -270,7 +270,7 @@
 
       .metric-grid {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(6, minmax(0, 1fr));
         gap: 12px;
       }
 
@@ -313,6 +313,51 @@
         display: grid;
         grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
         gap: 12px;
+      }
+
+      .panel-grid.equal {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .workflow-grid {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(96px, 1fr));
+        gap: 8px;
+      }
+
+      .workflow-step {
+        display: grid;
+        gap: 8px;
+        min-height: 104px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .workflow-step strong {
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .workflow-step span {
+        color: var(--green-dark);
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .workflow-step em {
+        color: var(--muted);
+        font-size: 11px;
+        font-style: normal;
+        line-height: 1.35;
+      }
+
+      .insight-list,
+      .journey-list,
+      .status-list {
+        display: grid;
+        gap: 10px;
       }
 
       .panel,
@@ -531,8 +576,12 @@
 
       .filter-grid {
         display: grid;
-        grid-template-columns: minmax(240px, 1.2fr) repeat(4, minmax(140px, 1fr));
+        grid-template-columns: minmax(240px, 1.4fr) repeat(4, minmax(150px, 1fr));
         gap: 10px;
+      }
+
+      .filter-grid.extended {
+        grid-template-columns: minmax(240px, 1.4fr) repeat(7, minmax(150px, 1fr));
       }
 
       label {
@@ -569,7 +618,7 @@
 
       table {
         width: 100%;
-        min-width: 1120px;
+        min-width: 1720px;
         border-collapse: collapse;
       }
 
@@ -607,6 +656,11 @@
 
       .quote-cell {
         max-width: 380px;
+        line-height: 1.45;
+      }
+
+      .action-cell {
+        max-width: 300px;
         line-height: 1.45;
       }
 
@@ -680,7 +734,10 @@
 
         .metric-grid,
         .panel-grid,
+        .panel-grid.equal,
+        .workflow-grid,
         .filter-grid,
+        .filter-grid.extended,
         .form-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -696,7 +753,10 @@
 
         .metric-grid,
         .panel-grid,
+        .panel-grid.equal,
+        .workflow-grid,
         .filter-grid,
+        .filter-grid.extended,
         .form-grid {
           grid-template-columns: 1fr;
         }
@@ -775,6 +835,28 @@
                   <strong id="metricNew">0</strong>
                   <em id="metricNewChange">对比前 7 天 / vs previous 7 days</em>
                 </button>
+                <button class="metric" type="button" data-drill="open-loop">
+                  <span>待闭环问题 / Open Loop</span>
+                  <strong id="metricOpenLoop">0</strong>
+                  <em>已发现但未复盘 / Not reviewed yet</em>
+                </button>
+                <button class="metric" type="button" data-drill="validating">
+                  <span>验证中 / In Validation</span>
+                  <strong id="metricValidating">0</strong>
+                  <em>UR、UT 或 AB Test 中 / UR, UT, or AB Test</em>
+                </button>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>闭环进展 / Insight Operating Loop</h2>
+                    <p>把第 03 页流程落到系统里：从原始 VOC 到用户分层、旅程定位、设计转化、验证和复盘。 / Tracks the operating loop from raw VOC to validated learning.</p>
+                  </div>
+                </div>
+                <div class="workflow-grid" id="workflowGrid"></div>
               </div>
             </section>
 
@@ -808,7 +890,7 @@
             </section>
 
             <section class="section">
-              <div class="panel-grid">
+              <div class="panel-grid equal">
                 <div class="panel">
                   <div class="section-head">
                     <div>
@@ -829,6 +911,29 @@
                 </div>
               </div>
             </section>
+
+            <section class="section">
+              <div class="panel-grid equal">
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>旅程卡点 / Journey Bottlenecks</h2>
+                      <p>按用户旅程聚合高影响和负向问题，帮助设计团队判断应该优先优化哪个触点。 / Groups VOC by journey stage to locate the next design focus.</p>
+                    </div>
+                  </div>
+                  <div class="journey-list" id="journeyList"></div>
+                </div>
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>洞察卡片 / Insight Cards</h2>
+                      <p>把多条 VOC 聚合为可行动洞察，连接用户类型、真实阻力、设计机会和验证方式。 / Turns recurring VOC patterns into actionable insight cards.</p>
+                    </div>
+                  </div>
+                  <div class="insight-list" id="insightList"></div>
+                </div>
+              </div>
+            </section>
           </section>
 
           <section class="view" id="listView">
@@ -844,7 +949,7 @@
                     <button class="btn primary" id="openCreateBtnList" type="button">手动创建 VOC / Create VOC</button>
                   </div>
                 </div>
-                <div class="filter-grid">
+                <div class="filter-grid extended">
                   <label>
                     搜索 / Search
                     <input id="searchInput" type="search" placeholder="搜索标题、原声、标签、建议动作 / Search title, quote, tags, action" />
@@ -876,6 +981,26 @@
                     <select id="tagFilter">
                       <option value="all">全部标签 / All tags</option>
                     </select>
+                  </label>
+                  <label>
+                    用户类型 / User Type
+                    <select id="userTypeFilter"></select>
+                  </label>
+                  <label>
+                    旅程阶段 / Journey
+                    <select id="journeyFilter"></select>
+                  </label>
+                  <label>
+                    问题类型 / Issue Type
+                    <select id="issueTypeFilter"></select>
+                  </label>
+                  <label>
+                    闭环状态 / Status
+                    <select id="statusFilter"></select>
+                  </label>
+                  <label>
+                    验证方式 / Validation
+                    <select id="verificationFilter"></select>
                   </label>
                 </div>
               </div>
@@ -923,6 +1048,38 @@
                     标签 / Tags
                     <input id="manualTags" required placeholder="soil, calculator, purchase-blocker" />
                   </label>
+                  <label>
+                    用户类型 / User Type
+                    <select id="manualUserType" required></select>
+                  </label>
+                  <label>
+                    旅程阶段 / Journey Stage
+                    <select id="manualJourneyStage" required></select>
+                  </label>
+                  <label>
+                    问题类型 / Issue Type
+                    <select id="manualIssueType" required></select>
+                  </label>
+                  <label>
+                    闭环状态 / Workflow Status
+                    <select id="manualWorkflowStatus" required></select>
+                  </label>
+                  <label>
+                    验证方式 / Validation
+                    <select id="manualVerification" required></select>
+                  </label>
+                  <label>
+                    负责人 / Owner
+                    <input id="manualOwner" placeholder="例如：UX / Content / CX" />
+                  </label>
+                  <label>
+                    关联项目 / Linked Project
+                    <input id="manualLinkedProject" placeholder="例如：PDP soil calculator" />
+                  </label>
+                  <label>
+                    复盘结果 / Review Result
+                    <select id="manualReviewResult" required></select>
+                  </label>
                   <label class="wide">
                     用户原声 / User Voice
                     <textarea id="manualQuote" required placeholder="粘贴或概括一条 VOC / Paste or summarize one VOC"></textarea>
@@ -930,6 +1087,10 @@
                   <label class="wide">
                     建议动作 / Recommended Action
                     <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器 / Add soil bag calculator to PDP" />
+                  </label>
+                  <label class="wide">
+                    洞察沉淀链接 / Insight Link
+                    <input id="manualInsightLink" placeholder="Notion insight card, research note, or experiment link" />
                   </label>
                 </div>
                 <div class="actions">
@@ -947,10 +1108,18 @@
                       <th><button type="button" data-sort="source">渠道 / Channel <span id="sortSource"></span></button></th>
                       <th><button type="button" data-sort="sentiment">情绪 / Sentiment <span id="sortSentiment"></span></button></th>
                       <th><button type="button" data-sort="impact">影响 / Impact <span id="sortImpact"></span></button></th>
+                      <th><button type="button" data-sort="priority">优先级 / Priority <span id="sortPriority"></span></button></th>
                       <th><button type="button" data-sort="title">标题 / Title <span id="sortTitle"></span></button></th>
+                      <th><button type="button" data-sort="userType">用户类型 / User Type <span id="sortUserType"></span></button></th>
+                      <th><button type="button" data-sort="journeyStage">旅程 / Journey <span id="sortJourneyStage"></span></button></th>
+                      <th><button type="button" data-sort="issueType">问题类型 / Issue Type <span id="sortIssueType"></span></button></th>
+                      <th><button type="button" data-sort="workflowStatus">闭环状态 / Status <span id="sortWorkflowStatus"></span></button></th>
+                      <th><button type="button" data-sort="verification">验证 / Validation <span id="sortVerification"></span></button></th>
                       <th>用户原声 / User Voice</th>
                       <th>标签 / Tags</th>
                       <th>建议动作 / Recommended Action</th>
+                      <th>负责人 / Owner</th>
+                      <th>复盘 / Review</th>
                     </tr>
                   </thead>
                   <tbody id="vocTableBody"></tbody>
@@ -983,6 +1152,68 @@
         { id: "post-purchase", name: "购买后问卷 / Post-purchase Survey", type: "Owned", cadence: "Weekly", owner: "Lifecycle", quality: 56 },
       ];
 
+      const userTypeOptions = [
+        { id: "beginner-gardener", label: "新手种植者 / Beginner gardener" },
+        { id: "experienced-grower", label: "有经验种植者 / Experienced grower" },
+        { id: "small-space", label: "小空间用户 / Small-space patio user" },
+        { id: "tomato-grower", label: "番茄种植用户 / Tomato grower" },
+        { id: "price-sensitive", label: "价格敏感用户 / Price-sensitive shopper" },
+        { id: "accessibility", label: "行动不便用户 / Accessibility user" },
+        { id: "b2b-project", label: "项目型用户 / B2B or project buyer" },
+        { id: "unknown", label: "待判断 / Unknown" },
+      ];
+
+      const journeyOptions = [
+        { id: "search-compare", label: "搜索比较 / Search and compare" },
+        { id: "pdp-evaluation", label: "PDP 决策 / PDP evaluation" },
+        { id: "configuration", label: "尺寸与配件选择 / Size and accessory choice" },
+        { id: "checkout", label: "下单结算 / Checkout" },
+        { id: "delivery-assembly", label: "收货安装 / Delivery and assembly" },
+        { id: "first-use", label: "第一次种植 / First use" },
+        { id: "post-purchase", label: "售后复购 / Post-purchase" },
+        { id: "unknown", label: "待定位 / Unknown" },
+      ];
+
+      const issueTypeOptions = [
+        { id: "info-gap", label: "信息缺失 / Information gap" },
+        { id: "value-proof", label: "价值感不足 / Value proof" },
+        { id: "usability", label: "操作困难 / Usability friction" },
+        { id: "trust-risk", label: "信任不足 / Trust risk" },
+        { id: "accessory-clarity", label: "配件不清 / Accessory clarity" },
+        { id: "support-aftercare", label: "售后问题 / Support or aftercare" },
+        { id: "product-fit", label: "产品适配 / Product fit" },
+        { id: "unknown", label: "待归因 / Unknown" },
+      ];
+
+      const statusOptions = [
+        { id: "new", label: "新发现 / New" },
+        { id: "diagnosed", label: "已归因 / Diagnosed" },
+        { id: "design-ready", label: "已转设计方案 / Design ready" },
+        { id: "ut", label: "UT 中 / In UT" },
+        { id: "ab-test", label: "AB Test 中 / In AB Test" },
+        { id: "launched", label: "已上线 / Launched" },
+        { id: "reviewed", label: "已复盘 / Reviewed" },
+      ];
+
+      const verificationOptions = [
+        { id: "triage", label: "先分诊 / Triage first" },
+        { id: "ur", label: "UR 归因 / UR diagnosis" },
+        { id: "ut", label: "UT 验证 / Usability test" },
+        { id: "ab-test", label: "AB Test" },
+        { id: "content-update", label: "内容优化 / Content update" },
+        { id: "support-script", label: "客服话术 / Support script" },
+        { id: "monitor", label: "持续观察 / Monitor" },
+      ];
+
+      const reviewResultOptions = [
+        { id: "pending", label: "待复盘 / Pending" },
+        { id: "effective", label: "有效 / Effective" },
+        { id: "ineffective", label: "无效 / Ineffective" },
+        { id: "watching", label: "待观察 / Watching" },
+      ];
+
+      const ownerOptions = ["UX", "Content", "CX", "Ecommerce Ops", "SEO", "Marketplace", "Lifecycle", "Research"];
+
       const defaultVoices = [
         {
           source: "site-reviews",
@@ -1010,7 +1241,7 @@
         route: "dashboard",
         voices: loadStoredVoices(),
         dataMeta: { mode: "sample", generatedAt: null, sources: [], endpoint: "" },
-        filters: { search: "", source: "all", sentiment: "all", impact: "all", tag: "all" },
+        filters: { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all" },
         sort: { key: "date", direction: "desc" },
         page: 1,
         pageSize: 12,
@@ -1048,24 +1279,126 @@
         const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "community";
         const sentiment = ["positive", "neutral", "negative"].includes(voice.sentiment) ? voice.sentiment : "neutral";
         const impact = ["low", "medium", "high"].includes(voice.impact) ? voice.impact : sentiment === "negative" ? "high" : "medium";
+        const tags = Array.isArray(voice.tags) && voice.tags.length ? voice.tags.map(String) : ["unclassified"];
+        const joinedTags = tags.join(" ").toLowerCase();
+        const titleQuote = `${voice.title || ""} ${voice.quote || voice.text || voice.comment || ""}`.toLowerCase();
+        const userType = normalizeOption(voice.userType || voice.persona || voice.segment || inferUserType(joinedTags, titleQuote), userTypeOptions, "unknown");
+        const journeyStage = normalizeOption(voice.journeyStage || voice.journey || inferJourney(joinedTags, titleQuote), journeyOptions, "unknown");
+        const issueType = normalizeOption(voice.issueType || voice.problemType || inferIssueType(joinedTags, titleQuote), issueTypeOptions, "unknown");
+        const workflowStatus = normalizeOption(voice.workflowStatus || voice.status, statusOptions, "new");
+        const verification = normalizeOption(voice.verification || voice.validation || inferVerification(issueType, impact), verificationOptions, "triage");
+        const reviewResult = normalizeOption(voice.reviewResult || voice.result, reviewResultOptions, "pending");
+        const priority = voice.priority || calculatePriority({ impact, sentiment, tags, workflowStatus });
         return {
           source,
           sentiment,
           impact,
-          tags: Array.isArray(voice.tags) && voice.tags.length ? voice.tags : ["unclassified"],
+          priority,
+          tags,
           title: voice.title || "VOC item",
           quote: voice.quote || voice.text || voice.comment || "",
           date: String(voice.date || new Date().toISOString().slice(0, 10)).slice(0, 10),
           sourceUrl: voice.sourceUrl || "",
-          status: voice.status || "new",
+          status: workflowStatus,
+          workflowStatus,
+          userType,
+          journeyStage,
+          issueType,
+          verification,
+          owner: voice.owner || inferOwner(source, issueType),
+          linkedProject: voice.linkedProject || voice.project || inferProject(issueType, joinedTags),
+          reviewResult,
+          insightLink: voice.insightLink || voice.insightUrl || "",
           recommendedAction: voice.recommendedAction || "",
           manual: Boolean(voice.manual),
         };
       }
 
+      function normalizeOption(value, options, fallback) {
+        const raw = String(value || "").trim();
+        if (!raw) return fallback;
+        if (options.some((option) => option.id === raw)) return raw;
+        const lower = raw.toLowerCase();
+        const matched = options.find((option) => option.label.toLowerCase().includes(lower) || lower.includes(option.id));
+        return matched ? matched.id : fallback;
+      }
+
+      function labelById(options, id) {
+        return (options.find((option) => option.id === id) || options.find((option) => option.id === "unknown") || { label: id }).label;
+      }
+
+      function inferUserType(tags, text) {
+        if (/tomato|trellis|cucumber/.test(tags + text)) return "tomato-grower";
+        if (/patio|balcony|small-space|compact|white/.test(tags + text)) return "small-space";
+        if (/beginner|first|new/.test(tags + text)) return "beginner-gardener";
+        if (/price|value|cost|expensive/.test(tags + text)) return "price-sensitive";
+        if (/accessibility|elevated|mobility|bending|older/.test(tags + text)) return "accessibility";
+        if (/commercial|project|b2b|bulk/.test(tags + text)) return "b2b-project";
+        return "unknown";
+      }
+
+      function inferJourney(tags, text) {
+        if (/search|compare|best/.test(tags + text)) return "search-compare";
+        if (/pdp|calculator|soil|depth|price|value/.test(tags + text)) return "pdp-evaluation";
+        if (/accessory|trellis|cover|size|configuration|bundle/.test(tags + text)) return "configuration";
+        if (/checkout|cart|shipping|delivery/.test(tags + text)) return "checkout";
+        if (/assembly|install|unboxing|protective-film/.test(tags + text)) return "delivery-assembly";
+        if (/crop|tomato|first-use|planting/.test(tags + text)) return "first-use";
+        if (/support|warranty|return|post-purchase/.test(tags + text)) return "post-purchase";
+        return "unknown";
+      }
+
+      function inferIssueType(tags, text) {
+        if (/soil|calculator|depth|unclear|info|guide/.test(tags + text)) return "info-gap";
+        if (/price|value|cost|comparison/.test(tags + text)) return "value-proof";
+        if (/assembly|install|friction|difficult|setup/.test(tags + text)) return "usability";
+        if (/durability|rust|food-safe|trust|warranty/.test(tags + text)) return "trust-risk";
+        if (/accessory|trellis|cover|mesh|bundle/.test(tags + text)) return "accessory-clarity";
+        if (/delivery|packaging|support|return|aftercare/.test(tags + text)) return "support-aftercare";
+        if (/fit|size|patio|layout|crop/.test(tags + text)) return "product-fit";
+        return "unknown";
+      }
+
+      function inferVerification(issueType, impact) {
+        if (issueType === "usability" || issueType === "product-fit") return "ut";
+        if (issueType === "value-proof" && impact === "high") return "ab-test";
+        if (issueType === "info-gap" || issueType === "accessory-clarity") return "content-update";
+        if (issueType === "support-aftercare") return "support-script";
+        if (issueType === "trust-risk") return "ur";
+        return "triage";
+      }
+
+      function inferOwner(source, issueType) {
+        if (source === "support" || issueType === "support-aftercare") return "CX";
+        if (source === "search-console") return "SEO";
+        if (source === "amazon") return "Marketplace";
+        if (["info-gap", "value-proof", "accessory-clarity"].includes(issueType)) return "Content";
+        return "UX";
+      }
+
+      function inferProject(issueType, tags) {
+        if (tags.includes("soil")) return "PDP soil calculator";
+        if (tags.includes("trellis")) return "Accessory bundle guidance";
+        if (tags.includes("assembly")) return "Assembly content update";
+        if (issueType === "value-proof") return "PDP value proof";
+        if (issueType === "product-fit") return "Help me choose flow";
+        return "VOC triage backlog";
+      }
+
+      function calculatePriority({ impact, sentiment, tags, workflowStatus }) {
+        let score = impact === "high" ? 3 : impact === "medium" ? 2 : 1;
+        if (sentiment === "negative") score += 2;
+        if (tags.some((tag) => /purchase|blocker|checkout|price|trust/.test(tag))) score += 1;
+        if (["reviewed", "launched"].includes(workflowStatus)) score -= 1;
+        if (score >= 5) return "P0";
+        if (score >= 4) return "P1";
+        if (score >= 2) return "P2";
+        return "P3";
+      }
+
       async function loadRemoteVocData({ silent = false } = {}) {
         const config = await loadRuntimeConfig();
-        const endpoints = [config.vocApiEndpoint || "/api/notion-voc", "data/voc-items.json"].filter(Boolean);
+        const endpoints = [config.vocApiEndpoint, "data/voc-items.json", "/api/notion-voc"].filter(Boolean);
         let response;
         let endpoint;
         let lastError;
@@ -1153,12 +1486,17 @@
         const term = state.filters.search.trim().toLowerCase();
         return state.voices.filter((voice) => {
           const source = sourceById(voice.source);
-          const text = `${voice.date} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction}`.toLowerCase();
+          const text = `${voice.date} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction} ${voice.userType} ${voice.journeyStage} ${voice.issueType} ${voice.workflowStatus} ${voice.verification} ${voice.owner} ${voice.linkedProject}`.toLowerCase();
           return (!term || text.includes(term))
             && (state.filters.source === "all" || voice.source === state.filters.source)
             && (state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment)
             && (state.filters.impact === "all" || voice.impact === state.filters.impact)
-            && (state.filters.tag === "all" || voice.tags.includes(state.filters.tag));
+            && (state.filters.tag === "all" || voice.tags.includes(state.filters.tag))
+            && (state.filters.userType === "all" || voice.userType === state.filters.userType)
+            && (state.filters.journeyStage === "all" || voice.journeyStage === state.filters.journeyStage)
+            && (state.filters.issueType === "all" || voice.issueType === state.filters.issueType)
+            && (state.filters.workflowStatus === "all" || voice.workflowStatus === state.filters.workflowStatus)
+            && (state.filters.verification === "all" || voice.verification === state.filters.verification);
         });
       }
 
@@ -1191,6 +1529,8 @@
         const total = state.voices.length;
         const negative = state.voices.filter((voice) => voice.sentiment === "negative").length;
         const high = state.voices.filter((voice) => voice.impact === "high").length;
+        const openLoop = state.voices.filter((voice) => !["reviewed", "launched"].includes(voice.workflowStatus)).length;
+        const validating = state.voices.filter((voice) => ["ut", "ab-test"].includes(voice.workflowStatus) || ["ur", "ut", "ab-test"].includes(voice.verification)).length;
         const { last7, previous7, delta } = getDateRangeCounts();
         const negativeRate = Math.round((negative / Math.max(1, total)) * 100);
 
@@ -1201,8 +1541,33 @@
         $("metricHigh").textContent = high;
         $("metricNew").textContent = last7;
         $("metricNewChange").textContent = `${delta >= 0 ? "+" : ""}${delta} vs 前 7 天 / previous 7 days`;
+        $("metricOpenLoop").textContent = openLoop;
+        $("metricValidating").textContent = validating;
         $("navDashboardCount").textContent = total;
         $("navListCount").textContent = total;
+      }
+
+      function renderWorkflowGrid() {
+        const steps = [
+          ["VOC", "all", (voice) => Boolean(voice.quote), "原始声音 / Raw voice"],
+          ["用户分层", "userType", (voice) => voice.userType !== "unknown", "已识别用户类型 / Segmented"],
+          ["UR 归因", "diagnosed", (voice) => ["diagnosed", "design-ready", "ut", "ab-test", "launched", "reviewed"].includes(voice.workflowStatus), "已解释真实阻力 / Diagnosed"],
+          ["Journey", "journeyStage", (voice) => voice.journeyStage !== "unknown", "已定位旅程阶段 / Journey mapped"],
+          ["设计转化", "design-ready", (voice) => ["design-ready", "ut", "ab-test", "launched", "reviewed"].includes(voice.workflowStatus), "进入方案或项目 / Design backlog"],
+          ["验证", "validating", (voice) => ["ut", "ab-test"].includes(voice.workflowStatus) || ["ur", "ut", "ab-test"].includes(voice.verification), "UR、UT、AB Test / Validating"],
+          ["复盘沉淀", "reviewed", (voice) => voice.workflowStatus === "reviewed" || voice.reviewResult !== "pending", "已沉淀结果 / Learned"],
+        ];
+        $("workflowGrid").innerHTML = steps.map(([label, drill, predicate, caption]) => {
+          const count = state.voices.filter(predicate).length;
+          const rate = Math.round((count / Math.max(1, state.voices.length)) * 100);
+          return `
+            <button class="workflow-step" type="button" data-workflow-drill="${drill}">
+              <strong>${label}</strong>
+              <span>${count}</span>
+              <em>${caption} · ${rate}%</em>
+            </button>
+          `;
+        }).join("");
       }
 
       function renderTrendChart() {
@@ -1229,7 +1594,11 @@
 
       function renderSyncList() {
         const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString("zh-CN") : "尚未同步 / Not synced";
-        const sourceLabel = state.dataMeta.mode === "notion-api" ? "Notion VOC Database" : state.dataMeta.mode;
+        const sourceLabel = state.dataMeta.mode === "notion-api"
+          ? "Notion VOC Database"
+          : state.dataMeta.mode === "no-source-configured"
+            ? "本地 VOC 数据 / Local VOC JSON"
+            : state.dataMeta.mode;
         const { last7, previous7, delta } = getDateRangeCounts();
         $("sideDataStatus").textContent = `数据源 / Source: ${sourceLabel}. 最近同步 / Latest sync: ${generated}.`;
         $("syncList").innerHTML = `
@@ -1268,6 +1637,53 @@
         }).join("") || `<div class="list-row"><p>暂无主题数据。 / No topic data yet.</p></div>`;
       }
 
+      function countBy(items, key) {
+        const counts = new Map();
+        items.forEach((item) => counts.set(item[key], (counts.get(item[key]) || 0) + 1));
+        return [...counts.entries()].sort((a, b) => b[1] - a[1]);
+      }
+
+      function renderJourneyList() {
+        const journeyCounts = countBy(state.voices, "journeyStage").slice(0, 7);
+        $("journeyList").innerHTML = journeyCounts.map(([journey, count]) => {
+          const related = state.voices.filter((voice) => voice.journeyStage === journey);
+          const high = related.filter((voice) => voice.impact === "high").length;
+          const negative = related.filter((voice) => voice.sentiment === "negative").length;
+          const percent = Math.round((count / Math.max(1, state.voices.length)) * 100);
+          return `
+            <button class="list-row" type="button" data-journey="${journey}">
+              <div class="row-top">
+                <strong>${labelById(journeyOptions, journey)}</strong>
+                <span class="badge ${high ? "risk" : "good"}">${count} 条 / ${count} items</span>
+              </div>
+              <div class="bar"><span style="width:${Math.max(8, percent)}%"></span></div>
+              <p>${high} 条高影响，${negative} 条负向。 / ${high} high-impact, ${negative} negative.</p>
+            </button>
+          `;
+        }).join("") || `<div class="list-row"><p>暂无旅程数据。 / No journey data yet.</p></div>`;
+      }
+
+      function renderInsightList() {
+        const clusters = countBy(state.voices, "issueType").slice(0, 6);
+        $("insightList").innerHTML = clusters.map(([issueType, count]) => {
+          const related = state.voices.filter((voice) => voice.issueType === issueType);
+          const topJourney = countBy(related, "journeyStage")[0]?.[0] || "unknown";
+          const topUserType = countBy(related, "userType")[0]?.[0] || "unknown";
+          const highest = related.some((voice) => voice.priority === "P0") ? "P0" : related.some((voice) => voice.priority === "P1") ? "P1" : "P2";
+          const sample = related.find((voice) => voice.recommendedAction)?.recommendedAction || "进入洞察卡片后补充设计机会和验证方式 / Add design opportunity and validation method.";
+          return `
+            <button class="list-row" type="button" data-issue-type="${issueType}">
+              <div class="row-top">
+                <strong>${labelById(issueTypeOptions, issueType)}</strong>
+                <span class="badge ${highest === "P0" ? "risk" : "warn"}">${highest}</span>
+              </div>
+              <p>${count} 条证据，主要来自 ${labelById(userTypeOptions, topUserType)}，集中在 ${labelById(journeyOptions, topJourney)}。</p>
+              <p><strong>机会 / Opportunity:</strong> ${sample}</p>
+            </button>
+          `;
+        }).join("") || `<div class="list-row"><p>暂无可聚合洞察。 / No insight clusters yet.</p></div>`;
+      }
+
       function renderChannels() {
         $("channelList").innerHTML = sourceConfig.map((source) => {
           const items = state.voices.filter((voice) => voice.source === source.id);
@@ -1291,10 +1707,26 @@
         $("manualSource").innerHTML = sourceOptions;
         const tagOptions = getTagCounts().map(([tag]) => `<option value="${tag}">${tag}</option>`).join("");
         $("tagFilter").innerHTML = `<option value="all">全部标签 / All tags</option>${tagOptions}`;
+        fillSelect("userTypeFilter", userTypeOptions, "全部用户类型 / All user types");
+        fillSelect("journeyFilter", journeyOptions, "全部旅程阶段 / All journey stages");
+        fillSelect("issueTypeFilter", issueTypeOptions, "全部问题类型 / All issue types");
+        fillSelect("statusFilter", statusOptions, "全部闭环状态 / All statuses");
+        fillSelect("verificationFilter", verificationOptions, "全部验证方式 / All validation");
+        fillSelect("manualUserType", userTypeOptions);
+        fillSelect("manualJourneyStage", journeyOptions);
+        fillSelect("manualIssueType", issueTypeOptions);
+        fillSelect("manualWorkflowStatus", statusOptions);
+        fillSelect("manualVerification", verificationOptions);
+        fillSelect("manualReviewResult", reviewResultOptions);
+      }
+
+      function fillSelect(id, options, allLabel = "") {
+        const prefix = allLabel ? `<option value="all">${allLabel}</option>` : "";
+        $(id).innerHTML = `${prefix}${options.map((option) => `<option value="${option.id}">${option.label}</option>`).join("")}`;
       }
 
       function renderSortIndicators() {
-        ["Date", "Source", "Sentiment", "Impact", "Title"].forEach((name) => {
+        ["Date", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification"].forEach((name) => {
           $(`sort${name}`).textContent = "";
         });
         const id = `sort${state.sort.key.charAt(0).toUpperCase()}${state.sort.key.slice(1)}`;
@@ -1315,13 +1747,21 @@
               <td><strong>${source.name}</strong><br><span class="tag">${source.type}</span></td>
               <td><span class="badge ${voice.sentiment}">${titleCase(voice.sentiment)}</span></td>
               <td><span class="badge ${voice.impact}">${titleCase(voice.impact)}</span></td>
+              <td><span class="badge ${voice.priority === "P0" ? "risk" : voice.priority === "P1" ? "warn" : "medium"}">${voice.priority}</span></td>
               <td><strong>${voice.title}</strong></td>
+              <td>${labelById(userTypeOptions, voice.userType)}</td>
+              <td>${labelById(journeyOptions, voice.journeyStage)}</td>
+              <td>${labelById(issueTypeOptions, voice.issueType)}</td>
+              <td><span class="badge">${labelById(statusOptions, voice.workflowStatus)}</span></td>
+              <td>${labelById(verificationOptions, voice.verification)}</td>
               <td class="quote-cell">${voice.quote}</td>
               <td><div class="tag-list">${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div></td>
-              <td>${voice.recommendedAction || "待补充 / To be added"}</td>
+              <td class="action-cell">${voice.recommendedAction || "待补充 / To be added"}${voice.linkedProject ? `<br><span class="tag">${voice.linkedProject}</span>` : ""}</td>
+              <td>${voice.owner || "Unassigned"}</td>
+              <td>${labelById(reviewResultOptions, voice.reviewResult)}${voice.insightLink ? `<br><a href="${voice.insightLink}" target="_blank" rel="noreferrer">Insight</a>` : ""}</td>
             </tr>
           `;
-        }).join("") || `<tr><td colspan="8">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
+        }).join("") || `<tr><td colspan="16">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
         $("tableSummary").textContent = `${filtered.length} 条 VOC / ${filtered.length} VOC items, 第 ${state.page} / ${totalPages} 页 / page ${state.page} of ${totalPages}`;
         $("prevPageBtn").disabled = state.page <= 1;
         $("nextPageBtn").disabled = state.page >= totalPages;
@@ -1331,11 +1771,18 @@
       function renderAll() {
         renderFilterOptions();
         renderMetrics();
+        renderWorkflowGrid();
         renderTrendChart();
         renderSyncList();
         renderTopics();
         renderChannels();
+        renderJourneyList();
+        renderInsightList();
         renderTable();
+      }
+
+      function resetFilters() {
+        return { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all" };
       }
 
       function drillToList(filterPatch) {
@@ -1352,20 +1799,35 @@
         $("sentimentFilter").value = state.filters.sentiment;
         $("impactFilter").value = state.filters.impact;
         $("tagFilter").value = state.filters.tag;
+        $("userTypeFilter").value = state.filters.userType;
+        $("journeyFilter").value = state.filters.journeyStage;
+        $("issueTypeFilter").value = state.filters.issueType;
+        $("statusFilter").value = state.filters.workflowStatus;
+        $("verificationFilter").value = state.filters.verification;
       }
 
       function exportCsv() {
         const rows = [
-          ["date", "source", "sentiment", "impact", "tags", "title", "quote", "recommended_action"],
+          ["date", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "owner", "linked_project", "review_result", "tags", "title", "quote", "recommended_action", "insight_link"],
           ...sortedVoices(filteredVoices()).map((voice) => [
             voice.date,
             sourceById(voice.source).name,
             voice.sentiment,
             voice.impact,
+            voice.priority,
+            voice.userType,
+            voice.journeyStage,
+            voice.issueType,
+            voice.workflowStatus,
+            voice.verification,
+            voice.owner,
+            voice.linkedProject,
+            voice.reviewResult,
             voice.tags.join("|"),
             voice.title,
             voice.quote,
             voice.recommendedAction,
+            voice.insightLink,
           ]),
         ];
         const csv = rows.map((row) => row.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(",")).join("\n");
@@ -1385,27 +1847,54 @@
         document.querySelectorAll(".metric").forEach((button) => {
           button.addEventListener("click", () => {
             const drill = button.dataset.drill;
-            if (drill === "negative") drillToList({ sentiment: "negative", impact: "all", tag: "all", source: "all", search: "" });
-            if (drill === "high") drillToList({ impact: "high", sentiment: "all", tag: "all", source: "all", search: "" });
-            if (drill === "new") drillToList({ search: daysAgo(0), sentiment: "all", impact: "all", tag: "all", source: "all" });
-            if (drill === "all") drillToList({ search: "", sentiment: "all", impact: "all", tag: "all", source: "all" });
+            if (drill === "negative") drillToList({ ...resetFilters(), sentiment: "negative" });
+            if (drill === "high") drillToList({ ...resetFilters(), impact: "high" });
+            if (drill === "new") drillToList({ ...resetFilters(), search: daysAgo(0) });
+            if (drill === "open-loop") drillToList({ ...resetFilters(), workflowStatus: "new" });
+            if (drill === "validating") drillToList({ ...resetFilters(), verification: "ut" });
+            if (drill === "all") drillToList(resetFilters());
           });
+        });
+        $("workflowGrid").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-workflow-drill]");
+          if (!row) return;
+          const drill = row.dataset.workflowDrill;
+          if (drill === "all") drillToList(resetFilters());
+          if (drill === "userType") drillToList({ ...resetFilters(), userType: "unknown" });
+          if (drill === "journeyStage") drillToList({ ...resetFilters(), journeyStage: "unknown" });
+          if (drill === "diagnosed") drillToList({ ...resetFilters(), workflowStatus: "diagnosed" });
+          if (drill === "design-ready") drillToList({ ...resetFilters(), workflowStatus: "design-ready" });
+          if (drill === "validating") drillToList({ ...resetFilters(), verification: "ut" });
+          if (drill === "reviewed") drillToList({ ...resetFilters(), workflowStatus: "reviewed" });
         });
         $("topicList").addEventListener("click", (event) => {
           const row = event.target.closest("[data-topic]");
-          if (row) drillToList({ tag: row.dataset.topic, search: "", source: "all", sentiment: "all", impact: "all" });
+          if (row) drillToList({ ...resetFilters(), tag: row.dataset.topic });
         });
         $("channelList").addEventListener("click", (event) => {
           const row = event.target.closest("[data-source]");
-          if (row) drillToList({ source: row.dataset.source, search: "", sentiment: "all", impact: "all", tag: "all" });
+          if (row) drillToList({ ...resetFilters(), source: row.dataset.source });
         });
-        ["searchInput", "sourceFilter", "sentimentFilter", "impactFilter", "tagFilter"].forEach((id) => {
+        $("journeyList").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-journey]");
+          if (row) drillToList({ ...resetFilters(), journeyStage: row.dataset.journey });
+        });
+        $("insightList").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-issue-type]");
+          if (row) drillToList({ ...resetFilters(), issueType: row.dataset.issueType });
+        });
+        ["searchInput", "sourceFilter", "sentimentFilter", "impactFilter", "tagFilter", "userTypeFilter", "journeyFilter", "issueTypeFilter", "statusFilter", "verificationFilter"].forEach((id) => {
           $(id).addEventListener("input", () => {
             state.filters.search = $("searchInput").value;
             state.filters.source = $("sourceFilter").value;
             state.filters.sentiment = $("sentimentFilter").value;
             state.filters.impact = $("impactFilter").value;
             state.filters.tag = $("tagFilter").value;
+            state.filters.userType = $("userTypeFilter").value;
+            state.filters.journeyStage = $("journeyFilter").value;
+            state.filters.issueType = $("issueTypeFilter").value;
+            state.filters.workflowStatus = $("statusFilter").value;
+            state.filters.verification = $("verificationFilter").value;
             state.page = 1;
             renderTable();
           });
@@ -1427,7 +1916,7 @@
           renderTable();
         });
         $("clearFiltersBtn").addEventListener("click", () => {
-          state.filters = { search: "", source: "all", sentiment: "all", impact: "all", tag: "all" };
+          state.filters = resetFilters();
           state.page = 1;
           syncFilterControls();
           renderTable();
@@ -1449,10 +1938,19 @@
             sentiment: $("manualSentiment").value,
             impact: $("manualImpact").value,
             tags: $("manualTags").value.split(",").map((tag) => tag.trim()).filter(Boolean),
+            userType: $("manualUserType").value,
+            journeyStage: $("manualJourneyStage").value,
+            issueType: $("manualIssueType").value,
+            workflowStatus: $("manualWorkflowStatus").value,
+            verification: $("manualVerification").value,
+            owner: $("manualOwner").value.trim(),
+            linkedProject: $("manualLinkedProject").value.trim(),
+            reviewResult: $("manualReviewResult").value,
             title: $("manualTitle").value.trim(),
             quote: $("manualQuote").value.trim(),
             date: $("manualDate").value,
             recommendedAction: $("manualAction").value.trim(),
+            insightLink: $("manualInsightLink").value.trim(),
             manual: true,
           });
           const manualItems = [item, ...getManualItems()];
