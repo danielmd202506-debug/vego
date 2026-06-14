@@ -3,30 +3,24 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>VEGO VOC Collection System</title>
+    <title>VEGO VOC Management System</title>
     <style>
       :root {
-        --ink: #17351f;
-        --text: #31513a;
-        --muted: #687a67;
-        --cream: #fbf4df;
-        --oat: #f4ead0;
-        --mist: #f5f8ef;
-        --panel: #ffffff;
-        --pale: #eaf2e3;
-        --line: #d9dec3;
-        --green: #2f663b;
-        --green-dark: #1e4f2d;
-        --forest: #164d5d;
-        --sage: #8aa970;
-        --lime: #d9e88b;
-        --cta: #ffd976;
-        --clay: #a9502e;
-        --orange: #ffad4f;
-        --red: #b84b3f;
-        --white: #ffffff;
-        --shadow-card: 0 1px 3px rgba(23, 53, 31, 0.1);
-        --shadow-popover: 0 10px 24px rgba(23, 53, 31, 0.16);
+        --bg: #f6f7f2;
+        --surface: #ffffff;
+        --surface-2: #eef3e9;
+        --ink: #16351f;
+        --text: #2f4636;
+        --muted: #687567;
+        --line: #d9dfd0;
+        --green: #2e6b3f;
+        --green-dark: #1f4f2e;
+        --blue: #245f73;
+        --yellow: #f1c85c;
+        --red: #b64b3f;
+        --orange: #b86b2c;
+        --shadow: 0 1px 3px rgba(22, 53, 31, 0.09);
+        --focus: 0 0 0 3px rgba(46, 107, 63, 0.24);
       }
 
       * {
@@ -39,9 +33,9 @@
 
       body {
         margin: 0;
-        background: var(--cream);
+        background: var(--bg);
         color: var(--text);
-        font-family: Manrope, Arial, "Helvetica Neue", sans-serif;
+        font-family: Inter, Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       button,
@@ -51,30 +45,104 @@
         font: inherit;
       }
 
-      button,
-      select,
-      input,
-      textarea {
-        min-height: 44px;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        color: var(--ink);
-      }
-
       button {
         cursor: pointer;
       }
 
       button:focus-visible,
-      select:focus-visible,
       input:focus-visible,
+      select:focus-visible,
       textarea:focus-visible {
-        outline: 3px solid rgba(47, 102, 59, 0.35);
-        outline-offset: 2px;
+        outline: none;
+        box-shadow: var(--focus);
       }
 
       .app {
         min-height: 100vh;
+        display: grid;
+        grid-template-columns: 244px minmax(0, 1fr);
+      }
+
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 22px;
+        padding: 22px 18px;
+        background: var(--surface);
+        border-right: 1px solid var(--line);
+      }
+
+      .brand {
+        display: grid;
+        gap: 10px;
+      }
+
+      .brand img {
+        width: 120px;
+        height: auto;
+      }
+
+      .brand strong {
+        color: var(--ink);
+        font-size: 15px;
+      }
+
+      .nav {
+        display: grid;
+        gap: 8px;
+      }
+
+      .nav button {
+        min-height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 0 12px;
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--text);
+        font-weight: 800;
+        text-align: left;
+      }
+
+      .nav button:hover,
+      .nav button.active {
+        border-color: var(--line);
+        background: var(--surface-2);
+        color: var(--ink);
+      }
+
+      .nav span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .sidebar-note {
+        padding: 14px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+      }
+
+      .sidebar-note strong {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--ink);
+        font-size: 13px;
+      }
+
+      .sidebar-note p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .main {
+        min-width: 0;
         display: grid;
         grid-template-rows: auto 1fr;
       }
@@ -82,324 +150,112 @@
       .topbar {
         position: sticky;
         top: 0;
-        z-index: 20;
-        display: grid;
-        border-bottom: 1px solid var(--line);
-        background: rgba(251, 244, 223, 0.96);
-        backdrop-filter: blur(10px);
-      }
-
-      .announcement {
-        padding: 8px clamp(16px, 4vw, 48px);
-        background: var(--forest);
-        color: var(--white);
-        font-size: 13px;
-        font-weight: 800;
-        text-align: center;
-      }
-
-      .nav-row {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
-        align-items: center;
-        gap: 24px;
-        padding: 14px clamp(16px, 4vw, 48px);
-      }
-
-      .brand {
+        z-index: 10;
         display: flex;
         align-items: center;
-        gap: 12px;
-        color: var(--ink);
-        font-weight: 900;
-      }
-
-      .brand-logo {
-        display: block;
-        width: 108px;
-        height: auto;
-      }
-
-      .brand small,
-      .system-note {
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .nav-links {
-        display: flex;
-        justify-content: center;
-        gap: 22px;
-        color: var(--text);
-        font-size: 14px;
-        font-weight: 800;
-      }
-
-      .nav-links a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .shell {
-        display: grid;
-        grid-template-columns: 248px minmax(0, 1fr);
-        min-height: calc(100vh - 99px);
-        min-width: 0;
-      }
-
-      .sidebar {
-        position: sticky;
-        top: 99px;
-        align-self: start;
-        height: calc(100vh - 99px);
-        padding: 22px 18px;
-        background: var(--panel);
-        border-right: 1px solid var(--line);
-        overflow-y: auto;
-        min-width: 0;
-      }
-
-      .side-title {
-        margin: 0 0 12px;
-        color: var(--ink);
-        font-size: 14px;
-      }
-
-      .side-nav {
-        display: grid;
-        gap: 8px;
-        margin-bottom: 22px;
-      }
-
-      .side-nav a {
-        display: flex;
         justify-content: space-between;
-        gap: 12px;
-        padding: 10px 12px;
-        border: 1px solid transparent;
-        color: var(--text);
-        font-size: 14px;
-        font-weight: 800;
-        text-decoration: none;
+        gap: 16px;
+        padding: 16px clamp(18px, 3vw, 34px);
+        background: rgba(246, 247, 242, 0.96);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(8px);
       }
 
-      .side-nav a:hover,
-      .side-nav a.active {
-        border-color: var(--line);
-        background: var(--mist);
-        color: var(--ink);
-      }
-
-      .side-nav span {
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .sidebar-panel {
+      .page-title {
         display: grid;
-        gap: 10px;
-        padding: 14px;
-        background: var(--mist);
-        border: 1px solid var(--line);
+        gap: 4px;
       }
 
-      .sidebar-panel strong {
-        color: var(--ink);
-        font-size: 14px;
-      }
-
-      .sidebar-panel p {
+      h1,
+      h2,
+      h3,
+      p {
         margin: 0;
+      }
+
+      h1 {
+        color: var(--ink);
+        font-size: 24px;
+        line-height: 1.2;
+      }
+
+      h2 {
+        color: var(--ink);
+        font-size: 18px;
+        line-height: 1.25;
+      }
+
+      h3 {
+        color: var(--ink);
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .page-title p,
+      .section-head p {
         color: var(--muted);
         font-size: 13px;
         line-height: 1.45;
       }
 
-      .main {
-        display: grid;
-        gap: 24px;
-        padding: clamp(18px, 3vw, 36px);
-        background: linear-gradient(180deg, var(--cream) 0%, var(--mist) 100%);
-        min-width: 0;
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
-        gap: 24px;
-        align-items: stretch;
-        min-width: 0;
-      }
-
-      .hero-copy {
-        display: grid;
-        align-content: center;
-        gap: 16px;
-        min-height: 250px;
-        padding: clamp(22px, 4vw, 40px);
-        background: var(--panel);
-        border: 1px solid var(--line);
-        box-shadow: var(--shadow-card);
-      }
-
-      .label {
-        display: inline-flex;
-        width: fit-content;
-        padding: 6px 9px;
-        background: var(--green);
-        color: var(--white);
-        font-size: 12px;
-        font-weight: 900;
-      }
-
-      h1,
-      h2,
-      h3 {
-        margin: 0;
-        color: var(--ink);
-        letter-spacing: 0;
-      }
-
-      h1 {
-        max-width: 760px;
-        font-family: Georgia, "Times New Roman", serif;
-        font-size: 46px;
-        line-height: 1.04;
-      }
-
-      h2 {
-        font-size: 22px;
-        line-height: 1.2;
-      }
-
-      h3 {
-        font-size: 16px;
-        line-height: 1.25;
-      }
-
-      p {
-        margin: 0;
-        line-height: 1.6;
-      }
-
-      .hero-copy p {
-        max-width: 70ch;
-        color: var(--muted);
-        font-size: 16px;
-      }
-
-      .hero-actions {
+      .actions,
+      .toolbar,
+      .table-tools {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
         align-items: center;
+        gap: 10px;
       }
 
-      .primary,
-      .secondary,
-      .quiet {
-        min-height: 44px;
-        padding: 0 16px;
-        font-weight: 900;
+      .btn {
+        min-height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
+        font-weight: 800;
       }
 
-      .primary {
-        border-color: #e7bd46;
-        background: var(--cta);
-        color: #2f2a16;
-      }
-
-      .primary:hover {
-        background: #ffcf4d;
-      }
-
-      .secondary {
+      .btn.primary {
         border-color: var(--green);
         background: var(--green);
-        color: var(--white);
+        color: #fff;
       }
 
-      .quiet {
-        background: var(--panel);
-        color: var(--green);
+      .btn.warn {
+        border-color: #e2b453;
+        background: var(--yellow);
+        color: #3d3214;
       }
 
-      .live-panel {
+      .btn:hover {
+        filter: brightness(0.98);
+      }
+
+      .content {
+        min-width: 0;
+        padding: clamp(18px, 3vw, 34px);
+      }
+
+      .view {
+        display: none;
+      }
+
+      .view.active {
         display: grid;
-        gap: 14px;
-        padding: 20px;
-        background: var(--green);
-        color: var(--white);
-      }
-
-      .live-panel h2,
-      .live-panel strong {
-        color: var(--white);
-      }
-
-      .live-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .live-stat {
-        display: grid;
-        gap: 4px;
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.22);
-      }
-
-      .live-stat span {
-        color: #e6f0df;
-        font-size: 12px;
-        font-weight: 800;
-      }
-
-      .live-stat strong {
-        font-size: 22px;
-      }
-
-      .status-line {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        color: #e6f0df;
-        font-size: 13px;
-        font-weight: 800;
+        gap: 18px;
       }
 
       .section {
         display: grid;
         gap: 14px;
-        min-width: 0;
       }
 
       .section-head {
         display: flex;
-        align-items: end;
+        align-items: flex-end;
         justify-content: space-between;
         gap: 18px;
-      }
-
-      .section-head p {
-        max-width: 68ch;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .toolbar select,
-      .toolbar input {
-        padding: 0 12px;
       }
 
       .metric-grid {
@@ -409,18 +265,24 @@
       }
 
       .metric {
+        min-height: 118px;
         display: grid;
-        gap: 8px;
-        min-height: 116px;
+        align-content: space-between;
+        gap: 14px;
         padding: 16px;
-        background: var(--panel);
         border: 1px solid var(--line);
-        box-shadow: var(--shadow-card);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        text-align: left;
+      }
+
+      .metric:hover {
+        border-color: #b7c9ad;
       }
 
       .metric span {
         color: var(--muted);
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
       }
 
@@ -432,56 +294,165 @@
 
       .metric em {
         color: var(--green-dark);
-        font-size: 13px;
+        font-size: 12px;
         font-style: normal;
-        font-weight: 900;
+        font-weight: 800;
       }
 
-      .channel-grid {
+      .panel-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.65fr);
         gap: 12px;
       }
 
-      .channel {
-        display: grid;
-        gap: 12px;
-        padding: 16px;
-        background: var(--panel);
+      .panel,
+      .table-panel,
+      .form-panel {
+        min-width: 0;
         border: 1px solid var(--line);
-        box-shadow: var(--shadow-card);
+        background: var(--surface);
+        box-shadow: var(--shadow);
       }
 
-      .channel-head {
+      .panel {
+        display: grid;
+        gap: 14px;
+        padding: 16px;
+      }
+
+      .trend-chart {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 10px;
+        align-items: end;
+        min-height: 190px;
+        padding-top: 8px;
+      }
+
+      .trend-day {
+        display: grid;
+        align-content: end;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .trend-bars {
+        height: 132px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 3px;
+        align-items: end;
+      }
+
+      .trend-bars span {
+        display: block;
+        min-height: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.04);
+      }
+
+      .trend-bars .positive {
+        background: #8dbc76;
+      }
+
+      .trend-bars .neutral {
+        background: #b7c0b0;
+      }
+
+      .trend-bars .negative {
+        background: #d77367;
+      }
+
+      .trend-day small {
+        color: var(--muted);
+        font-size: 11px;
+        text-align: center;
+      }
+
+      .sync-list,
+      .topic-list,
+      .channel-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .list-row {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+      }
+
+      .row-top {
         display: flex;
-        align-items: start;
+        align-items: center;
         justify-content: space-between;
         gap: 12px;
       }
 
-      .channel p {
-        color: var(--muted);
+      .row-top strong {
+        color: var(--ink);
         font-size: 13px;
       }
 
+      .list-row p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .bar {
+        height: 8px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .bar span {
+        display: block;
+        height: 100%;
+        background: var(--green);
+      }
+
       .badge,
-      .tag,
-      .sentiment {
+      .tag {
         display: inline-flex;
         align-items: center;
         width: fit-content;
-        min-height: 26px;
-        padding: 4px 8px;
+        min-height: 24px;
+        padding: 3px 8px;
         border: 1px solid var(--line);
-        background: var(--mist);
+        background: var(--surface-2);
         color: var(--ink);
-        font-size: 12px;
-        font-weight: 900;
+        font-size: 11px;
+        font-weight: 800;
       }
 
+      .badge.positive,
       .badge.good {
         border-color: #b9d2ae;
-        background: #eef7ea;
+        background: #eff7eb;
+        color: var(--green-dark);
+      }
+
+      .badge.neutral,
+      .badge.medium {
+        border-color: #d5d9ce;
+        background: #f5f7f2;
+        color: #526153;
+      }
+
+      .badge.negative,
+      .badge.high,
+      .badge.risk {
+        border-color: #e1afa8;
+        background: #fff0ed;
+        color: #8b3028;
+      }
+
+      .badge.low {
+        border-color: #bad3b4;
+        background: #eff7eb;
         color: var(--green-dark);
       }
 
@@ -491,149 +462,18 @@
         color: #6c4614;
       }
 
-      .badge.risk,
-      .sentiment.negative {
-        border-color: #e1afa8;
-        background: #fff0ed;
-        color: #8b3028;
-      }
-
-      .sentiment.positive {
-        border-color: #b9d2ae;
-        background: #eef7ea;
-        color: var(--green-dark);
-      }
-
-      .sentiment.neutral {
-        background: var(--mist);
-        color: var(--muted);
-      }
-
-      .channel-meta,
-      .voice-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .bar {
-        height: 9px;
-        overflow: hidden;
-        background: var(--mist);
+      .filter-panel {
+        display: grid;
+        gap: 12px;
+        padding: 14px;
         border: 1px solid var(--line);
+        background: var(--surface);
+        box-shadow: var(--shadow);
       }
 
-      .bar span {
-        display: block;
-        height: 100%;
-        background: var(--green);
-      }
-
-      .insight-layout {
+      .filter-grid {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
-        gap: 12px;
-      }
-
-      .trend-panel,
-      .action-panel,
-      .source-panel,
-      .voice-list {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        box-shadow: var(--shadow-card);
-        min-width: 0;
-      }
-
-      .trend-panel,
-      .action-panel,
-      .source-panel {
-        display: grid;
-        gap: 14px;
-        padding: 16px;
-      }
-
-      .trend-row,
-      .action-item,
-      .source-row {
-        display: grid;
-        gap: 8px;
-        padding: 12px;
-        background: var(--mist);
-        border: 1px solid var(--line);
-      }
-
-      .trend-top,
-      .action-top,
-      .source-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .trend-row p,
-      .action-item p,
-      .source-row p {
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .voice-list {
-        display: grid;
-      }
-
-      .voice-item {
-        display: grid;
-        gap: 10px;
-        padding: 16px;
-        border-bottom: 1px solid var(--line);
-      }
-
-      .voice-item:last-child {
-        border-bottom: 0;
-      }
-
-      .voice-top {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-      }
-
-      .voice-title {
-        display: grid;
-        gap: 5px;
-      }
-
-      .voice-title strong {
-        color: var(--ink);
-      }
-
-      .voice-title span {
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 800;
-      }
-
-      .quote {
-        color: var(--text);
-        font-size: 14px;
-      }
-
-      .empty {
-        padding: 22px;
-        color: var(--muted);
-        text-align: center;
-      }
-
-      .collector {
-        display: grid;
-        grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
-        gap: 12px;
-      }
-
-      .form-grid {
-        display: grid;
+        grid-template-columns: minmax(240px, 1.2fr) repeat(4, minmax(140px, 1fr));
         gap: 10px;
       }
 
@@ -641,68 +481,121 @@
         display: grid;
         gap: 6px;
         color: var(--ink);
-        font-size: 13px;
-        font-weight: 900;
+        font-size: 12px;
+        font-weight: 800;
       }
 
       input,
       select,
       textarea {
         width: 100%;
-        padding: 10px 12px;
+        min-height: 40px;
+        padding: 9px 10px;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--ink);
       }
 
       textarea {
-        min-height: 112px;
+        min-height: 110px;
         resize: vertical;
       }
 
-      .schedule-table {
+      .table-panel {
+        overflow: hidden;
+      }
+
+      .table-scroll {
+        overflow-x: auto;
+      }
+
+      table {
         width: 100%;
-        max-width: 100%;
+        min-width: 1120px;
         border-collapse: collapse;
-        background: var(--panel);
-        border: 1px solid var(--line);
-        box-shadow: var(--shadow-card);
       }
 
       th,
       td {
-        padding: 12px;
+        padding: 11px 12px;
         border-bottom: 1px solid var(--line);
         text-align: left;
         vertical-align: top;
-      }
-
-      th {
-        color: var(--ink);
-        background: var(--mist);
         font-size: 13px;
       }
 
-      td {
-        color: var(--text);
-        font-size: 14px;
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: var(--surface-2);
+        color: var(--ink);
       }
 
-      tr:last-child td {
-        border-bottom: 0;
+      th button {
+        min-height: 26px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font-weight: 900;
+      }
+
+      tbody tr:hover {
+        background: #fbfcf8;
+      }
+
+      .quote-cell {
+        max-width: 380px;
+        line-height: 1.45;
+      }
+
+      .tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        border-top: 1px solid var(--line);
+      }
+
+      .form-drawer {
+        display: none;
+      }
+
+      .form-drawer.open {
+        display: grid;
+        gap: 12px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .form-grid .wide {
+        grid-column: 1 / -1;
       }
 
       .toast {
         position: fixed;
-        right: 24px;
-        bottom: 24px;
-        z-index: 30;
+        right: 22px;
+        bottom: 22px;
+        z-index: 20;
         max-width: 360px;
-        padding: 14px 16px;
+        padding: 13px 15px;
         background: var(--ink);
-        color: var(--white);
+        color: #fff;
         opacity: 0;
         pointer-events: none;
         transform: translateY(12px);
         transition: opacity 180ms ease, transform 180ms ease;
-        box-shadow: var(--shadow-popover);
       }
 
       .toast.show {
@@ -711,82 +604,45 @@
       }
 
       @media (max-width: 1120px) {
-        .shell,
-        .hero,
-        .insight-layout,
-        .collector {
+        .app {
           grid-template-columns: 1fr;
         }
 
         .sidebar {
           position: static;
           height: auto;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
+          grid-template-rows: auto;
         }
 
-        .side-nav {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+        .nav {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
-        .metric-grid {
+        .metric-grid,
+        .panel-grid,
+        .filter-grid,
+        .form-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
-      @media (max-width: 680px) {
-        .nav-row {
-          grid-template-columns: 1fr;
-          gap: 12px;
-        }
-
-        .nav-links {
-          justify-content: flex-start;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-
-        .system-note {
-          text-align: left;
-        }
-
-        .main {
-          padding: 16px;
-        }
-
-        .hero-copy,
-        .live-panel {
-          padding: 18px;
-        }
-
-        h1 {
-          font-size: 34px;
-        }
-
-        .metric-grid,
-        .live-grid,
-        .side-nav {
-          grid-template-columns: 1fr;
-        }
-
+      @media (max-width: 700px) {
+        .topbar,
         .section-head,
-        .voice-top,
-        .trend-top,
-        .action-top,
-        .source-top {
-          align-items: flex-start;
+        .pagination {
+          align-items: stretch;
           flex-direction: column;
         }
 
-        th,
-        td {
-          padding: 10px;
-          overflow-wrap: anywhere;
+        .metric-grid,
+        .panel-grid,
+        .filter-grid,
+        .form-grid {
+          grid-template-columns: 1fr;
         }
 
-        .schedule-table {
-          display: block;
-          overflow-x: auto;
+        .trend-chart {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
         }
       }
 
@@ -803,234 +659,246 @@
   </head>
   <body>
     <main class="app">
-      <header class="topbar">
-        <div class="announcement">VEGO VOC Center: collect, classify, and route garden shopper feedback every week.</div>
-        <div class="nav-row">
-          <div class="brand">
-            <img class="brand-logo" src="assets/logo.png" alt="VEGO Garden" />
-            <small>VOC System</small>
-          </div>
-          <nav class="nav-links" aria-label="VOC navigation">
-            <a href="#sources">渠道</a>
-            <a href="#insights">洞察</a>
-            <a href="#voices">原声</a>
-            <a href="#schedule">节奏</a>
-          </nav>
-          <div class="system-note">Dynamic prototype for raised garden bed VOC</div>
+      <aside class="sidebar" aria-label="VOC navigation">
+        <div class="brand">
+          <img src="assets/logo.png" alt="VEGO Garden" />
+          <strong>VOC 管理系统</strong>
         </div>
-      </header>
+        <nav class="nav">
+          <button class="active" type="button" data-route="dashboard">Dashboard <span id="navDashboardCount">0</span></button>
+          <button type="button" data-route="list">VOC List <span id="navListCount">0</span></button>
+        </nav>
+        <div class="sidebar-note">
+          <strong>数据状态</strong>
+          <p id="sideDataStatus">正在读取线上 VOC 数据库。</p>
+        </div>
+        <div class="sidebar-note">
+          <strong>下一步渠道</strong>
+          <p>Notion 已作为当前数据仓库。后续 Shopify、Gorgias、Amazon、社媒监听和 Search Console 可按渠道接入自动同步。</p>
+        </div>
+      </aside>
 
-      <div class="shell">
-        <aside class="sidebar" aria-label="VOC sections">
-          <h2 class="side-title">VOC 工作台</h2>
-          <nav class="side-nav">
-            <a class="active" href="#overview">总览 <span id="sideTotal">0</span></a>
-            <a href="#sources">渠道健康 <span id="sideSources">0</span></a>
-            <a href="#insights">洞察标签 <span id="sideTags">0</span></a>
-            <a href="#voices">用户原声 <span id="sideVoices">0</span></a>
-            <a href="#collector">手动录入 <span>+</span></a>
-            <a href="#schedule">采集节奏 <span>周</span></a>
-          </nav>
-          <div class="sidebar-panel">
-            <strong>系统目标</strong>
-            <p>把独立站、Amazon、社媒、客服和搜索数据转成可执行的问题池，持续反哺 PDP、3D 配置器、FAQ、套装推荐和新品规划。</p>
+      <div class="main">
+        <header class="topbar">
+          <div class="page-title">
+            <h1 id="pageTitle">Dashboard</h1>
+            <p id="pageSubtitle">集中查看 VOC 指标、趋势、同步变化和可点击下钻。</p>
           </div>
-        </aside>
+          <div class="actions">
+            <button class="btn" id="refreshBtn" type="button">同步最新数据</button>
+            <button class="btn" id="exportBtn" type="button">导出 CSV</button>
+            <button class="btn primary" id="openCreateBtn" type="button">手动创建 VOC</button>
+          </div>
+        </header>
 
-        <div class="main">
-          <section class="hero" id="overview">
-            <div class="hero-copy">
-              <span class="label">VOC OPERATIONS</span>
-              <h1>VEGO 用户声音动态收集系统</h1>
-              <p>统一收集线上评论、社交媒体、独立站行为、Amazon 评论和客服对话，按渠道、情绪、主题和业务影响自动汇总，让团队每周知道用户真正卡在哪里。</p>
-              <div class="hero-actions">
-                <button class="primary" id="runCollectBtn" type="button">Sync latest data</button>
-                <button class="secondary" id="exportBtn" type="button">Export CSV</button>
-                <button class="quiet" id="resetBtn" type="button">Reset sample data</button>
+        <div class="content">
+          <section class="view active" id="dashboardView">
+            <section class="section">
+              <div class="metric-grid">
+                <button class="metric" type="button" data-drill="all">
+                  <span>VOC 总量</span>
+                  <strong id="metricTotal">0</strong>
+                  <em id="metricTotalChange">同步中</em>
+                </button>
+                <button class="metric" type="button" data-drill="negative">
+                  <span>负向反馈</span>
+                  <strong id="metricNegative">0%</strong>
+                  <em id="metricNegativeChange">点击查看负向 VOC</em>
+                </button>
+                <button class="metric" type="button" data-drill="high">
+                  <span>高影响问题</span>
+                  <strong id="metricHigh">0</strong>
+                  <em>优先进入行动池</em>
+                </button>
+                <button class="metric" type="button" data-drill="new">
+                  <span>近 7 天新增</span>
+                  <strong id="metricNew">0</strong>
+                  <em id="metricNewChange">对比前 7 天</em>
+                </button>
               </div>
-            </div>
-            <div class="live-panel" aria-label="Live VOC status">
-              <h2>本周 VOC 状态</h2>
-              <div class="live-grid">
-                <div class="live-stat">
-                  <span>总声量</span>
-                  <strong id="totalVoices">0</strong>
+            </section>
+
+            <section class="section">
+              <div class="panel-grid">
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>VOC 趋势</h2>
+                      <p>按日期聚合正向、中性、负向反馈，用于判断近期是否有异常波动。</p>
+                    </div>
+                    <span class="badge" id="trendWindowLabel">最近 7 天</span>
+                  </div>
+                  <div class="trend-chart" id="trendChart"></div>
                 </div>
-                <div class="live-stat">
-                  <span>负向占比</span>
-                  <strong id="negativeRate">0%</strong>
-                </div>
-                <div class="live-stat">
-                  <span>高优先级</span>
-                  <strong id="highImpact">0</strong>
-                </div>
-                <div class="live-stat">
-                  <span>渠道覆盖</span>
-                  <strong id="sourceCount">0</strong>
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>同步变化</h2>
+                      <p>展示数据仓库、最近同步时间和新增趋势。</p>
+                    </div>
+                  </div>
+                  <div class="sync-list" id="syncList"></div>
                 </div>
               </div>
-              <div class="status-line">
-                <span id="lastRun">Last run: pending</span>
-                <span id="nextRun">Next run: Monday 09:00</span>
-                <span id="dataStatus">Data source: sample</span>
+            </section>
+
+            <section class="section">
+              <div class="panel-grid">
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>主题下钻</h2>
+                      <p>点击主题可以进入 VOC List 并自动筛选相关内容。</p>
+                    </div>
+                  </div>
+                  <div class="topic-list" id="topicList"></div>
+                </div>
+                <div class="panel">
+                  <div class="section-head">
+                    <div>
+                      <h2>渠道健康</h2>
+                      <p>保留采集频率、负责人、最近同步时间和数据质量，便于后续 API 接入管理。</p>
+                    </div>
+                  </div>
+                  <div class="channel-list" id="channelList"></div>
+                </div>
               </div>
-            </div>
+            </section>
           </section>
 
-          <section class="section" aria-label="VOC metrics">
-            <div class="metric-grid">
-              <div class="metric">
-                <span>Top issue</span>
-                <strong id="topIssue">-</strong>
-                <em>Highest mention count</em>
+          <section class="view" id="listView">
+            <section class="section">
+              <div class="filter-panel">
+                <div class="section-head">
+                  <div>
+                    <h2>VOC 信息列表</h2>
+                    <p>默认按时间从新到旧排序。表头可排序，筛选和搜索会即时更新结果。</p>
+                  </div>
+                  <div class="table-tools">
+                    <button class="btn" id="clearFiltersBtn" type="button">清空筛选</button>
+                    <button class="btn primary" id="openCreateBtnList" type="button">手动创建 VOC</button>
+                  </div>
+                </div>
+                <div class="filter-grid">
+                  <label>
+                    搜索
+                    <input id="searchInput" type="search" placeholder="搜索标题、原声、标签、建议动作" />
+                  </label>
+                  <label>
+                    渠道
+                    <select id="sourceFilter"></select>
+                  </label>
+                  <label>
+                    情绪
+                    <select id="sentimentFilter">
+                      <option value="all">全部情绪</option>
+                      <option value="positive">Positive</option>
+                      <option value="neutral">Neutral</option>
+                      <option value="negative">Negative</option>
+                    </select>
+                  </label>
+                  <label>
+                    影响
+                    <select id="impactFilter">
+                      <option value="all">全部影响</option>
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </label>
+                  <label>
+                    标签
+                    <select id="tagFilter">
+                      <option value="all">全部标签</option>
+                    </select>
+                  </label>
+                </div>
               </div>
-              <div class="metric">
-                <span>Top channel</span>
-                <strong id="topChannel">-</strong>
-                <em>Most active source</em>
-              </div>
-              <div class="metric">
-                <span>Purchase blockers</span>
-                <strong id="blockerCount">0</strong>
-                <em>Needs PDP or support fix</em>
-              </div>
-              <div class="metric">
-                <span>Opportunity signals</span>
-                <strong id="opportunityCount">0</strong>
-                <em>Can become content or bundles</em>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section class="section" id="sources">
-            <div class="section-head">
-              <div>
-                <h2>渠道配置与健康</h2>
-                <p>当前系统已接入 Notion VOC 数据库，页面会优先读取线上数据库中的 VOC 条目。每个渠道继续保留采集频率、负责人、最近同步时间和数据质量，用于管理后续 Shopify、Gorgias、Amazon SP-API、社媒监听工具和 Search Console API 的自动同步状态。</p>
-              </div>
-              <div class="toolbar">
-                <select id="sourceFilter" aria-label="Filter sources">
-                  <option value="all">All sources</option>
-                  <option value="Owned">Owned</option>
-                  <option value="Marketplace">Marketplace</option>
-                  <option value="Social">Social</option>
-                  <option value="Search">Search</option>
-                  <option value="Support">Support</option>
-                </select>
-              </div>
-            </div>
-            <div class="channel-grid" id="channelGrid"></div>
-          </section>
-
-          <section class="section" id="insights">
-            <div class="section-head">
-              <div>
-                <h2>主题趋势与行动建议</h2>
-                <p>系统把 VOC 归类为购买阻碍、体验问题、内容机会和产品机会。每条洞察都对应一个建议动作，便于运营、产品、客服和设计协同。</p>
-              </div>
-            </div>
-            <div class="insight-layout">
-              <div class="trend-panel">
-                <h3>高频主题</h3>
-                <div id="trendList"></div>
-              </div>
-              <div class="action-panel">
-                <h3>Action backlog</h3>
-                <div id="actionList"></div>
-              </div>
-            </div>
-          </section>
-
-          <section class="section" id="voices">
-            <div class="section-head">
-              <div>
-                <h2>用户原声汇总</h2>
-                <p>按渠道、情绪和关键词筛选原始 VOC。这里保留真实表达，方便后续提炼 PDP 文案、FAQ、配置器提示和客服脚本。</p>
-              </div>
-              <div class="toolbar">
-                <select id="voiceSourceFilter" aria-label="Filter voices by source">
-                  <option value="all">All channels</option>
-                </select>
-                <select id="sentimentFilter" aria-label="Filter voices by sentiment">
-                  <option value="all">All sentiment</option>
-                  <option value="positive">Positive</option>
-                  <option value="neutral">Neutral</option>
-                  <option value="negative">Negative</option>
-                </select>
-                <input id="searchInput" type="search" placeholder="Search keyword, tag, quote" aria-label="Search VOC" />
-              </div>
-            </div>
-            <div class="voice-list" id="voiceList"></div>
-          </section>
-
-          <section class="section" id="collector">
-            <div class="section-head">
-              <div>
-                <h2>手动录入与补充</h2>
-                <p>用于记录客服口头反馈、达人回访、线下活动观察，或者暂时没有 API 的渠道。录入后会进入同一套标签和统计。</p>
-              </div>
-            </div>
-            <div class="collector">
-              <form class="source-panel form-grid" id="manualForm">
-                <h3>新增 VOC</h3>
-                <label>
-                  渠道
-                  <select id="manualSource" required></select>
-                </label>
-                <label>
-                  情绪
-                  <select id="manualSentiment" required>
-                    <option value="negative">Negative</option>
-                    <option value="neutral">Neutral</option>
-                    <option value="positive">Positive</option>
-                  </select>
-                </label>
-                <label>
-                  主题标签
-                  <input id="manualTags" type="text" placeholder="soil, assembly, sizing" required />
-                </label>
-                <label>
-                  用户原声
-                  <textarea id="manualQuote" placeholder="Paste or summarize the user voice" required></textarea>
-                </label>
-                <button class="secondary" type="submit">Add VOC item</button>
+            <section class="form-drawer" id="createDrawer">
+              <form class="form-panel panel" id="createForm">
+                <div class="section-head">
+                  <div>
+                    <h2>手动创建 VOC</h2>
+                    <p>用于补充客服口头反馈、线下活动观察或暂未接 API 的渠道。当前会先保存在浏览器列表中。</p>
+                  </div>
+                  <button class="btn" id="closeCreateBtn" type="button">收起</button>
+                </div>
+                <div class="form-grid">
+                  <label>
+                    标题
+                    <input id="manualTitle" required placeholder="例如：土壤用量不清楚" />
+                  </label>
+                  <label>
+                    渠道
+                    <select id="manualSource" required></select>
+                  </label>
+                  <label>
+                    日期
+                    <input id="manualDate" type="date" required />
+                  </label>
+                  <label>
+                    情绪
+                    <select id="manualSentiment" required>
+                      <option value="negative">Negative</option>
+                      <option value="neutral">Neutral</option>
+                      <option value="positive">Positive</option>
+                    </select>
+                  </label>
+                  <label>
+                    影响
+                    <select id="manualImpact" required>
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </label>
+                  <label>
+                    标签
+                    <input id="manualTags" required placeholder="soil, calculator, purchase-blocker" />
+                  </label>
+                  <label class="wide">
+                    用户原声
+                    <textarea id="manualQuote" required placeholder="粘贴或概括一条 VOC"></textarea>
+                  </label>
+                  <label class="wide">
+                    建议动作
+                    <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器" />
+                  </label>
+                </div>
+                <div class="actions">
+                  <button class="btn primary" type="submit">保存 VOC</button>
+                </div>
               </form>
-              <div class="source-panel">
-                <h3>字段规则</h3>
-                <div class="source-row">
-                  <div class="source-top"><strong>渠道</strong><span class="badge good">Required</span></div>
-                  <p>建议覆盖 Owned、Marketplace、Social、Search、Support 五类，避免只看评论区。</p>
-                </div>
-                <div class="source-row">
-                  <div class="source-top"><strong>标签</strong><span class="badge good">3 to 5 tags</span></div>
-                  <p>优先使用业务标签：soil、size、rust、assembly、color、shipping、tomato、cover、irrigation。</p>
-                </div>
-                <div class="source-row">
-                  <div class="source-top"><strong>动作</strong><span class="badge warn">Weekly review</span></div>
-                  <p>每周把高频负向问题转入 PDP、FAQ、客服话术和配置器需求池。</p>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <section class="section" id="schedule">
-            <div class="section-head">
-              <div>
-                <h2>定期收集节奏</h2>
-                <p>先用周更机制跑通，再逐步自动化。高频渠道每天拉取，研究型渠道每周或每月做主题分析。</p>
+            <section class="table-panel">
+              <div class="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th><button type="button" data-sort="date">日期 <span id="sortDate"></span></button></th>
+                      <th><button type="button" data-sort="source">渠道 <span id="sortSource"></span></button></th>
+                      <th><button type="button" data-sort="sentiment">情绪 <span id="sortSentiment"></span></button></th>
+                      <th><button type="button" data-sort="impact">影响 <span id="sortImpact"></span></button></th>
+                      <th><button type="button" data-sort="title">标题 <span id="sortTitle"></span></button></th>
+                      <th>用户原声</th>
+                      <th>标签</th>
+                      <th>建议动作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="vocTableBody"></tbody>
+                </table>
               </div>
-            </div>
-            <table class="schedule-table">
-              <thead>
-                <tr>
-                  <th>渠道</th>
-                  <th>采集频率</th>
-                  <th>关键字段</th>
-                  <th>输出用途</th>
-                </tr>
-              </thead>
-              <tbody id="scheduleBody"></tbody>
-            </table>
+              <div class="pagination">
+                <span id="tableSummary">0 条 VOC</span>
+                <div class="actions">
+                  <button class="btn" id="prevPageBtn" type="button">上一页</button>
+                  <button class="btn" id="nextPageBtn" type="button">下一页</button>
+                </div>
+              </div>
+            </section>
           </section>
         </div>
       </div>
@@ -1040,102 +908,14 @@
 
     <script>
       const sourceConfig = [
-        {
-          id: "site-reviews",
-          name: "Independent site reviews",
-          type: "Owned",
-          cadence: "Daily",
-          owner: "Ecommerce Ops",
-          health: 92,
-          status: "good",
-          fields: "rating, product, layout, color, verified buyer",
-          use: "PDP proof, product objections, conversion copy",
-          description: "VEGO 独立站产品评论，最接近购买后真实体验。",
-        },
-        {
-          id: "site-qa",
-          name: "PDP Q&A and search",
-          type: "Owned",
-          cadence: "Daily",
-          owner: "Content",
-          health: 84,
-          status: "good",
-          fields: "question, search term, product handle, no-result term",
-          use: "FAQ, configurator hints, navigation",
-          description: "购买前疑虑库，适合判断用户在下单前缺什么信息。",
-        },
-        {
-          id: "amazon",
-          name: "Amazon reviews and Q&A",
-          type: "Marketplace",
-          cadence: "Twice weekly",
-          owner: "Marketplace",
-          health: 76,
-          status: "warn",
-          fields: "rating, verified, helpful votes, competitor tag",
-          use: "Competitive gaps, quality issues, listing content",
-          description: "自有和竞品评论，用来观察外部市场对材质、价格和安装的判断。",
-        },
-        {
-          id: "social",
-          name: "Instagram, TikTok, YouTube",
-          type: "Social",
-          cadence: "Weekly",
-          owner: "Brand",
-          health: 68,
-          status: "warn",
-          fields: "post URL, creator, comments, visual scenario",
-          use: "UGC themes, creator briefs, installation content",
-          description: "捕捉用户晒图、安装过程、种植成果和强情绪反馈。",
-        },
-        {
-          id: "community",
-          name: "Reddit and Facebook Groups",
-          type: "Social",
-          cadence: "Weekly",
-          owner: "Research",
-          health: 61,
-          status: "warn",
-          fields: "thread, subreddit/group, region, concern",
-          use: "Unfiltered objections, regional needs, trust gaps",
-          description: "非品牌化讨论，适合发现尖锐问题和长期耐用性顾虑。",
-        },
-        {
-          id: "support",
-          name: "Support chat, email, tickets",
-          type: "Support",
-          cadence: "Daily",
-          owner: "CX",
-          health: 88,
-          status: "good",
-          fields: "intent, product, resolution, CSAT, ticket tag",
-          use: "Support scripts, FAQ, defect escalation",
-          description: "用户卡点最密集的来源，尤其适合建立问题标签体系。",
-        },
-        {
-          id: "search-console",
-          name: "Google Search Console",
-          type: "Search",
-          cadence: "Weekly",
-          owner: "SEO",
-          health: 73,
-          status: "good",
-          fields: "query, landing page, clicks, impressions, CTR",
-          use: "Content roadmap, category naming, education gaps",
-          description: "反映用户购买前在搜索引擎里的真实问题和词汇。",
-        },
-        {
-          id: "post-purchase",
-          name: "7/30/90 day surveys",
-          type: "Owned",
-          cadence: "Weekly",
-          owner: "Lifecycle",
-          health: 56,
-          status: "risk",
-          fields: "day window, NPS, install effort, crop outcome",
-          use: "Lifecycle email, product quality, accessory upsell",
-          description: "分阶段了解安装、开始种植和长期使用满意度。",
-        },
+        { id: "site-reviews", name: "独立站评论", type: "Owned", cadence: "Daily", owner: "Ecommerce Ops", quality: 92 },
+        { id: "site-qa", name: "PDP Q&A", type: "Owned", cadence: "Daily", owner: "Content", quality: 84 },
+        { id: "amazon", name: "Amazon Reviews", type: "Marketplace", cadence: "Twice weekly", owner: "Marketplace", quality: 76 },
+        { id: "social", name: "社交媒体", type: "Social", cadence: "Mon/Wed/Fri", owner: "Brand", quality: 68 },
+        { id: "community", name: "社区讨论", type: "Social", cadence: "Weekly", owner: "Research", quality: 72 },
+        { id: "support", name: "客服工单", type: "Support", cadence: "Daily", owner: "CX", quality: 88 },
+        { id: "search-console", name: "Search Console", type: "Search", cadence: "Weekly", owner: "SEO", quality: 73 },
+        { id: "post-purchase", name: "购买后问卷", type: "Owned", cadence: "Weekly", owner: "Lifecycle", quality: 56 },
       ];
 
       const defaultVoices = [
@@ -1147,6 +927,7 @@
           title: "First raised bed felt approachable",
           quote: "I was nervous about assembling a metal bed, but the panels lined up well and it felt like a good first vegetable garden kit.",
           date: "2026-06-10",
+          recommendedAction: "Use this as confidence-building PDP proof."
         },
         {
           source: "site-qa",
@@ -1156,144 +937,36 @@
           title: "Soil volume unclear before checkout",
           quote: "How many bags of soil do I need for the 9-in-1 rectangle? I do not want to buy the bed and then guess at the garden center.",
           date: "2026-06-11",
-        },
-        {
-          source: "amazon",
-          sentiment: "negative",
-          impact: "high",
-          tags: ["rust", "durability", "competitor"],
-          title: "Competitor rust concern",
-          quote: "A competing metal bed looked good at first, but after one season the coating started to chip near the screws.",
-          date: "2026-06-08",
-        },
-        {
-          source: "support",
-          sentiment: "neutral",
-          impact: "high",
-          tags: ["size", "patio", "layout"],
-          title: "Patio fit question",
-          quote: "Customer has a 7 by 4 foot patio edge and wants to know if the rectangle layout leaves enough walking room.",
-          date: "2026-06-12",
-        },
-        {
-          source: "social",
-          sentiment: "positive",
-          impact: "medium",
-          tags: ["tomato", "trellis", "ugc"],
-          title: "Tomato setup performs well on TikTok",
-          quote: "Comments keep asking which trellis fits this raised bed because the tomato video makes the setup look easy.",
-          date: "2026-06-09",
-        },
-        {
-          source: "community",
-          sentiment: "negative",
-          impact: "medium",
-          tags: ["price", "trust", "comparison"],
-          title: "Price justification thread",
-          quote: "A gardening group compared cheaper beds and asked what makes VEGO worth paying more for beyond the look.",
-          date: "2026-06-07",
-        },
-        {
-          source: "search-console",
-          sentiment: "neutral",
-          impact: "medium",
-          tags: ["tomato", "content", "soil"],
-          title: "Search demand for tomato beds",
-          quote: "Search queries around best raised bed for tomatoes and how deep for tomatoes are increasing week over week.",
-          date: "2026-06-06",
-        },
-        {
-          source: "post-purchase",
-          sentiment: "negative",
-          impact: "high",
-          tags: ["instructions", "assembly", "support"],
-          title: "Install guide needs clearer order",
-          quote: "The bed is sturdy once built, but the booklet did not make the panel order obvious for the L-shape layout.",
-          date: "2026-06-05",
-        },
-        {
-          source: "site-reviews",
-          sentiment: "positive",
-          impact: "low",
-          tags: ["color", "white", "aesthetic"],
-          title: "White color works for patio",
-          quote: "The classic white bed looks clean next to our patio furniture and does not feel like a farm supply product.",
-          date: "2026-06-03",
-        },
-        {
-          source: "support",
-          sentiment: "neutral",
-          impact: "medium",
-          tags: ["cover", "pest", "bundle"],
-          title: "Cover system pre-sale question",
-          quote: "Customer asked whether the cover system should be bought with the first bed or only after seedlings are planted.",
-          date: "2026-06-04",
-        },
-      ];
-
-      const generatedVoices = [
-        {
-          source: "site-qa",
-          sentiment: "negative",
-          impact: "high",
-          tags: ["soil", "calculator", "pdp"],
-          title: "Soil bag estimate requested",
-          quote: "Can the product page show a soil bag estimate by layout instead of only cubic feet?",
-        },
-        {
-          source: "amazon",
-          sentiment: "neutral",
-          impact: "medium",
-          tags: ["assembly", "tools", "listing"],
-          title: "Tool requirement question",
-          quote: "Does the kit come with tools, or should I prepare a socket wrench before delivery?",
-        },
-        {
-          source: "social",
-          sentiment: "positive",
-          impact: "medium",
-          tags: ["before-after", "ugc", "patio"],
-          title: "Before and after post saved often",
-          quote: "Users are saving patio transformation posts that show the bed, soil fill, and first seedlings in one sequence.",
-        },
-        {
-          source: "support",
-          sentiment: "negative",
-          impact: "high",
-          tags: ["shipping", "missing-parts", "cx"],
-          title: "Missing hardware escalation",
-          quote: "Customer reports one fastener pack missing and wants a faster replacement path before the weekend planting window.",
+          recommendedAction: "Add soil volume calculator to PDP."
         },
       ];
 
       const state = {
-        voices: loadVoices(),
-        dataMeta: {
-          mode: "sample",
-          generatedAt: null,
-          sources: [],
-          endpoint: "",
-        },
-        filters: {
-          sourceType: "all",
-          voiceSource: "all",
-          sentiment: "all",
-          search: "",
-        },
+        route: "dashboard",
+        voices: loadStoredVoices(),
+        dataMeta: { mode: "sample", generatedAt: null, sources: [], endpoint: "" },
+        filters: { search: "", source: "all", sentiment: "all", impact: "all", tag: "all" },
+        sort: { key: "date", direction: "desc" },
+        page: 1,
+        pageSize: 12,
       };
 
-      function loadVoices() {
-        const stored = localStorage.getItem("vegoVocVoices");
-        if (!stored) return defaultVoices;
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function loadStoredVoices() {
         try {
-          return JSON.parse(stored);
-        } catch (error) {
+          const stored = localStorage.getItem("vegoVocManualItems");
+          const manualItems = stored ? JSON.parse(stored) : [];
+          return [...manualItems, ...defaultVoices];
+        } catch {
           return defaultVoices;
         }
       }
 
-      function saveVoices() {
-        localStorage.setItem("vegoVocVoices", JSON.stringify(state.voices));
+      function saveManualItems(items) {
+        localStorage.setItem("vegoVocManualItems", JSON.stringify(items));
       }
 
       async function loadRuntimeConfig() {
@@ -1301,13 +974,13 @@
           const response = await fetch(`data/runtime-config.json?ts=${Date.now()}`, { cache: "no-store" });
           if (!response.ok) return {};
           return response.json();
-        } catch (error) {
+        } catch {
           return {};
         }
       }
 
       function normalizeVoice(voice) {
-        const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "site-reviews";
+        const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "community";
         const sentiment = ["positive", "neutral", "negative"].includes(voice.sentiment) ? voice.sentiment : "neutral";
         const impact = ["low", "medium", "high"].includes(voice.impact) ? voice.impact : sentiment === "negative" ? "high" : "medium";
         return {
@@ -1318,19 +991,20 @@
           title: voice.title || "VOC item",
           quote: voice.quote || voice.text || voice.comment || "",
           date: String(voice.date || new Date().toISOString().slice(0, 10)).slice(0, 10),
+          sourceUrl: voice.sourceUrl || "",
+          status: voice.status || "new",
+          recommendedAction: voice.recommendedAction || "",
+          manual: Boolean(voice.manual),
         };
       }
 
       async function loadRemoteVocData({ silent = false } = {}) {
         const config = await loadRuntimeConfig();
-        const endpoints = [
-          config.vocApiEndpoint || "/api/notion-voc",
-          "data/voc-items.json",
-        ].filter(Boolean);
-
+        const endpoints = [config.vocApiEndpoint || "/api/notion-voc", "data/voc-items.json"].filter(Boolean);
         let response;
         let endpoint;
         let lastError;
+
         for (const candidate of endpoints) {
           try {
             const separator = candidate.includes("?") ? "&" : "?";
@@ -1344,32 +1018,51 @@
             lastError = error;
           }
         }
+
         if (!response || !response.ok) throw lastError || new Error("VOC data request failed.");
         const payload = await response.json();
-        const items = Array.isArray(payload) ? payload : payload.items;
-        if (!Array.isArray(items) || !items.length) throw new Error("VOC data file has no items.");
-        state.voices = items.map(normalizeVoice).filter((voice) => voice.quote);
+        const remoteItems = Array.isArray(payload) ? payload : payload.items;
+        if (!Array.isArray(remoteItems)) throw new Error("VOC payload has no items.");
+
+        const manualItems = getManualItems();
+        state.voices = [...manualItems, ...remoteItems.map(normalizeVoice).filter((voice) => voice.quote)];
         state.dataMeta = {
-          mode: payload.mode || (config.vocApiEndpoint ? "notion-api" : "synced"),
+          mode: payload.mode || "notion-api",
           generatedAt: payload.generatedAt || new Date().toISOString(),
           sources: Array.isArray(payload.sources) ? payload.sources : [],
           endpoint,
         };
-        localStorage.removeItem("vegoVocVoices");
         renderAll();
-        if (!silent) showToast(`Loaded ${state.voices.length} VOC items from synced data.`);
+        if (!silent) showToast(`已同步 ${state.voices.length} 条 VOC。`);
       }
 
-      function $(id) {
-        return document.getElementById(id);
+      function getManualItems() {
+        try {
+          return JSON.parse(localStorage.getItem("vegoVocManualItems") || "[]").map(normalizeVoice);
+        } catch {
+          return [];
+        }
       }
 
       function sourceById(id) {
-        return sourceConfig.find((source) => source.id === id) || sourceConfig[0];
+        return sourceConfig.find((source) => source.id === id) || { id, name: id, type: "Other", cadence: "Manual", owner: "Unassigned", quality: 50 };
       }
 
       function titleCase(value) {
-        return value.charAt(0).toUpperCase() + value.slice(1);
+        return String(value || "").charAt(0).toUpperCase() + String(value || "").slice(1);
+      }
+
+      function formatDate(value) {
+        if (!value) return "";
+        const date = new Date(`${value}T00:00:00`);
+        if (Number.isNaN(date.getTime())) return value;
+        return date.toLocaleDateString("zh-CN", { month: "2-digit", day: "2-digit" });
+      }
+
+      function daysAgo(days) {
+        const date = new Date();
+        date.setDate(date.getDate() - days);
+        return date.toISOString().slice(0, 10);
       }
 
       function showToast(message) {
@@ -1379,317 +1072,342 @@
         window.setTimeout(() => toast.classList.remove("show"), 2600);
       }
 
-      function renderSources() {
-        const filtered = sourceConfig.filter((source) => {
-          return state.filters.sourceType === "all" || source.type === state.filters.sourceType;
-        });
-        $("channelGrid").innerHTML = filtered.map((source) => {
-          const count = state.voices.filter((voice) => voice.source === source.id).length;
-          return `
-            <article class="channel">
-              <div class="channel-head">
-                <div>
-                  <h3>${source.name}</h3>
-                  <p>${source.description}</p>
-                </div>
-                <span class="badge ${source.status}">${source.status === "good" ? "Healthy" : source.status === "warn" ? "Watch" : "Needs setup"}</span>
-              </div>
-              <div class="channel-meta">
-                <span class="tag">${source.type}</span>
-                <span class="tag">${source.cadence}</span>
-                <span class="tag">${source.owner}</span>
-                <span class="tag">${count} items</span>
-              </div>
-              <div class="bar" aria-label="${source.name} health ${source.health}%"><span style="width:${source.health}%"></span></div>
-            </article>
-          `;
-        }).join("");
-      }
-
-      function renderFilters() {
-        const options = sourceConfig.map((source) => `<option value="${source.id}">${source.name}</option>`).join("");
-        $("voiceSourceFilter").innerHTML = `<option value="all">All channels</option>${options}`;
-        $("manualSource").innerHTML = options;
+      function setRoute(route) {
+        state.route = route;
+        document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
+        document.querySelectorAll(".nav button").forEach((button) => button.classList.toggle("active", button.dataset.route === route));
+        $(`${route}View`).classList.add("active");
+        $("pageTitle").textContent = route === "dashboard" ? "Dashboard" : "VOC List";
+        $("pageSubtitle").textContent = route === "dashboard"
+          ? "集中查看 VOC 指标、趋势、同步变化和可点击下钻。"
+          : "收录所有 VOC 信息，支持筛选、排序、搜索和手动创建。";
+        window.location.hash = route;
       }
 
       function filteredVoices() {
         const term = state.filters.search.trim().toLowerCase();
         return state.voices.filter((voice) => {
           const source = sourceById(voice.source);
-          const sourceMatch = state.filters.voiceSource === "all" || voice.source === state.filters.voiceSource;
-          const sentimentMatch = state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment;
-          const searchTarget = `${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name}`.toLowerCase();
-          const searchMatch = !term || searchTarget.includes(term);
-          return sourceMatch && sentimentMatch && searchMatch;
+          const text = `${voice.date} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction}`.toLowerCase();
+          return (!term || text.includes(term))
+            && (state.filters.source === "all" || voice.source === state.filters.source)
+            && (state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment)
+            && (state.filters.impact === "all" || voice.impact === state.filters.impact)
+            && (state.filters.tag === "all" || voice.tags.includes(state.filters.tag));
         });
       }
 
-      function renderVoices() {
-        const voices = filteredVoices();
-        if (!voices.length) {
-          $("voiceList").innerHTML = `<div class="empty">No VOC items match the current filters.</div>`;
-          return;
-        }
-        $("voiceList").innerHTML = voices.map((voice) => {
-          const source = sourceById(voice.source);
-          return `
-            <article class="voice-item">
-              <div class="voice-top">
-                <div class="voice-title">
-                  <strong>${voice.title}</strong>
-                  <span>${source.name} / ${voice.date}</span>
-                </div>
-                <span class="sentiment ${voice.sentiment}">${titleCase(voice.sentiment)}</span>
-              </div>
-              <p class="quote">${voice.quote}</p>
-              <div class="voice-meta">
-                <span class="badge ${voice.impact === "high" ? "risk" : voice.impact === "medium" ? "warn" : "good"}">${titleCase(voice.impact)} impact</span>
-                ${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-              </div>
-            </article>
-          `;
-        }).join("");
+      function sortedVoices(items) {
+        const direction = state.sort.direction === "asc" ? 1 : -1;
+        return [...items].sort((a, b) => {
+          const key = state.sort.key;
+          const aValue = key === "source" ? sourceById(a.source).name : a[key] || "";
+          const bValue = key === "source" ? sourceById(b.source).name : b[key] || "";
+          return String(aValue).localeCompare(String(bValue)) * direction;
+        });
       }
 
-      function getTagCounts() {
+      function getTagCounts(items = state.voices) {
         const counts = new Map();
-        state.voices.forEach((voice) => {
-          voice.tags.forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1));
-        });
+        items.forEach((voice) => voice.tags.forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1)));
         return [...counts.entries()].sort((a, b) => b[1] - a[1]);
       }
 
-      function renderInsights() {
-        const tags = getTagCounts();
-        $("trendList").innerHTML = tags.slice(0, 7).map(([tag, count]) => {
-          const related = state.voices.filter((voice) => voice.tags.includes(tag));
-          const negative = related.filter((voice) => voice.sentiment === "negative").length;
-          const percent = Math.max(8, Math.round((count / Math.max(1, state.voices.length)) * 100));
-          return `
-            <div class="trend-row">
-              <div class="trend-top">
-                <strong>${tag}</strong>
-                <span class="badge ${negative ? "warn" : "good"}">${count} mentions</span>
-              </div>
-              <div class="bar"><span style="width:${percent}%"></span></div>
-              <p>${negative ? `${negative} negative signals need review.` : "Mostly neutral or positive signals."}</p>
-            </div>
-          `;
-        }).join("");
-
-        const actions = buildActions(tags);
-        $("actionList").innerHTML = actions.map((action) => `
-          <div class="action-item">
-            <div class="action-top">
-              <strong>${action.title}</strong>
-              <span class="badge ${action.priority === "High" ? "risk" : "warn"}">${action.priority}</span>
-            </div>
-            <p>${action.detail}</p>
-          </div>
-        `).join("");
-      }
-
-      function buildActions(tags) {
-        const tagSet = new Set(tags.map(([tag]) => tag));
-        const actions = [];
-        if (tagSet.has("soil")) {
-          actions.push({
-            title: "Add soil calculator to PDP and configurator",
-            priority: "High",
-            detail: "Show cubic feet, bag estimate, and recommended soil mix by layout.",
-          });
-        }
-        if (tagSet.has("assembly") || tagSet.has("instructions")) {
-          actions.push({
-            title: "Improve layout-specific assembly guidance",
-            priority: "High",
-            detail: "Create separate panel order steps for rectangle, side yard, L-shape, and family layouts.",
-          });
-        }
-        if (tagSet.has("tomato") || tagSet.has("trellis")) {
-          actions.push({
-            title: "Promote tomato growing setup",
-            priority: "Medium",
-            detail: "Turn recurring tomato questions into a recommended bundle and seasonal content path.",
-          });
-        }
-        if (tagSet.has("price") || tagSet.has("trust")) {
-          actions.push({
-            title: "Clarify premium value proof",
-            priority: "Medium",
-            detail: "Use comparison content to explain coating, modularity, warranty, and long-term durability.",
-          });
-        }
-        if (!actions.length) {
-          actions.push({
-            title: "Review top VOC manually",
-            priority: "Medium",
-            detail: "No automated rule matched yet. Review the highest impact items and create a new action.",
-          });
-        }
-        return actions;
+      function getDateRangeCounts() {
+        const today = daysAgo(0);
+        const last7Start = daysAgo(6);
+        const previousStart = daysAgo(13);
+        const last7 = state.voices.filter((voice) => voice.date >= last7Start && voice.date <= today).length;
+        const previous7 = state.voices.filter((voice) => voice.date >= previousStart && voice.date < last7Start).length;
+        return { last7, previous7, delta: last7 - previous7 };
       }
 
       function renderMetrics() {
         const total = state.voices.length;
         const negative = state.voices.filter((voice) => voice.sentiment === "negative").length;
         const high = state.voices.filter((voice) => voice.impact === "high").length;
-        const channels = new Set(state.voices.map((voice) => voice.source)).size;
-        const topTag = getTagCounts()[0]?.[0] || "-";
-        const sourceCounts = sourceConfig.map((source) => [
-          source.name,
-          state.voices.filter((voice) => voice.source === source.id).length,
-        ]).sort((a, b) => b[1] - a[1]);
-        const blockerCount = state.voices.filter((voice) => voice.tags.includes("purchase-blocker") || ["soil", "size", "shipping"].some((tag) => voice.tags.includes(tag))).length;
-        const opportunityCount = state.voices.filter((voice) => ["tomato", "ugc", "bundle", "content", "cover", "irrigation"].some((tag) => voice.tags.includes(tag))).length;
+        const { last7, previous7, delta } = getDateRangeCounts();
+        const negativeRate = Math.round((negative / Math.max(1, total)) * 100);
 
-        $("totalVoices").textContent = total;
-        $("negativeRate").textContent = `${Math.round((negative / Math.max(1, total)) * 100)}%`;
-        $("highImpact").textContent = high;
-        $("sourceCount").textContent = channels;
-        $("topIssue").textContent = topTag;
-        $("topChannel").textContent = sourceCounts[0]?.[0].split(" ")[0] || "-";
-        $("blockerCount").textContent = blockerCount;
-        $("opportunityCount").textContent = opportunityCount;
-        $("sideTotal").textContent = total;
-        $("sideSources").textContent = sourceConfig.length;
-        $("sideTags").textContent = getTagCounts().length;
-        $("sideVoices").textContent = total;
+        $("metricTotal").textContent = total;
+        $("metricTotalChange").textContent = `${sourceConfig.length} 个渠道配置`;
+        $("metricNegative").textContent = `${negativeRate}%`;
+        $("metricNegativeChange").textContent = `${negative} 条负向反馈`;
+        $("metricHigh").textContent = high;
+        $("metricNew").textContent = last7;
+        $("metricNewChange").textContent = `${delta >= 0 ? "+" : ""}${delta} vs 前 7 天`;
+        $("navDashboardCount").textContent = total;
+        $("navListCount").textContent = total;
       }
 
-      function renderDataStatus() {
-        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString() : "not synced";
-        const sourceLabel = state.dataMeta.mode === "synced" && state.dataMeta.sources.length ? `${state.dataMeta.sources.length} configured source(s)` : state.dataMeta.mode;
-        $("lastRun").textContent = `Last sync: ${generated}`;
-        $("dataStatus").textContent = `Data source: ${sourceLabel}`;
+      function renderTrendChart() {
+        const days = Array.from({ length: 7 }, (_, index) => daysAgo(6 - index));
+        const max = Math.max(1, ...days.map((day) => state.voices.filter((voice) => voice.date === day).length));
+        $("trendChart").innerHTML = days.map((day) => {
+          const voices = state.voices.filter((voice) => voice.date === day);
+          const positive = voices.filter((voice) => voice.sentiment === "positive").length;
+          const neutral = voices.filter((voice) => voice.sentiment === "neutral").length;
+          const negative = voices.filter((voice) => voice.sentiment === "negative").length;
+          const height = (count) => `${Math.max(count ? 8 : 0, Math.round((count / max) * 122))}px`;
+          return `
+            <div class="trend-day" title="${day}: ${voices.length} 条">
+              <div class="trend-bars">
+                <span class="positive" style="height:${height(positive)}"></span>
+                <span class="neutral" style="height:${height(neutral)}"></span>
+                <span class="negative" style="height:${height(negative)}"></span>
+              </div>
+              <small>${formatDate(day)}</small>
+            </div>
+          `;
+        }).join("");
       }
 
-      function renderSchedule() {
-        $("scheduleBody").innerHTML = sourceConfig.map((source) => `
-          <tr>
-            <td><strong>${source.name}</strong><br /><span class="tag">${source.type}</span></td>
-            <td>${source.cadence}<br />Owner: ${source.owner}</td>
-            <td>${source.fields}</td>
-            <td>${source.use}</td>
-          </tr>
-        `).join("");
+      function renderSyncList() {
+        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString("zh-CN") : "尚未同步";
+        const sourceLabel = state.dataMeta.mode === "notion-api" ? "Notion VOC Database" : state.dataMeta.mode;
+        const { last7, previous7, delta } = getDateRangeCounts();
+        $("sideDataStatus").textContent = `数据源：${sourceLabel}。最近同步：${generated}。`;
+        $("syncList").innerHTML = `
+          <div class="list-row">
+            <div class="row-top"><strong>最近同步</strong><span class="badge good">${sourceLabel}</span></div>
+            <p>${generated}</p>
+          </div>
+          <div class="list-row">
+            <div class="row-top"><strong>新增变化</strong><span class="badge ${delta >= 0 ? "good" : "warn"}">${delta >= 0 ? "+" : ""}${delta}</span></div>
+            <p>近 7 天 ${last7} 条，前 7 天 ${previous7} 条。</p>
+          </div>
+          <div class="list-row">
+            <div class="row-top"><strong>同步来源</strong><span class="badge">${state.dataMeta.endpoint || "fallback"}</span></div>
+            <p>${state.dataMeta.sources.length ? state.dataMeta.sources.join(", ") : "当前从线上 API 或本地 JSON 回退读取。"}</p>
+          </div>
+        `;
+      }
+
+      function renderTopics() {
+        const topTags = getTagCounts().slice(0, 8);
+        $("topicList").innerHTML = topTags.map(([tag, count]) => {
+          const related = state.voices.filter((voice) => voice.tags.includes(tag));
+          const negative = related.filter((voice) => voice.sentiment === "negative").length;
+          const high = related.filter((voice) => voice.impact === "high").length;
+          const percent = Math.round((count / Math.max(1, state.voices.length)) * 100);
+          return `
+            <button class="list-row" type="button" data-topic="${tag}">
+              <div class="row-top">
+                <strong>${tag}</strong>
+                <span class="badge ${negative ? "warn" : "good"}">${count} 条</span>
+              </div>
+              <div class="bar"><span style="width:${Math.max(8, percent)}%"></span></div>
+              <p>${negative} 条负向，${high} 条高影响。点击下钻到列表。</p>
+            </button>
+          `;
+        }).join("") || `<div class="list-row"><p>暂无主题数据。</p></div>`;
+      }
+
+      function renderChannels() {
+        $("channelList").innerHTML = sourceConfig.map((source) => {
+          const items = state.voices.filter((voice) => voice.source === source.id);
+          const lastDate = items.map((item) => item.date).sort().at(-1) || "暂无";
+          return `
+            <button class="list-row" type="button" data-source="${source.id}">
+              <div class="row-top">
+                <strong>${source.name}</strong>
+                <span class="badge ${source.quality >= 80 ? "good" : source.quality >= 65 ? "warn" : "risk"}">${source.quality}%</span>
+              </div>
+              <div class="bar"><span style="width:${source.quality}%"></span></div>
+              <p>${source.cadence}，负责人 ${source.owner}，最近同步 ${lastDate}，当前 ${items.length} 条。</p>
+            </button>
+          `;
+        }).join("");
+      }
+
+      function renderFilterOptions() {
+        const sourceOptions = sourceConfig.map((source) => `<option value="${source.id}">${source.name}</option>`).join("");
+        $("sourceFilter").innerHTML = `<option value="all">全部渠道</option>${sourceOptions}`;
+        $("manualSource").innerHTML = sourceOptions;
+        const tagOptions = getTagCounts().map(([tag]) => `<option value="${tag}">${tag}</option>`).join("");
+        $("tagFilter").innerHTML = `<option value="all">全部标签</option>${tagOptions}`;
+      }
+
+      function renderSortIndicators() {
+        ["Date", "Source", "Sentiment", "Impact", "Title"].forEach((name) => {
+          $(`sort${name}`).textContent = "";
+        });
+        const id = `sort${state.sort.key.charAt(0).toUpperCase()}${state.sort.key.slice(1)}`;
+        if ($(id)) $(id).textContent = state.sort.direction === "asc" ? "↑" : "↓";
+      }
+
+      function renderTable() {
+        const filtered = sortedVoices(filteredVoices());
+        const totalPages = Math.max(1, Math.ceil(filtered.length / state.pageSize));
+        state.page = Math.min(state.page, totalPages);
+        const start = (state.page - 1) * state.pageSize;
+        const pageItems = filtered.slice(start, start + state.pageSize);
+        $("vocTableBody").innerHTML = pageItems.map((voice) => {
+          const source = sourceById(voice.source);
+          return `
+            <tr>
+              <td>${voice.date}</td>
+              <td><strong>${source.name}</strong><br><span class="tag">${source.type}</span></td>
+              <td><span class="badge ${voice.sentiment}">${titleCase(voice.sentiment)}</span></td>
+              <td><span class="badge ${voice.impact}">${titleCase(voice.impact)}</span></td>
+              <td><strong>${voice.title}</strong></td>
+              <td class="quote-cell">${voice.quote}</td>
+              <td><div class="tag-list">${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div></td>
+              <td>${voice.recommendedAction || "待补充"}</td>
+            </tr>
+          `;
+        }).join("") || `<tr><td colspan="8">没有符合筛选条件的 VOC。</td></tr>`;
+        $("tableSummary").textContent = `${filtered.length} 条 VOC，第 ${state.page} / ${totalPages} 页`;
+        $("prevPageBtn").disabled = state.page <= 1;
+        $("nextPageBtn").disabled = state.page >= totalPages;
+        renderSortIndicators();
       }
 
       function renderAll() {
-        renderSources();
-        renderVoices();
-        renderInsights();
+        renderFilterOptions();
         renderMetrics();
-        renderDataStatus();
-        renderSchedule();
+        renderTrendChart();
+        renderSyncList();
+        renderTopics();
+        renderChannels();
+        renderTable();
       }
 
-      async function runCollection() {
-        try {
-          await loadRemoteVocData();
-        } catch (error) {
-          const next = generatedVoices[Math.floor(Math.random() * generatedVoices.length)];
-          const newVoice = {
-            ...next,
-            date: new Date().toISOString().slice(0, 10),
-          };
-          state.voices = [newVoice, ...state.voices];
-          state.dataMeta = {
-            mode: "local fallback",
-            generatedAt: new Date().toISOString(),
-            sources: [],
-            endpoint: "",
-          };
-          saveVoices();
-          renderAll();
-          showToast("Could not load synced data, so a local VOC item was added.");
-        }
+      function drillToList(filterPatch) {
+        state.filters = { ...state.filters, ...filterPatch };
+        state.page = 1;
+        syncFilterControls();
+        setRoute("list");
+        renderTable();
+      }
+
+      function syncFilterControls() {
+        $("searchInput").value = state.filters.search;
+        $("sourceFilter").value = state.filters.source;
+        $("sentimentFilter").value = state.filters.sentiment;
+        $("impactFilter").value = state.filters.impact;
+        $("tagFilter").value = state.filters.tag;
       }
 
       function exportCsv() {
         const rows = [
-          ["date", "source", "source_type", "sentiment", "impact", "tags", "title", "quote"],
-          ...state.voices.map((voice) => {
-            const source = sourceById(voice.source);
-            return [
-              voice.date,
-              source.name,
-              source.type,
-              voice.sentiment,
-              voice.impact,
-              voice.tags.join("|"),
-              voice.title,
-              voice.quote,
-            ];
-          }),
+          ["date", "source", "sentiment", "impact", "tags", "title", "quote", "recommended_action"],
+          ...sortedVoices(filteredVoices()).map((voice) => [
+            voice.date,
+            sourceById(voice.source).name,
+            voice.sentiment,
+            voice.impact,
+            voice.tags.join("|"),
+            voice.title,
+            voice.quote,
+            voice.recommendedAction,
+          ]),
         ];
-        const csv = rows.map((row) => row.map((cell) => `"${String(cell).replaceAll('"', '""')}"`).join(",")).join("\n");
+        const csv = rows.map((row) => row.map((cell) => `"${String(cell || "").replaceAll('"', '""')}"`).join(",")).join("\n");
         const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "vego-voc-export.csv";
+        link.download = "vego-voc-list.csv";
         link.click();
         URL.revokeObjectURL(url);
-        showToast("CSV export is ready.");
       }
 
       function bindEvents() {
-        $("sourceFilter").addEventListener("change", (event) => {
-          state.filters.sourceType = event.target.value;
-          renderSources();
+        document.querySelectorAll(".nav button").forEach((button) => {
+          button.addEventListener("click", () => setRoute(button.dataset.route));
         });
-        $("voiceSourceFilter").addEventListener("change", (event) => {
-          state.filters.voiceSource = event.target.value;
-          renderVoices();
+        document.querySelectorAll(".metric").forEach((button) => {
+          button.addEventListener("click", () => {
+            const drill = button.dataset.drill;
+            if (drill === "negative") drillToList({ sentiment: "negative", impact: "all", tag: "all", source: "all", search: "" });
+            if (drill === "high") drillToList({ impact: "high", sentiment: "all", tag: "all", source: "all", search: "" });
+            if (drill === "new") drillToList({ search: daysAgo(0), sentiment: "all", impact: "all", tag: "all", source: "all" });
+            if (drill === "all") drillToList({ search: "", sentiment: "all", impact: "all", tag: "all", source: "all" });
+          });
         });
-        $("sentimentFilter").addEventListener("change", (event) => {
-          state.filters.sentiment = event.target.value;
-          renderVoices();
+        $("topicList").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-topic]");
+          if (row) drillToList({ tag: row.dataset.topic, search: "", source: "all", sentiment: "all", impact: "all" });
         });
-        $("searchInput").addEventListener("input", (event) => {
-          state.filters.search = event.target.value;
-          renderVoices();
+        $("channelList").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-source]");
+          if (row) drillToList({ source: row.dataset.source, search: "", sentiment: "all", impact: "all", tag: "all" });
         });
-        $("runCollectBtn").addEventListener("click", runCollection);
+        ["searchInput", "sourceFilter", "sentimentFilter", "impactFilter", "tagFilter"].forEach((id) => {
+          $(id).addEventListener("input", () => {
+            state.filters.search = $("searchInput").value;
+            state.filters.source = $("sourceFilter").value;
+            state.filters.sentiment = $("sentimentFilter").value;
+            state.filters.impact = $("impactFilter").value;
+            state.filters.tag = $("tagFilter").value;
+            state.page = 1;
+            renderTable();
+          });
+        });
+        document.querySelectorAll("th button[data-sort]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const key = button.dataset.sort;
+            state.sort.direction = state.sort.key === key && state.sort.direction === "desc" ? "asc" : "desc";
+            state.sort.key = key;
+            renderTable();
+          });
+        });
+        $("prevPageBtn").addEventListener("click", () => {
+          state.page = Math.max(1, state.page - 1);
+          renderTable();
+        });
+        $("nextPageBtn").addEventListener("click", () => {
+          state.page += 1;
+          renderTable();
+        });
+        $("clearFiltersBtn").addEventListener("click", () => {
+          state.filters = { search: "", source: "all", sentiment: "all", impact: "all", tag: "all" };
+          state.page = 1;
+          syncFilterControls();
+          renderTable();
+        });
+        $("refreshBtn").addEventListener("click", () => loadRemoteVocData().catch((error) => showToast(error.message)));
         $("exportBtn").addEventListener("click", exportCsv);
-        $("resetBtn").addEventListener("click", () => {
-          state.voices = defaultVoices;
-          saveVoices();
-          $("lastRun").textContent = "Last run: sample data reset";
-          renderAll();
-          showToast("Sample VOC data has been reset.");
+        ["openCreateBtn", "openCreateBtnList"].forEach((id) => {
+          $(id).addEventListener("click", () => {
+            $("createDrawer").classList.add("open");
+            setRoute("list");
+            $("manualDate").value = new Date().toISOString().slice(0, 10);
+          });
         });
-        $("manualForm").addEventListener("submit", (event) => {
+        $("closeCreateBtn").addEventListener("click", () => $("createDrawer").classList.remove("open"));
+        $("createForm").addEventListener("submit", (event) => {
           event.preventDefault();
-          const tags = $("manualTags").value.split(",").map((tag) => tag.trim()).filter(Boolean);
-          state.voices = [{
+          const item = normalizeVoice({
             source: $("manualSource").value,
             sentiment: $("manualSentiment").value,
-            impact: $("manualSentiment").value === "negative" ? "high" : "medium",
-            tags,
-            title: tags.slice(0, 2).join(" / ") || "Manual VOC",
+            impact: $("manualImpact").value,
+            tags: $("manualTags").value.split(",").map((tag) => tag.trim()).filter(Boolean),
+            title: $("manualTitle").value.trim(),
             quote: $("manualQuote").value.trim(),
-            date: new Date().toISOString().slice(0, 10),
-          }, ...state.voices];
-          saveVoices();
+            date: $("manualDate").value,
+            recommendedAction: $("manualAction").value.trim(),
+            manual: true,
+          });
+          const manualItems = [item, ...getManualItems()];
+          saveManualItems(manualItems);
+          state.voices = [item, ...state.voices];
           event.target.reset();
+          $("createDrawer").classList.remove("open");
           renderAll();
-          showToast("Manual VOC item added.");
+          showToast("VOC 已创建在当前列表中。");
         });
       }
 
-      renderFilters();
+      renderFilterOptions();
       bindEvents();
+      syncFilterControls();
       renderAll();
+      setRoute((window.location.hash || "#dashboard").replace("#", "") === "list" ? "list" : "dashboard");
       loadRemoteVocData({ silent: true }).catch(() => {
-        state.dataMeta = {
-          mode: "sample",
-          generatedAt: null,
-          sources: [],
-          endpoint: "",
-        };
-        renderDataStatus();
+        renderAll();
+        showToast("线上数据暂不可用，已显示本地数据。");
       });
     </script>
   </body>
