@@ -1,0 +1,136 @@
+{
+  "items": [
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": ["modular", "small-space", "layout"],
+      "title": "Modular layouts solve awkward yard geometry",
+      "quote": "Public review synthesis: shoppers value that one kit can adapt to narrow, angled, L-shaped, U-shaped, or compact spaces without custom carpentry.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "recommendedAction": "Add a layout finder that starts from yard shape and recommends kit configuration, height, and accessories."
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": ["price", "comparison", "value-proof"],
+      "title": "Higher price needs stronger long-term value proof",
+      "quote": "Public review synthesis: the main purchase hesitation is price versus lower-cost galvanized beds, even when shoppers like the durability story.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-modular-raised-beds",
+      "recommendedAction": "Add a cost-per-season comparison module and make the 20-year durability claim easier to evaluate."
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "medium",
+      "tags": ["assembly", "protective-film", "friction"],
+      "title": "Protective film removal extends assembly time",
+      "quote": "Public hands-on testing noted that setup was straightforward, but removing protective film from panels created unexpected extra work.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "recommendedAction": "Add a pre-assembly tip card and short video specifically about protective film removal."
+    },
+    {
+      "source": "community",
+      "sentiment": "negative",
+      "impact": "high",
+      "tags": ["assembly", "expectation-setting", "instructions"],
+      "title": "Actual assembly time can exceed expectations",
+      "quote": "Public tester feedback indicates assembly can take much longer than the fastest advertised expectation, even when the build is manageable.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.bhg.com/best-raised-garden-beds-7372855",
+      "recommendedAction": "Show realistic assembly time ranges by model and number of people instead of a single best-case estimate."
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": ["durability", "food-safe", "rust-resistance"],
+      "title": "Material safety and rust resistance drive trust",
+      "quote": "Public buyer-guide coverage repeatedly highlights corrosion resistance, food-safe coating, and long service life as core reasons to choose Vego.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "recommendedAction": "Create a durability proof section with coating explanation, food safety, corrosion testing, and expected lifespan."
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": ["pest-control", "accessories", "mesh"],
+      "title": "Small-animal protection may require add-ons",
+      "quote": "Public buying advice suggests some gardens may still need mesh or short screens to keep smaller animals out.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.realsimple.com/home-organizing/gardening/outdoor/best-raised-garden-beds",
+      "recommendedAction": "Bundle pest-screen recommendations by region, crop, and bed height."
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "high",
+      "tags": ["accessibility", "elevated-bed", "mobility"],
+      "title": "Elevated height is a clear accessibility benefit",
+      "quote": "Hands-on coverage emphasizes that elevated beds make plant inspection and maintenance easier for users avoiding bending or crouching.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "recommendedAction": "Segment elevated beds for accessibility, back comfort, patios, and older gardeners."
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": ["soil", "depth", "calculator"],
+      "title": "Elevated beds need clearer soil quantity guidance",
+      "quote": "Public review coverage calls out that elevated beds use less soil than larger in-ground beds, making capacity and bag estimates important.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "recommendedAction": "Add a soil bag calculator to each PDP, including Hugelkultur-style fill guidance where appropriate."
+    },
+    {
+      "source": "community",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": ["delivery", "packaging", "confidence"],
+      "title": "Compact shipping can create missing-parts anxiety",
+      "quote": "Hands-on coverage noted the box was surprisingly compact, which created initial concern before confirming all parts were included.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.architecturaldigest.com/story/vego-garden-bed-review",
+      "recommendedAction": "Add an unboxing checklist and packing diagram to reduce setup anxiety."
+    },
+    {
+      "source": "social",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": ["trellis", "vertical-gardening", "small-space"],
+      "title": "Trellis arches expand small-space gardening appeal",
+      "quote": "Public coverage frames trellis arches as a way to add vertical growing capacity and visual impact without expanding the garden footprint.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-arch-trellis",
+      "recommendedAction": "Cross-sell trellis arches on small-space and tomato/cucumber bed pages."
+    },
+    {
+      "source": "social",
+      "sentiment": "positive",
+      "impact": "medium",
+      "tags": ["trellis", "assembly", "sturdiness"],
+      "title": "Trellis setup is praised when quick and sturdy",
+      "quote": "Public shopper feedback summarized by media highlights easy trellis installation and a sturdy feel as key confidence drivers.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.homesandgardens.com/gardens/vego-garden-arch-trellis",
+      "recommendedAction": "Use short installation clips and sturdiness proof points in trellis PDP media."
+    },
+    {
+      "source": "community",
+      "sentiment": "neutral",
+      "impact": "medium",
+      "tags": ["depth", "crop-fit", "buying-guide"],
+      "title": "Crop type should guide bed depth selection",
+      "quote": "Public buyer guidance notes that herbs and flowers can use shallower beds, while deep-rooted crops need more soil depth.",
+      "date": "2026-06-14",
+      "sourceUrl": "https://www.thespruce.com/best-raised-garden-beds-11742061",
+      "recommendedAction": "Add a crop-to-depth selector for herbs, tomatoes, cucumbers, eggplants, and root vegetables."
+    }
+  ]
+}
