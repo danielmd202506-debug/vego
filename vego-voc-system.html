@@ -529,6 +529,12 @@
         color: #8b3028;
       }
 
+      .score-pill.empty {
+        border-color: #d5d9ce;
+        background: #f5f7f2;
+        color: var(--muted);
+      }
+
       .stat-strip {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -584,31 +590,67 @@
 
       .journey-score-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
         gap: 12px;
         align-items: stretch;
       }
 
       .journey-score-list {
         display: grid;
-        gap: 9px;
-      }
-
-      .journey-score-row {
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
-      }
-
-      .journey-score-row .row-body {
-        display: grid;
         gap: 8px;
         min-width: 0;
       }
 
+      .journey-map-header,
+      .journey-score-row {
+        display: grid;
+        grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr) minmax(150px, 1.15fr) minmax(150px, 1.2fr) 74px;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .journey-score-row {
+        min-height: 116px;
+      }
+
+      .journey-map-header {
+        padding: 0 13px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .journey-cell {
+        display: grid;
+        gap: 6px;
+        min-width: 0;
+        align-content: start;
+      }
+
+      .journey-cell .cell-label {
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 900;
+      }
+
+      .journey-cell strong {
+        color: var(--ink);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .journey-cell p,
       .journey-score-row p {
         color: var(--muted);
         font-size: 12px;
         line-height: 1.4;
+      }
+
+      .journey-score-cell {
+        display: grid;
+        gap: 8px;
+        justify-items: end;
+        align-content: start;
       }
 
       .journey-curve {
@@ -791,7 +833,7 @@
 
       table {
         width: 100%;
-        min-width: 1720px;
+        min-width: 1880px;
         border-collapse: collapse;
       }
 
@@ -835,6 +877,13 @@
       .action-cell {
         max-width: 300px;
         line-height: 1.45;
+      }
+
+      .inline-select {
+        min-width: 150px;
+        min-height: 34px;
+        padding: 5px 8px;
+        font-size: 12px;
       }
 
       .tag-list {
@@ -915,6 +964,10 @@
         .form-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        .journey-score-layout {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 700px) {
@@ -938,6 +991,18 @@
 
         .trend-chart {
           grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .journey-map-header {
+          display: none;
+        }
+
+        .journey-score-row {
+          grid-template-columns: 1fr;
+        }
+
+        .journey-score-cell {
+          justify-items: start;
         }
       }
 
@@ -1287,12 +1352,16 @@
                     复盘结果 / Review Result
                     <select id="manualReviewResult" required></select>
                   </label>
+                  <label>
+                    决策状态 / Decision Status
+                    <select id="manualDecisionStatus" required></select>
+                  </label>
                   <label class="wide">
                     用户原声 / User Voice
                     <textarea id="manualQuote" required placeholder="粘贴或概括一条 VOC / Paste or summarize one VOC"></textarea>
                   </label>
                   <label class="wide">
-                    建议动作 / Recommended Action
+                    AI 建议动作 / AI Suggested Action
                     <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器 / Add soil bag calculator to PDP" />
                   </label>
                   <label class="wide">
@@ -1322,9 +1391,10 @@
                       <th><button type="button" data-sort="issueType">问题类型 / Issue Type <span id="sortIssueType"></span></button></th>
                       <th><button type="button" data-sort="workflowStatus">闭环状态 / Status <span id="sortWorkflowStatus"></span></button></th>
                       <th><button type="button" data-sort="verification">验证 / Validation <span id="sortVerification"></span></button></th>
+                      <th><button type="button" data-sort="decisionStatus">决策状态 / Decision <span id="sortDecisionStatus"></span></button></th>
                       <th>用户原声 / User Voice</th>
                       <th>标签 / Tags</th>
-                      <th>建议动作 / Recommended Action</th>
+                      <th>AI 建议动作 / AI Suggested Action</th>
                       <th>负责人 / Owner</th>
                       <th>复盘 / Review</th>
                     </tr>
@@ -1419,6 +1489,15 @@
         { id: "watching", label: "待观察 / Watching" },
       ];
 
+      const decisionStatusOptions = [
+        { id: "pending-review", label: "待评审 / Pending review" },
+        { id: "accepted", label: "已采纳 / Accepted" },
+        { id: "rejected", label: "已拒绝 / Rejected" },
+        { id: "requirement", label: "转为需求 / Converted to requirement" },
+        { id: "experiment", label: "转为实验 / Converted to test" },
+        { id: "monitoring", label: "持续观察 / Monitoring" },
+      ];
+
       const ownerOptions = ["UX", "Content", "CX", "Ecommerce Ops", "SEO", "Marketplace", "Lifecycle", "Research"];
 
       const defaultVoices = [
@@ -1462,9 +1541,9 @@
         try {
           const stored = localStorage.getItem("vegoVocManualItems");
           const manualItems = stored ? JSON.parse(stored) : [];
-          return [...manualItems, ...defaultVoices];
+          return applyDecisionOverrides([...manualItems, ...defaultVoices].map(normalizeVoice));
         } catch {
-          return defaultVoices;
+          return applyDecisionOverrides(defaultVoices.map(normalizeVoice));
         }
       }
 
@@ -1482,6 +1561,37 @@
         }
       }
 
+      function makeVoiceKey(voice) {
+        return `${voice.source || "unknown"}|${String(voice.date || "").slice(0, 10)}|${voice.quote || voice.text || voice.comment || ""}`
+          .toLowerCase()
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function getDecisionOverrides() {
+        try {
+          return JSON.parse(localStorage.getItem("vegoVocDecisionOverrides") || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function saveDecisionOverrides(overrides) {
+        localStorage.setItem("vegoVocDecisionOverrides", JSON.stringify(overrides));
+      }
+
+      function applyDecisionOverrides(voices) {
+        const overrides = getDecisionOverrides();
+        return voices.map((voice) => {
+          const key = voice.key || makeVoiceKey(voice);
+          return {
+            ...voice,
+            key,
+            decisionStatus: normalizeOption(overrides[key] || voice.decisionStatus, decisionStatusOptions, "pending-review"),
+          };
+        });
+      }
+
       function normalizeVoice(voice) {
         const source = sourceConfig.some((item) => item.id === voice.source) ? voice.source : "community";
         const sentiment = ["positive", "neutral", "negative"].includes(voice.sentiment) ? voice.sentiment : "neutral";
@@ -1495,8 +1605,9 @@
         const workflowStatus = normalizeOption(voice.workflowStatus || voice.status, statusOptions, "new");
         const verification = normalizeOption(voice.verification || voice.validation || inferVerification(issueType, impact), verificationOptions, "triage");
         const reviewResult = normalizeOption(voice.reviewResult || voice.result, reviewResultOptions, "pending");
+        const decisionStatus = normalizeOption(voice.decisionStatus || voice.decision_status, decisionStatusOptions, "pending-review");
         const priority = voice.priority || calculatePriority({ impact, sentiment, tags, workflowStatus });
-        return {
+        const normalized = {
           source,
           sentiment,
           impact,
@@ -1515,10 +1626,12 @@
           owner: voice.owner || inferOwner(source, issueType),
           linkedProject: voice.linkedProject || voice.project || inferProject(issueType, joinedTags),
           reviewResult,
+          decisionStatus,
           insightLink: voice.insightLink || voice.insightUrl || "",
           recommendedAction: voice.recommendedAction || "",
           manual: Boolean(voice.manual),
         };
+        return { ...normalized, key: makeVoiceKey(normalized) };
       }
 
       function normalizeOption(value, options, fallback) {
@@ -1630,7 +1743,7 @@
         if (!Array.isArray(remoteItems)) throw new Error("VOC payload has no items.");
 
         const manualItems = getManualItems();
-        state.voices = [...manualItems, ...remoteItems.map(normalizeVoice).filter((voice) => voice.quote)];
+        state.voices = applyDecisionOverrides([...manualItems, ...remoteItems.map(normalizeVoice).filter((voice) => voice.quote)]);
         state.dataMeta = {
           mode: payload.mode || "notion-api",
           generatedAt: payload.generatedAt || new Date().toISOString(),
@@ -1859,7 +1972,7 @@
         const highNegative = items.filter((voice) => voice.sentiment === "negative" && voice.impact === "high").length;
         const scoreBase = total ? ((positive * 100) + (neutral * 68) + (negative * 28)) / total : 0;
         const penalty = total ? (highNegative / total) * 10 : 0;
-        const score = Math.max(0, Math.min(100, Math.round(scoreBase - penalty)));
+        const score = total ? Math.max(0, Math.min(100, Math.round(scoreBase - penalty))) : null;
         const percent = (count) => Math.round((count / Math.max(1, total)) * 100);
         return {
           total,
@@ -1875,9 +1988,14 @@
       }
 
       function scoreClass(score) {
+        if (score === null || score === undefined) return "empty";
         if (score < 55) return "risk";
         if (score < 72) return "warn";
         return "";
+      }
+
+      function formatScore(score) {
+        return score === null || score === undefined ? "N/A" : String(score);
       }
 
       function sentimentStackStyle(health) {
@@ -1891,14 +2009,14 @@
             return { option, related, health: getVocHealth(related) };
           })
           .filter((item) => item.health.total > 0)
-          .sort((a, b) => b.health.total - a.health.total || a.health.score - b.health.score)
+          .sort((a, b) => b.health.total - a.health.total || (a.health.score ?? 101) - (b.health.score ?? 101))
           .slice(0, 8);
 
         $("personaGrid").innerHTML = ranked.map(({ option, health }) => `
           <button class="persona-card" type="button" data-user-type="${option.id}">
             <div class="score-line">
               <strong>${option.label}</strong>
-              <span class="score-pill ${scoreClass(health.score)}">${health.score}</span>
+              <span class="score-pill ${scoreClass(health.score)}">${formatScore(health.score)}</span>
             </div>
             <div class="stat-strip">
               <span><b>${health.total}</b>VOC 数量 / VOC count</span>
@@ -1913,7 +2031,7 @@
               <span>正向 ${health.positiveRate}%</span>
               <span>中性 ${health.neutralRate}%</span>
               <span>负向 ${health.negativeRate}%</span>
-              <span>满意度 ${health.score}/100</span>
+              <span>满意度 ${formatScore(health.score)}${health.score === null ? "" : "/100"}</span>
             </div>
           </button>
         `).join("") || `<div class="list-row"><p>暂无用户画像数据。 / No persona data yet.</p></div>`;
@@ -1928,25 +2046,101 @@
           });
       }
 
+      const journeyMapTemplates = {
+        "search-compare": {
+          activity: "搜索与比较 / Search and compare",
+          touchpoint: "SEO 内容、榜单、社媒、首页入口 / SEO, lists, social, site entry",
+          expectation: "快速判断 VEGO 与低价替代品的差异 / Understand value vs alternatives",
+        },
+        "pdp-evaluation": {
+          activity: "评估产品是否适合 / Evaluate product fit",
+          touchpoint: "PDP、图片、尺寸、材料说明、评论 / PDP, media, specs, reviews",
+          expectation: "看懂尺寸、材料、耐久和真实使用效果 / See fit, material, durability, proof",
+        },
+        "configuration": {
+          activity: "选择尺寸、形状和配件 / Configure size and accessories",
+          touchpoint: "配置器、配件推荐、土壤/作物指南 / Configurator, bundles, soil and crop guides",
+          expectation: "知道该买哪个组合，不遗漏关键配件 / Pick the right kit without missing add-ons",
+        },
+        checkout: {
+          activity: "确认订单并下单 / Checkout and purchase",
+          touchpoint: "购物车、价格、配送、优惠、支付 / Cart, price, shipping, promo, payment",
+          expectation: "总价、配送和安装准备清楚透明 / Clear total cost, delivery, setup prep",
+        },
+        "delivery-assembly": {
+          activity: "收货、检查、组装 / Receive and assemble",
+          touchpoint: "包装、说明书、安装视频、客服 / Packaging, manual, install video, support",
+          expectation: "零件齐全，步骤清楚，组装时间可预期 / Complete parts, clear steps, predictable time",
+        },
+        "first-use": {
+          activity: "填土、种植、第一次维护 / Fill, plant, first maintenance",
+          touchpoint: "土壤计算、作物指南、浇水建议 / Soil calculator, crop guide, watering tips",
+          expectation: "知道填多少土、种什么、怎么养护 / Know soil, crops, care routine",
+        },
+        "post-purchase": {
+          activity: "售后、复购、扩展 / Support, repeat, expansion",
+          touchpoint: "客服、配件、UGC、邮件、复购推荐 / Support, accessories, UGC, email, repeat offers",
+          expectation: "问题能解决，并知道下一步怎么扩展 / Resolve issues and know how to expand",
+        },
+      };
+
+      function getJourneyPain(related, health) {
+        if (!related.length) return "暂无明显痛点 / No clear pain point yet";
+        const issueId = countBy(related, "issueType")[0]?.[0] || "unknown";
+        const negative = related.filter((voice) => voice.sentiment === "negative").length;
+        const high = related.filter((voice) => voice.impact === "high").length;
+        const issueLabel = labelById(issueTypeOptions, issueId);
+        return `${health.issues} 个问题，${negative} 条负向，${high} 条高影响；集中在 ${issueLabel}`;
+      }
+
       function renderJourneyScorePanel() {
         const rows = journeyHealthRows();
-        $("journeyScoreList").innerHTML = rows.map(({ option, health }) => `
+        $("journeyScoreList").innerHTML = `
+          <div class="journey-map-header" aria-hidden="true">
+            <span>活动 / Activity</span>
+            <span>触点 / Touchpoint</span>
+            <span>痛点 / Pain Point</span>
+            <span>期望 / Expectation</span>
+            <span>评分 / Score</span>
+          </div>
+          ${rows.map(({ option, related, health }) => {
+            const template = journeyMapTemplates[option.id] || {
+              activity: option.label,
+              touchpoint: "待补充 / To be mapped",
+              expectation: "待补充 / To be defined",
+            };
+            return `
           <button class="journey-score-row" type="button" data-journey-score="${option.id}">
-            <div class="row-body">
-              <div class="row-top">
-                <strong>${option.label}</strong>
-                <span class="badge ${health.issues ? "warn" : "good"}">${health.total} VOC</span>
-              </div>
+            <div class="journey-cell">
+              <span class="cell-label">活动 / Activity</span>
+              <strong>${template.activity}</strong>
+              <p>${health.total} 条 VOC / ${health.total} VOC</p>
+            </div>
+            <div class="journey-cell">
+              <span class="cell-label">触点 / Touchpoint</span>
+              <p>${template.touchpoint}</p>
+            </div>
+            <div class="journey-cell">
+              <span class="cell-label">痛点 / Pain Point</span>
+              <p>${getJourneyPain(related, health)}</p>
+            </div>
+            <div class="journey-cell">
+              <span class="cell-label">期望 / Expectation</span>
+              <p>${template.expectation}</p>
               <div class="sentiment-stack" style="${sentimentStackStyle(health)}">
                 <span class="positive"></span>
                 <span class="neutral"></span>
                 <span class="negative"></span>
               </div>
-              <p>${health.issues} 个问题，正向 ${health.positiveRate}% / 中性 ${health.neutralRate}% / 负向 ${health.negativeRate}%</p>
             </div>
-            <span class="score-pill ${scoreClass(health.score)}">${health.score}</span>
+            <div class="journey-score-cell">
+              <span class="score-pill ${scoreClass(health.score)}">${formatScore(health.score)}</span>
+              <p>正 ${health.positiveRate}%<br>中 ${health.neutralRate}%<br>负 ${health.negativeRate}%</p>
+            </div>
           </button>
-        `).join("");
+            `;
+          }).join("")}
+        `;
 
         renderJourneyScoreCurve(rows);
       }
@@ -1960,20 +2154,24 @@
         const plotH = height - padY * 2;
         const xFor = (index) => padX + (rows.length <= 1 ? plotW / 2 : (plotW / (rows.length - 1)) * index);
         const yFor = (score) => padY + ((100 - score) / 100) * plotH;
-        const points = rows.map(({ health }, index) => [xFor(index), yFor(health.score)]);
-        const line = points.map(([x, y]) => `${x},${y}`).join(" ");
-        const area = `${padX},${padY + plotH} ${line} ${padX + plotW},${padY + plotH}`;
+        const validPoints = rows
+          .map((row, index) => row.health.score === null ? null : { row, index, x: xFor(index), y: yFor(row.health.score) })
+          .filter(Boolean);
+        const line = validPoints.map((point) => `${point.x},${point.y}`).join(" ");
+        const area = validPoints.length
+          ? `${validPoints[0].x},${padY + plotH} ${line} ${validPoints.at(-1).x},${padY + plotH}`
+          : "";
         const labels = rows.map(({ option }) => `<span>${option.label.split(" / ")[0]}</span>`).join("");
-        const lowest = rows.reduce((min, row) => row.health.score < min.health.score ? row : min, rows[0]);
+        const lowest = validPoints.reduce((min, point) => !min || point.row.health.score < min.row.health.score ? point : min, null)?.row;
 
         $("journeyScoreCurve").innerHTML = `
           <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Journey satisfaction score curve">
             <line x1="${padX}" y1="${yFor(80)}" x2="${padX + plotW}" y2="${yFor(80)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
             <line x1="${padX}" y1="${yFor(60)}" x2="${padX + plotW}" y2="${yFor(60)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
-            <polygon points="${area}" fill="rgba(47, 102, 59, 0.12)"></polygon>
-            <polyline points="${line}" fill="none" stroke="#2f663b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></polyline>
-            ${points.map(([x, y], index) => {
-              const score = rows[index].health.score;
+            ${area ? `<polygon points="${area}" fill="rgba(47, 102, 59, 0.12)"></polygon>` : ""}
+            ${line ? `<polyline points="${line}" fill="none" stroke="#2f663b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></polyline>` : ""}
+            ${validPoints.map(({ x, y, row }) => {
+              const score = row.health.score;
               const fill = score < 55 ? "#b84b3f" : score < 72 ? "#ffad4f" : "#2f663b";
               return `<g><circle cx="${x}" cy="${y}" r="7" fill="${fill}" stroke="#fff" stroke-width="2"></circle><text x="${x}" y="${Math.max(16, y - 12)}" text-anchor="middle" fill="#17351f" font-size="12" font-weight="800">${score}</text></g>`;
             }).join("")}
@@ -1981,7 +2179,7 @@
             <text x="${padX}" y="${yFor(60) - 6}" fill="#687a67" font-size="11">60</text>
           </svg>
           <div class="curve-labels">${labels}</div>
-          <p class="curve-caption">最低触点：${lowest ? lowest.option.label : "N/A"}，满意度 ${lowest ? lowest.health.score : 0}/100。 / Lowest touchpoint score is highlighted for prioritization.</p>
+          <p class="curve-caption">最低触点：${lowest ? lowest.option.label : "N/A"}，满意度 ${lowest ? `${lowest.health.score}/100` : "N/A"}。 / Touchpoints with no VOC show N/A and are not connected in the curve.</p>
         `;
       }
 
@@ -2060,6 +2258,7 @@
         fillSelect("manualWorkflowStatus", statusOptions);
         fillSelect("manualVerification", verificationOptions);
         fillSelect("manualReviewResult", reviewResultOptions);
+        fillSelect("manualDecisionStatus", decisionStatusOptions);
       }
 
       function fillSelect(id, options, allLabel = "") {
@@ -2068,7 +2267,7 @@
       }
 
       function renderSortIndicators() {
-        ["Date", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification"].forEach((name) => {
+        ["Date", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification", "DecisionStatus"].forEach((name) => {
           $(`sort${name}`).textContent = "";
         });
         const id = `sort${state.sort.key.charAt(0).toUpperCase()}${state.sort.key.slice(1)}`;
@@ -2096,6 +2295,11 @@
               <td>${labelById(issueTypeOptions, voice.issueType)}</td>
               <td><span class="badge">${labelById(statusOptions, voice.workflowStatus)}</span></td>
               <td>${labelById(verificationOptions, voice.verification)}</td>
+              <td>
+                <select class="inline-select" data-decision-key="${encodeURIComponent(voice.key)}" aria-label="Decision status">
+                  ${decisionStatusOptions.map((option) => `<option value="${option.id}" ${option.id === voice.decisionStatus ? "selected" : ""}>${option.label}</option>`).join("")}
+                </select>
+              </td>
               <td class="quote-cell">${voice.quote}</td>
               <td><div class="tag-list">${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div></td>
               <td class="action-cell">${voice.recommendedAction || "待补充 / To be added"}${voice.linkedProject ? `<br><span class="tag">${voice.linkedProject}</span>` : ""}</td>
@@ -2103,7 +2307,7 @@
               <td>${labelById(reviewResultOptions, voice.reviewResult)}${voice.insightLink ? `<br><a href="${voice.insightLink}" target="_blank" rel="noreferrer">Insight</a>` : ""}</td>
             </tr>
           `;
-        }).join("") || `<tr><td colspan="16">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
+        }).join("") || `<tr><td colspan="17">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
         $("tableSummary").textContent = `${filtered.length} 条 VOC / ${filtered.length} VOC items, 第 ${state.page} / ${totalPages} 页 / page ${state.page} of ${totalPages}`;
         $("prevPageBtn").disabled = state.page <= 1;
         $("nextPageBtn").disabled = state.page >= totalPages;
@@ -2150,9 +2354,19 @@
         $("verificationFilter").value = state.filters.verification;
       }
 
+      function updateDecisionStatus(key, value) {
+        const decodedKey = decodeURIComponent(key);
+        const normalizedStatus = normalizeOption(value, decisionStatusOptions, "pending-review");
+        const overrides = getDecisionOverrides();
+        overrides[decodedKey] = normalizedStatus;
+        saveDecisionOverrides(overrides);
+        state.voices = state.voices.map((voice) => voice.key === decodedKey ? { ...voice, decisionStatus: normalizedStatus } : voice);
+        showToast(`决策状态已更新：${labelById(decisionStatusOptions, normalizedStatus)} / Decision status updated.`);
+      }
+
       function exportCsv() {
         const rows = [
-          ["date", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "owner", "linked_project", "review_result", "tags", "title", "quote", "recommended_action", "insight_link"],
+          ["date", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "decision_status", "owner", "linked_project", "review_result", "tags", "title", "quote", "ai_suggested_action", "insight_link"],
           ...sortedVoices(filteredVoices()).map((voice) => [
             voice.date,
             sourceById(voice.source).name,
@@ -2164,6 +2378,7 @@
             voice.issueType,
             voice.workflowStatus,
             voice.verification,
+            voice.decisionStatus,
             voice.owner,
             voice.linkedProject,
             voice.reviewResult,
@@ -2259,6 +2474,10 @@
             renderTable();
           });
         });
+        $("vocTableBody").addEventListener("change", (event) => {
+          const select = event.target.closest("[data-decision-key]");
+          if (select) updateDecisionStatus(select.dataset.decisionKey, select.value);
+        });
         $("prevPageBtn").addEventListener("click", () => {
           state.page = Math.max(1, state.page - 1);
           renderTable();
@@ -2298,6 +2517,7 @@
             owner: $("manualOwner").value.trim(),
             linkedProject: $("manualLinkedProject").value.trim(),
             reviewResult: $("manualReviewResult").value,
+            decisionStatus: $("manualDecisionStatus").value,
             title: $("manualTitle").value.trim(),
             quote: $("manualQuote").value.trim(),
             date: $("manualDate").value,
