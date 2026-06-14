@@ -25,6 +25,14 @@ jobs:
         env:
           VOC_SOURCE_URLS: ${{ secrets.VOC_SOURCE_URLS }}
 
+      - name: Sync VOC data to Notion
+        run: node scripts/sync-voc-to-notion.mjs
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          VOC_SOURCE_URLS: ${{ secrets.VOC_SOURCE_URLS }}
+          VOC_SOURCE_FILES: data/voc-items.json
+
       - name: Commit updated VOC data
         run: |
           git config user.name "github-actions[bot]"
