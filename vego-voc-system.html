@@ -110,6 +110,7 @@
         color: var(--text);
         font-weight: 800;
         text-align: left;
+        line-height: 1.2;
       }
 
       .nav button:hover,
@@ -216,6 +217,8 @@
         background: var(--surface);
         color: var(--ink);
         font-weight: 800;
+        line-height: 1.2;
+        text-align: center;
       }
 
       .btn.primary {
@@ -554,6 +557,8 @@
         background: transparent;
         color: inherit;
         font-weight: 900;
+        line-height: 1.2;
+        text-align: left;
       }
 
       tbody tr:hover {
@@ -677,19 +682,19 @@
       <aside class="sidebar" aria-label="VOC navigation">
         <div class="brand">
           <img src="assets/logo.png" alt="VEGO Garden" />
-          <strong>VOC 管理系统</strong>
+          <strong>VOC 管理系统 / VOC Management</strong>
         </div>
         <nav class="nav">
-          <button class="active" type="button" data-route="dashboard">Dashboard <span id="navDashboardCount">0</span></button>
-          <button type="button" data-route="list">VOC List <span id="navListCount">0</span></button>
+          <button class="active" type="button" data-route="dashboard">仪表盘 / Dashboard <span id="navDashboardCount">0</span></button>
+          <button type="button" data-route="list">VOC 列表 / VOC List <span id="navListCount">0</span></button>
         </nav>
         <div class="sidebar-note">
-          <strong>数据状态</strong>
-          <p id="sideDataStatus">正在读取线上 VOC 数据库。</p>
+          <strong>数据状态 / Data Status</strong>
+          <p id="sideDataStatus">正在读取线上 VOC 数据库 / Loading live VOC database.</p>
         </div>
         <div class="sidebar-note">
-          <strong>下一步渠道</strong>
-          <p>Notion 已作为当前数据仓库。后续 Shopify、Gorgias、Amazon、社媒监听和 Search Console 可按渠道接入自动同步。</p>
+          <strong>下一步渠道 / Next Channels</strong>
+          <p>Notion 已作为当前数据仓库。后续 Shopify、Gorgias、Amazon、社媒监听和 Search Console 可按渠道接入自动同步。 / Notion is the active data warehouse. Shopify, Gorgias, Amazon, social listening, and Search Console can be connected next.</p>
         </div>
       </aside>
 
@@ -697,12 +702,12 @@
         <header class="topbar">
           <div class="page-title">
             <h1 id="pageTitle">Dashboard</h1>
-            <p id="pageSubtitle">集中查看 VOC 指标、趋势、同步变化和可点击下钻。</p>
+            <p id="pageSubtitle">集中查看 VOC 指标、趋势、同步变化和可点击下钻。 / View VOC metrics, trends, sync changes, and drill-downs.</p>
           </div>
           <div class="actions">
-            <button class="btn" id="refreshBtn" type="button">同步最新数据</button>
-            <button class="btn" id="exportBtn" type="button">导出 CSV</button>
-            <button class="btn primary" id="openCreateBtn" type="button">手动创建 VOC</button>
+            <button class="btn" id="refreshBtn" type="button">同步最新数据 / Sync Data</button>
+            <button class="btn" id="exportBtn" type="button">导出 CSV / Export CSV</button>
+            <button class="btn primary" id="openCreateBtn" type="button">手动创建 VOC / Create VOC</button>
           </div>
         </header>
 
@@ -711,24 +716,24 @@
             <section class="section">
               <div class="metric-grid">
                 <button class="metric" type="button" data-drill="all">
-                  <span>VOC 总量</span>
+                  <span>VOC 总量 / Total VOC</span>
                   <strong id="metricTotal">0</strong>
-                  <em id="metricTotalChange">同步中</em>
+                  <em id="metricTotalChange">同步中 / Syncing</em>
                 </button>
                 <button class="metric" type="button" data-drill="negative">
-                  <span>负向反馈</span>
+                  <span>负向反馈 / Negative</span>
                   <strong id="metricNegative">0%</strong>
-                  <em id="metricNegativeChange">点击查看负向 VOC</em>
+                  <em id="metricNegativeChange">点击查看负向 VOC / Drill into negative items</em>
                 </button>
                 <button class="metric" type="button" data-drill="high">
-                  <span>高影响问题</span>
+                  <span>高影响问题 / High Impact</span>
                   <strong id="metricHigh">0</strong>
-                  <em>优先进入行动池</em>
+                  <em>优先进入行动池 / Prioritize for action</em>
                 </button>
                 <button class="metric" type="button" data-drill="new">
-                  <span>近 7 天新增</span>
+                  <span>近 7 天新增 / New in 7 Days</span>
                   <strong id="metricNew">0</strong>
-                  <em id="metricNewChange">对比前 7 天</em>
+                  <em id="metricNewChange">对比前 7 天 / vs previous 7 days</em>
                 </button>
               </div>
             </section>
@@ -738,18 +743,18 @@
                 <div class="panel">
                   <div class="section-head">
                     <div>
-                      <h2>VOC 趋势</h2>
-                      <p>按日期聚合正向、中性、负向反馈，用于判断近期是否有异常波动。</p>
+                      <h2>VOC 趋势 / VOC Trend</h2>
+                      <p>按日期聚合正向、中性、负向反馈，用于判断近期是否有异常波动。 / Track positive, neutral, and negative feedback by date.</p>
                     </div>
-                    <span class="badge" id="trendWindowLabel">最近 7 天</span>
+                    <span class="badge" id="trendWindowLabel">最近 7 天 / Last 7 days</span>
                   </div>
                   <div class="trend-chart" id="trendChart"></div>
                 </div>
                 <div class="panel">
                   <div class="section-head">
                     <div>
-                      <h2>同步变化</h2>
-                      <p>展示数据仓库、最近同步时间和新增趋势。</p>
+                      <h2>同步变化 / Sync Changes</h2>
+                      <p>展示数据仓库、最近同步时间和新增趋势。 / Shows data source, latest sync time, and recent change.</p>
                     </div>
                   </div>
                   <div class="sync-list" id="syncList"></div>
@@ -762,8 +767,8 @@
                 <div class="panel">
                   <div class="section-head">
                     <div>
-                      <h2>主题下钻</h2>
-                      <p>点击主题可以进入 VOC List 并自动筛选相关内容。</p>
+                      <h2>主题下钻 / Topic Drill-down</h2>
+                      <p>点击主题可以进入 VOC List 并自动筛选相关内容。 / Click a topic to open the filtered VOC list.</p>
                     </div>
                   </div>
                   <div class="topic-list" id="topicList"></div>
@@ -771,8 +776,8 @@
                 <div class="panel">
                   <div class="section-head">
                     <div>
-                      <h2>渠道健康</h2>
-                      <p>保留采集频率、负责人、最近同步时间和数据质量，便于后续 API 接入管理。</p>
+                      <h2>渠道健康 / Channel Health</h2>
+                      <p>保留采集频率、负责人、最近同步时间和数据质量，便于后续 API 接入管理。 / Track cadence, owner, latest sync, and data quality for API onboarding.</p>
                     </div>
                   </div>
                   <div class="channel-list" id="channelList"></div>
@@ -786,45 +791,45 @@
               <div class="filter-panel">
                 <div class="section-head">
                   <div>
-                    <h2>VOC 信息列表</h2>
-                    <p>默认按时间从新到旧排序。表头可排序，筛选和搜索会即时更新结果。</p>
+                    <h2>VOC 信息列表 / VOC List</h2>
+                    <p>默认按时间从新到旧排序。表头可排序，筛选和搜索会即时更新结果。 / Defaults to newest first. Table headers, filters, and search update results instantly.</p>
                   </div>
                   <div class="table-tools">
-                    <button class="btn" id="clearFiltersBtn" type="button">清空筛选</button>
-                    <button class="btn primary" id="openCreateBtnList" type="button">手动创建 VOC</button>
+                    <button class="btn" id="clearFiltersBtn" type="button">清空筛选 / Clear Filters</button>
+                    <button class="btn primary" id="openCreateBtnList" type="button">手动创建 VOC / Create VOC</button>
                   </div>
                 </div>
                 <div class="filter-grid">
                   <label>
-                    搜索
-                    <input id="searchInput" type="search" placeholder="搜索标题、原声、标签、建议动作" />
+                    搜索 / Search
+                    <input id="searchInput" type="search" placeholder="搜索标题、原声、标签、建议动作 / Search title, quote, tags, action" />
                   </label>
                   <label>
-                    渠道
+                    渠道 / Channel
                     <select id="sourceFilter"></select>
                   </label>
                   <label>
-                    情绪
+                    情绪 / Sentiment
                     <select id="sentimentFilter">
-                      <option value="all">全部情绪</option>
-                      <option value="positive">Positive</option>
-                      <option value="neutral">Neutral</option>
-                      <option value="negative">Negative</option>
+                      <option value="all">全部情绪 / All sentiment</option>
+                      <option value="positive">正向 / Positive</option>
+                      <option value="neutral">中性 / Neutral</option>
+                      <option value="negative">负向 / Negative</option>
                     </select>
                   </label>
                   <label>
-                    影响
+                    影响 / Impact
                     <select id="impactFilter">
-                      <option value="all">全部影响</option>
-                      <option value="high">High</option>
-                      <option value="medium">Medium</option>
-                      <option value="low">Low</option>
+                      <option value="all">全部影响 / All impact</option>
+                      <option value="high">高 / High</option>
+                      <option value="medium">中 / Medium</option>
+                      <option value="low">低 / Low</option>
                     </select>
                   </label>
                   <label>
-                    标签
+                    标签 / Tag
                     <select id="tagFilter">
-                      <option value="all">全部标签</option>
+                      <option value="all">全部标签 / All tags</option>
                     </select>
                   </label>
                 </div>
@@ -835,55 +840,55 @@
               <form class="form-panel panel" id="createForm">
                 <div class="section-head">
                   <div>
-                    <h2>手动创建 VOC</h2>
-                    <p>用于补充客服口头反馈、线下活动观察或暂未接 API 的渠道。当前会先保存在浏览器列表中。</p>
+                    <h2>手动创建 VOC / Create VOC</h2>
+                    <p>用于补充客服口头反馈、线下活动观察或暂未接 API 的渠道。当前会先保存在浏览器列表中。 / Use this for support notes, offline observations, or channels without APIs. Items are saved locally first.</p>
                   </div>
-                  <button class="btn" id="closeCreateBtn" type="button">收起</button>
+                  <button class="btn" id="closeCreateBtn" type="button">收起 / Collapse</button>
                 </div>
                 <div class="form-grid">
                   <label>
-                    标题
-                    <input id="manualTitle" required placeholder="例如：土壤用量不清楚" />
+                    标题 / Title
+                    <input id="manualTitle" required placeholder="例如：土壤用量不清楚 / Soil volume is unclear" />
                   </label>
                   <label>
-                    渠道
+                    渠道 / Channel
                     <select id="manualSource" required></select>
                   </label>
                   <label>
-                    日期
+                    日期 / Date
                     <input id="manualDate" type="date" required />
                   </label>
                   <label>
-                    情绪
+                    情绪 / Sentiment
                     <select id="manualSentiment" required>
-                      <option value="negative">Negative</option>
-                      <option value="neutral">Neutral</option>
-                      <option value="positive">Positive</option>
+                      <option value="negative">负向 / Negative</option>
+                      <option value="neutral">中性 / Neutral</option>
+                      <option value="positive">正向 / Positive</option>
                     </select>
                   </label>
                   <label>
-                    影响
+                    影响 / Impact
                     <select id="manualImpact" required>
-                      <option value="high">High</option>
-                      <option value="medium">Medium</option>
-                      <option value="low">Low</option>
+                      <option value="high">高 / High</option>
+                      <option value="medium">中 / Medium</option>
+                      <option value="low">低 / Low</option>
                     </select>
                   </label>
                   <label>
-                    标签
+                    标签 / Tags
                     <input id="manualTags" required placeholder="soil, calculator, purchase-blocker" />
                   </label>
                   <label class="wide">
-                    用户原声
-                    <textarea id="manualQuote" required placeholder="粘贴或概括一条 VOC"></textarea>
+                    用户原声 / User Voice
+                    <textarea id="manualQuote" required placeholder="粘贴或概括一条 VOC / Paste or summarize one VOC"></textarea>
                   </label>
                   <label class="wide">
-                    建议动作
-                    <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器" />
+                    建议动作 / Recommended Action
+                    <input id="manualAction" placeholder="例如：在 PDP 增加土壤袋数计算器 / Add soil bag calculator to PDP" />
                   </label>
                 </div>
                 <div class="actions">
-                  <button class="btn primary" type="submit">保存 VOC</button>
+                  <button class="btn primary" type="submit">保存 VOC / Save VOC</button>
                 </div>
               </form>
             </section>
@@ -893,14 +898,14 @@
                 <table>
                   <thead>
                     <tr>
-                      <th><button type="button" data-sort="date">日期 <span id="sortDate"></span></button></th>
-                      <th><button type="button" data-sort="source">渠道 <span id="sortSource"></span></button></th>
-                      <th><button type="button" data-sort="sentiment">情绪 <span id="sortSentiment"></span></button></th>
-                      <th><button type="button" data-sort="impact">影响 <span id="sortImpact"></span></button></th>
-                      <th><button type="button" data-sort="title">标题 <span id="sortTitle"></span></button></th>
-                      <th>用户原声</th>
-                      <th>标签</th>
-                      <th>建议动作</th>
+                      <th><button type="button" data-sort="date">日期 / Date <span id="sortDate"></span></button></th>
+                      <th><button type="button" data-sort="source">渠道 / Channel <span id="sortSource"></span></button></th>
+                      <th><button type="button" data-sort="sentiment">情绪 / Sentiment <span id="sortSentiment"></span></button></th>
+                      <th><button type="button" data-sort="impact">影响 / Impact <span id="sortImpact"></span></button></th>
+                      <th><button type="button" data-sort="title">标题 / Title <span id="sortTitle"></span></button></th>
+                      <th>用户原声 / User Voice</th>
+                      <th>标签 / Tags</th>
+                      <th>建议动作 / Recommended Action</th>
                     </tr>
                   </thead>
                   <tbody id="vocTableBody"></tbody>
@@ -909,8 +914,8 @@
               <div class="pagination">
                 <span id="tableSummary">0 条 VOC</span>
                 <div class="actions">
-                  <button class="btn" id="prevPageBtn" type="button">上一页</button>
-                  <button class="btn" id="nextPageBtn" type="button">下一页</button>
+                  <button class="btn" id="prevPageBtn" type="button">上一页 / Previous</button>
+                  <button class="btn" id="nextPageBtn" type="button">下一页 / Next</button>
                 </div>
               </div>
             </section>
@@ -923,14 +928,14 @@
 
     <script>
       const sourceConfig = [
-        { id: "site-reviews", name: "独立站评论", type: "Owned", cadence: "Daily", owner: "Ecommerce Ops", quality: 92 },
+        { id: "site-reviews", name: "独立站评论 / Site Reviews", type: "Owned", cadence: "Daily", owner: "Ecommerce Ops", quality: 92 },
         { id: "site-qa", name: "PDP Q&A", type: "Owned", cadence: "Daily", owner: "Content", quality: 84 },
         { id: "amazon", name: "Amazon Reviews", type: "Marketplace", cadence: "Twice weekly", owner: "Marketplace", quality: 76 },
-        { id: "social", name: "社交媒体", type: "Social", cadence: "Mon/Wed/Fri", owner: "Brand", quality: 68 },
-        { id: "community", name: "社区讨论", type: "Social", cadence: "Weekly", owner: "Research", quality: 72 },
-        { id: "support", name: "客服工单", type: "Support", cadence: "Daily", owner: "CX", quality: 88 },
+        { id: "social", name: "社交媒体 / Social Media", type: "Social", cadence: "Mon/Wed/Fri", owner: "Brand", quality: 68 },
+        { id: "community", name: "社区讨论 / Community", type: "Social", cadence: "Weekly", owner: "Research", quality: 72 },
+        { id: "support", name: "客服工单 / Support Tickets", type: "Support", cadence: "Daily", owner: "CX", quality: 88 },
         { id: "search-console", name: "Search Console", type: "Search", cadence: "Weekly", owner: "SEO", quality: 73 },
-        { id: "post-purchase", name: "购买后问卷", type: "Owned", cadence: "Weekly", owner: "Lifecycle", quality: 56 },
+        { id: "post-purchase", name: "购买后问卷 / Post-purchase Survey", type: "Owned", cadence: "Weekly", owner: "Lifecycle", quality: 56 },
       ];
 
       const defaultVoices = [
@@ -1048,7 +1053,7 @@
           endpoint,
         };
         renderAll();
-        if (!silent) showToast(`已同步 ${state.voices.length} 条 VOC。`);
+        if (!silent) showToast(`已同步 ${state.voices.length} 条 VOC / Synced ${state.voices.length} VOC items.`);
       }
 
       function getManualItems() {
@@ -1092,10 +1097,10 @@
         document.querySelectorAll(".view").forEach((view) => view.classList.remove("active"));
         document.querySelectorAll(".nav button").forEach((button) => button.classList.toggle("active", button.dataset.route === route));
         $(`${route}View`).classList.add("active");
-        $("pageTitle").textContent = route === "dashboard" ? "Dashboard" : "VOC List";
+        $("pageTitle").textContent = route === "dashboard" ? "仪表盘 / Dashboard" : "VOC 列表 / VOC List";
         $("pageSubtitle").textContent = route === "dashboard"
-          ? "集中查看 VOC 指标、趋势、同步变化和可点击下钻。"
-          : "收录所有 VOC 信息，支持筛选、排序、搜索和手动创建。";
+          ? "集中查看 VOC 指标、趋势、同步变化和可点击下钻。 / View VOC metrics, trends, sync changes, and drill-downs."
+          : "收录所有 VOC 信息，支持筛选、排序、搜索和手动创建。 / Review all VOC items with filters, sorting, search, and manual creation.";
         window.location.hash = route;
       }
 
@@ -1145,12 +1150,12 @@
         const negativeRate = Math.round((negative / Math.max(1, total)) * 100);
 
         $("metricTotal").textContent = total;
-        $("metricTotalChange").textContent = `${sourceConfig.length} 个渠道配置`;
+        $("metricTotalChange").textContent = `${sourceConfig.length} 个渠道配置 / ${sourceConfig.length} channels configured`;
         $("metricNegative").textContent = `${negativeRate}%`;
-        $("metricNegativeChange").textContent = `${negative} 条负向反馈`;
+        $("metricNegativeChange").textContent = `${negative} 条负向反馈 / ${negative} negative items`;
         $("metricHigh").textContent = high;
         $("metricNew").textContent = last7;
-        $("metricNewChange").textContent = `${delta >= 0 ? "+" : ""}${delta} vs 前 7 天`;
+        $("metricNewChange").textContent = `${delta >= 0 ? "+" : ""}${delta} vs 前 7 天 / previous 7 days`;
         $("navDashboardCount").textContent = total;
         $("navListCount").textContent = total;
       }
@@ -1165,7 +1170,7 @@
           const negative = voices.filter((voice) => voice.sentiment === "negative").length;
           const height = (count) => `${Math.max(count ? 8 : 0, Math.round((count / max) * 122))}px`;
           return `
-            <div class="trend-day" title="${day}: ${voices.length} 条">
+            <div class="trend-day" title="${day}: ${voices.length} 条 / ${voices.length} items">
               <div class="trend-bars">
                 <span class="positive" style="height:${height(positive)}"></span>
                 <span class="neutral" style="height:${height(neutral)}"></span>
@@ -1178,22 +1183,22 @@
       }
 
       function renderSyncList() {
-        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString("zh-CN") : "尚未同步";
+        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString("zh-CN") : "尚未同步 / Not synced";
         const sourceLabel = state.dataMeta.mode === "notion-api" ? "Notion VOC Database" : state.dataMeta.mode;
         const { last7, previous7, delta } = getDateRangeCounts();
-        $("sideDataStatus").textContent = `数据源：${sourceLabel}。最近同步：${generated}。`;
+        $("sideDataStatus").textContent = `数据源 / Source: ${sourceLabel}. 最近同步 / Latest sync: ${generated}.`;
         $("syncList").innerHTML = `
           <div class="list-row">
-            <div class="row-top"><strong>最近同步</strong><span class="badge good">${sourceLabel}</span></div>
+            <div class="row-top"><strong>最近同步 / Latest Sync</strong><span class="badge good">${sourceLabel}</span></div>
             <p>${generated}</p>
           </div>
           <div class="list-row">
-            <div class="row-top"><strong>新增变化</strong><span class="badge ${delta >= 0 ? "good" : "warn"}">${delta >= 0 ? "+" : ""}${delta}</span></div>
-            <p>近 7 天 ${last7} 条，前 7 天 ${previous7} 条。</p>
+            <div class="row-top"><strong>新增变化 / New Change</strong><span class="badge ${delta >= 0 ? "good" : "warn"}">${delta >= 0 ? "+" : ""}${delta}</span></div>
+            <p>近 7 天 ${last7} 条，前 7 天 ${previous7} 条。 / ${last7} in last 7 days, ${previous7} in previous 7 days.</p>
           </div>
           <div class="list-row">
-            <div class="row-top"><strong>同步来源</strong><span class="badge">${state.dataMeta.endpoint || "fallback"}</span></div>
-            <p>${state.dataMeta.sources.length ? state.dataMeta.sources.join(", ") : "当前从线上 API 或本地 JSON 回退读取。"}</p>
+            <div class="row-top"><strong>同步来源 / Sync Source</strong><span class="badge">${state.dataMeta.endpoint || "fallback"}</span></div>
+            <p>${state.dataMeta.sources.length ? state.dataMeta.sources.join(", ") : "当前从线上 API 或本地 JSON 回退读取。 / Reading from live API or local JSON fallback."}</p>
           </div>
         `;
       }
@@ -1209,19 +1214,19 @@
             <button class="list-row" type="button" data-topic="${tag}">
               <div class="row-top">
                 <strong>${tag}</strong>
-                <span class="badge ${negative ? "warn" : "good"}">${count} 条</span>
+                <span class="badge ${negative ? "warn" : "good"}">${count} 条 / ${count} items</span>
               </div>
               <div class="bar"><span style="width:${Math.max(8, percent)}%"></span></div>
-              <p>${negative} 条负向，${high} 条高影响。点击下钻到列表。</p>
+              <p>${negative} 条负向，${high} 条高影响。点击下钻到列表。 / ${negative} negative, ${high} high-impact. Click to drill down.</p>
             </button>
           `;
-        }).join("") || `<div class="list-row"><p>暂无主题数据。</p></div>`;
+        }).join("") || `<div class="list-row"><p>暂无主题数据。 / No topic data yet.</p></div>`;
       }
 
       function renderChannels() {
         $("channelList").innerHTML = sourceConfig.map((source) => {
           const items = state.voices.filter((voice) => voice.source === source.id);
-          const lastDate = items.map((item) => item.date).sort().at(-1) || "暂无";
+          const lastDate = items.map((item) => item.date).sort().at(-1) || "暂无 / None";
           return `
             <button class="list-row" type="button" data-source="${source.id}">
               <div class="row-top">
@@ -1229,7 +1234,7 @@
                 <span class="badge ${source.quality >= 80 ? "good" : source.quality >= 65 ? "warn" : "risk"}">${source.quality}%</span>
               </div>
               <div class="bar"><span style="width:${source.quality}%"></span></div>
-              <p>${source.cadence}，负责人 ${source.owner}，最近同步 ${lastDate}，当前 ${items.length} 条。</p>
+              <p>${source.cadence}，负责人 ${source.owner}，最近同步 ${lastDate}，当前 ${items.length} 条。 / Owner: ${source.owner}. Latest sync: ${lastDate}. Current items: ${items.length}.</p>
             </button>
           `;
         }).join("");
@@ -1237,10 +1242,10 @@
 
       function renderFilterOptions() {
         const sourceOptions = sourceConfig.map((source) => `<option value="${source.id}">${source.name}</option>`).join("");
-        $("sourceFilter").innerHTML = `<option value="all">全部渠道</option>${sourceOptions}`;
+        $("sourceFilter").innerHTML = `<option value="all">全部渠道 / All channels</option>${sourceOptions}`;
         $("manualSource").innerHTML = sourceOptions;
         const tagOptions = getTagCounts().map(([tag]) => `<option value="${tag}">${tag}</option>`).join("");
-        $("tagFilter").innerHTML = `<option value="all">全部标签</option>${tagOptions}`;
+        $("tagFilter").innerHTML = `<option value="all">全部标签 / All tags</option>${tagOptions}`;
       }
 
       function renderSortIndicators() {
@@ -1268,11 +1273,11 @@
               <td><strong>${voice.title}</strong></td>
               <td class="quote-cell">${voice.quote}</td>
               <td><div class="tag-list">${voice.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}</div></td>
-              <td>${voice.recommendedAction || "待补充"}</td>
+              <td>${voice.recommendedAction || "待补充 / To be added"}</td>
             </tr>
           `;
-        }).join("") || `<tr><td colspan="8">没有符合筛选条件的 VOC。</td></tr>`;
-        $("tableSummary").textContent = `${filtered.length} 条 VOC，第 ${state.page} / ${totalPages} 页`;
+        }).join("") || `<tr><td colspan="8">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
+        $("tableSummary").textContent = `${filtered.length} 条 VOC / ${filtered.length} VOC items, 第 ${state.page} / ${totalPages} 页 / page ${state.page} of ${totalPages}`;
         $("prevPageBtn").disabled = state.page <= 1;
         $("nextPageBtn").disabled = state.page >= totalPages;
         renderSortIndicators();
@@ -1411,7 +1416,7 @@
           event.target.reset();
           $("createDrawer").classList.remove("open");
           renderAll();
-          showToast("VOC 已创建在当前列表中。");
+          showToast("VOC 已创建在当前列表中 / VOC created in the current list.");
         });
       }
 
@@ -1422,7 +1427,7 @@
       setRoute((window.location.hash || "#dashboard").replace("#", "") === "list" ? "list" : "dashboard");
       loadRemoteVocData({ silent: true }).catch(() => {
         renderAll();
-        showToast("线上数据暂不可用，已显示本地数据。");
+        showToast("线上数据暂不可用，已显示本地数据 / Live data unavailable, showing local data.");
       });
     </script>
   </body>
