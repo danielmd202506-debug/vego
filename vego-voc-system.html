@@ -470,6 +470,179 @@
         gap: 10px;
       }
 
+      .persona-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 10px;
+      }
+
+      .persona-card,
+      .journey-score-row {
+        display: grid;
+        gap: 10px;
+        width: 100%;
+        padding: 13px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--text);
+        text-align: left;
+      }
+
+      button.persona-card:hover,
+      button.journey-score-row:hover {
+        border-color: #b9d2ae;
+        background: #eef7ea;
+      }
+
+      .score-line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .score-line strong {
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .score-pill {
+        min-width: 62px;
+        padding: 5px 8px;
+        border: 1px solid #b9d2ae;
+        background: #eff7eb;
+        color: var(--green-dark);
+        font-size: 16px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .score-pill.warn {
+        border-color: #edc286;
+        background: #fff4df;
+        color: #6c4614;
+      }
+
+      .score-pill.risk {
+        border-color: #e1afa8;
+        background: #fff0ed;
+        color: #8b3028;
+      }
+
+      .stat-strip {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stat-strip span {
+        display: grid;
+        gap: 3px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .stat-strip b {
+        color: var(--ink);
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .sentiment-stack {
+        display: grid;
+        grid-template-columns: var(--positive, 0fr) var(--neutral, 0fr) var(--negative, 0fr);
+        height: 10px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .sentiment-stack span {
+        min-width: 2px;
+      }
+
+      .sentiment-stack .positive {
+        background: #8dbc76;
+      }
+
+      .sentiment-stack .neutral {
+        background: #b7c0b0;
+      }
+
+      .sentiment-stack .negative {
+        background: #d77367;
+      }
+
+      .sentiment-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px 10px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .journey-score-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 12px;
+        align-items: stretch;
+      }
+
+      .journey-score-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .journey-score-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+      }
+
+      .journey-score-row .row-body {
+        display: grid;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .journey-score-row p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .journey-curve {
+        min-height: 342px;
+        display: grid;
+        gap: 12px;
+        align-content: stretch;
+        padding: 12px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .journey-curve svg {
+        width: 100%;
+        min-height: 238px;
+        display: block;
+      }
+
+      .curve-labels {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 6px;
+        color: var(--muted);
+        font-size: 10px;
+        line-height: 1.25;
+        text-align: center;
+      }
+
+      .curve-caption {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
       .list-row {
         display: grid;
         gap: 8px;
@@ -735,6 +908,7 @@
         .metric-grid,
         .panel-grid,
         .panel-grid.equal,
+        .journey-score-layout,
         .workflow-grid,
         .filter-grid,
         .filter-grid.extended,
@@ -754,6 +928,7 @@
         .metric-grid,
         .panel-grid,
         .panel-grid.equal,
+        .journey-score-layout,
         .workflow-grid,
         .filter-grid,
         .filter-grid.extended,
@@ -885,6 +1060,38 @@
                     </div>
                   </div>
                   <div class="sync-list" id="syncList"></div>
+                </div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>用户画像 VOC 健康 / Persona VOC Health</h2>
+                    <p>按用户类型查看 VOC 数量、问题数、正负中性占比和综合满意度。点击画像可下钻到 VOC List。 / See VOC volume, issue count, sentiment mix, and satisfaction by user type.</p>
+                  </div>
+                  <div class="trend-legend" aria-label="Persona sentiment legend">
+                    <span class="legend-item"><span class="legend-dot positive"></span>正向 / Positive</span>
+                    <span class="legend-item"><span class="legend-dot neutral"></span>中性 / Neutral</span>
+                    <span class="legend-item"><span class="legend-dot negative"></span>负向 / Negative</span>
+                  </div>
+                </div>
+                <div class="persona-grid" id="personaGrid"></div>
+              </div>
+            </section>
+
+            <section class="section">
+              <div class="panel">
+                <div class="section-head">
+                  <div>
+                    <h2>用户旅程触点评分 / Journey Touchpoint Score</h2>
+                    <p>每个关键节点展示 VOC 数量、问题数、情绪占比和满意度，曲线用于快速定位掉分触点。 / Scores each journey touchpoint and highlights where experience drops.</p>
+                  </div>
+                </div>
+                <div class="journey-score-layout">
+                  <div class="journey-score-list" id="journeyScoreList"></div>
+                  <div class="journey-curve" id="journeyScoreCurve"></div>
                 </div>
               </div>
             </section>
@@ -1643,6 +1850,141 @@
         return [...counts.entries()].sort((a, b) => b[1] - a[1]);
       }
 
+      function getVocHealth(items) {
+        const total = items.length;
+        const positive = items.filter((voice) => voice.sentiment === "positive").length;
+        const neutral = items.filter((voice) => voice.sentiment === "neutral").length;
+        const negative = items.filter((voice) => voice.sentiment === "negative").length;
+        const issues = items.filter((voice) => voice.sentiment === "negative" || voice.impact === "high").length;
+        const highNegative = items.filter((voice) => voice.sentiment === "negative" && voice.impact === "high").length;
+        const scoreBase = total ? ((positive * 100) + (neutral * 68) + (negative * 28)) / total : 0;
+        const penalty = total ? (highNegative / total) * 10 : 0;
+        const score = Math.max(0, Math.min(100, Math.round(scoreBase - penalty)));
+        const percent = (count) => Math.round((count / Math.max(1, total)) * 100);
+        return {
+          total,
+          positive,
+          neutral,
+          negative,
+          issues,
+          score,
+          positiveRate: percent(positive),
+          neutralRate: percent(neutral),
+          negativeRate: percent(negative),
+        };
+      }
+
+      function scoreClass(score) {
+        if (score < 55) return "risk";
+        if (score < 72) return "warn";
+        return "";
+      }
+
+      function sentimentStackStyle(health) {
+        return `--positive:${Math.max(health.positive, 0.001)}fr; --neutral:${Math.max(health.neutral, 0.001)}fr; --negative:${Math.max(health.negative, 0.001)}fr;`;
+      }
+
+      function renderPersonaGrid() {
+        const ranked = userTypeOptions
+          .map((option) => {
+            const related = state.voices.filter((voice) => voice.userType === option.id);
+            return { option, related, health: getVocHealth(related) };
+          })
+          .filter((item) => item.health.total > 0)
+          .sort((a, b) => b.health.total - a.health.total || a.health.score - b.health.score)
+          .slice(0, 8);
+
+        $("personaGrid").innerHTML = ranked.map(({ option, health }) => `
+          <button class="persona-card" type="button" data-user-type="${option.id}">
+            <div class="score-line">
+              <strong>${option.label}</strong>
+              <span class="score-pill ${scoreClass(health.score)}">${health.score}</span>
+            </div>
+            <div class="stat-strip">
+              <span><b>${health.total}</b>VOC 数量 / VOC count</span>
+              <span><b>${health.issues}</b>问题数 / Issues</span>
+            </div>
+            <div class="sentiment-stack" style="${sentimentStackStyle(health)}" aria-label="Sentiment mix">
+              <span class="positive"></span>
+              <span class="neutral"></span>
+              <span class="negative"></span>
+            </div>
+            <div class="sentiment-meta">
+              <span>正向 ${health.positiveRate}%</span>
+              <span>中性 ${health.neutralRate}%</span>
+              <span>负向 ${health.negativeRate}%</span>
+              <span>满意度 ${health.score}/100</span>
+            </div>
+          </button>
+        `).join("") || `<div class="list-row"><p>暂无用户画像数据。 / No persona data yet.</p></div>`;
+      }
+
+      function journeyHealthRows() {
+        return journeyOptions
+          .filter((option) => option.id !== "unknown")
+          .map((option) => {
+            const related = state.voices.filter((voice) => voice.journeyStage === option.id);
+            return { option, related, health: getVocHealth(related) };
+          });
+      }
+
+      function renderJourneyScorePanel() {
+        const rows = journeyHealthRows();
+        $("journeyScoreList").innerHTML = rows.map(({ option, health }) => `
+          <button class="journey-score-row" type="button" data-journey-score="${option.id}">
+            <div class="row-body">
+              <div class="row-top">
+                <strong>${option.label}</strong>
+                <span class="badge ${health.issues ? "warn" : "good"}">${health.total} VOC</span>
+              </div>
+              <div class="sentiment-stack" style="${sentimentStackStyle(health)}">
+                <span class="positive"></span>
+                <span class="neutral"></span>
+                <span class="negative"></span>
+              </div>
+              <p>${health.issues} 个问题，正向 ${health.positiveRate}% / 中性 ${health.neutralRate}% / 负向 ${health.negativeRate}%</p>
+            </div>
+            <span class="score-pill ${scoreClass(health.score)}">${health.score}</span>
+          </button>
+        `).join("");
+
+        renderJourneyScoreCurve(rows);
+      }
+
+      function renderJourneyScoreCurve(rows) {
+        const width = 520;
+        const height = 238;
+        const padX = 34;
+        const padY = 24;
+        const plotW = width - padX * 2;
+        const plotH = height - padY * 2;
+        const xFor = (index) => padX + (rows.length <= 1 ? plotW / 2 : (plotW / (rows.length - 1)) * index);
+        const yFor = (score) => padY + ((100 - score) / 100) * plotH;
+        const points = rows.map(({ health }, index) => [xFor(index), yFor(health.score)]);
+        const line = points.map(([x, y]) => `${x},${y}`).join(" ");
+        const area = `${padX},${padY + plotH} ${line} ${padX + plotW},${padY + plotH}`;
+        const labels = rows.map(({ option }) => `<span>${option.label.split(" / ")[0]}</span>`).join("");
+        const lowest = rows.reduce((min, row) => row.health.score < min.health.score ? row : min, rows[0]);
+
+        $("journeyScoreCurve").innerHTML = `
+          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Journey satisfaction score curve">
+            <line x1="${padX}" y1="${yFor(80)}" x2="${padX + plotW}" y2="${yFor(80)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
+            <line x1="${padX}" y1="${yFor(60)}" x2="${padX + plotW}" y2="${yFor(60)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
+            <polygon points="${area}" fill="rgba(47, 102, 59, 0.12)"></polygon>
+            <polyline points="${line}" fill="none" stroke="#2f663b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></polyline>
+            ${points.map(([x, y], index) => {
+              const score = rows[index].health.score;
+              const fill = score < 55 ? "#b84b3f" : score < 72 ? "#ffad4f" : "#2f663b";
+              return `<g><circle cx="${x}" cy="${y}" r="7" fill="${fill}" stroke="#fff" stroke-width="2"></circle><text x="${x}" y="${Math.max(16, y - 12)}" text-anchor="middle" fill="#17351f" font-size="12" font-weight="800">${score}</text></g>`;
+            }).join("")}
+            <text x="${padX}" y="${yFor(80) - 6}" fill="#687a67" font-size="11">80</text>
+            <text x="${padX}" y="${yFor(60) - 6}" fill="#687a67" font-size="11">60</text>
+          </svg>
+          <div class="curve-labels">${labels}</div>
+          <p class="curve-caption">最低触点：${lowest ? lowest.option.label : "N/A"}，满意度 ${lowest ? lowest.health.score : 0}/100。 / Lowest touchpoint score is highlighted for prioritization.</p>
+        `;
+      }
+
       function renderJourneyList() {
         const journeyCounts = countBy(state.voices, "journeyStage").slice(0, 7);
         $("journeyList").innerHTML = journeyCounts.map(([journey, count]) => {
@@ -1774,6 +2116,8 @@
         renderWorkflowGrid();
         renderTrendChart();
         renderSyncList();
+        renderPersonaGrid();
+        renderJourneyScorePanel();
         renderTopics();
         renderChannels();
         renderJourneyList();
@@ -1874,6 +2218,14 @@
         $("channelList").addEventListener("click", (event) => {
           const row = event.target.closest("[data-source]");
           if (row) drillToList({ ...resetFilters(), source: row.dataset.source });
+        });
+        $("personaGrid").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-user-type]");
+          if (row) drillToList({ ...resetFilters(), userType: row.dataset.userType });
+        });
+        $("journeyScoreList").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-journey-score]");
+          if (row) drillToList({ ...resetFilters(), journeyStage: row.dataset.journeyScore });
         });
         $("journeyList").addEventListener("click", (event) => {
           const row = event.target.closest("[data-journey]");
