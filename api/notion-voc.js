@@ -38,6 +38,7 @@ function normalizePage(page) {
     date,
     collectedDate,
     sourcePublishedDate,
+    urDiagnosis: getPlainText(properties["UR Diagnosis"]) || getPlainText(properties["Root Cause"]) || getPlainText(properties.Diagnosis),
     sourceUrl: getPlainText(properties["Source URL"]),
     evidenceScreenshot: getPlainText(properties["Evidence Screenshot"]) || getPlainText(properties.Screenshot),
     status: getPlainText(properties.Status),

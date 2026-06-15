@@ -429,6 +429,71 @@
         text-align: center;
       }
 
+      .movement-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .movement-card {
+        min-height: 108px;
+        display: grid;
+        align-content: space-between;
+        gap: 10px;
+        padding: 13px;
+        border: 1px solid var(--line);
+        background: var(--surface-2);
+      }
+
+      .movement-card span {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .movement-card strong {
+        color: var(--ink);
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .movement-card em {
+        color: var(--green-dark);
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 900;
+      }
+
+      .movement-card em.warn {
+        color: #6c4614;
+      }
+
+      .movement-card em.risk {
+        color: #8b3028;
+      }
+
+      .mini-trend {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 4px;
+        align-items: end;
+        height: 26px;
+      }
+
+      .mini-trend i {
+        display: block;
+        min-height: 3px;
+        background: #b7c9ad;
+      }
+
+      .mini-trend i.negative {
+        background: #d77367;
+      }
+
+      .mini-trend i.high {
+        background: #ffad4f;
+      }
+
       .trend-legend {
         display: flex;
         flex-wrap: wrap;
@@ -476,8 +541,7 @@
         gap: 10px;
       }
 
-      .persona-card,
-      .journey-score-row {
+      .persona-card {
         display: grid;
         gap: 10px;
         width: 100%;
@@ -488,8 +552,7 @@
         text-align: left;
       }
 
-      button.persona-card:hover,
-      button.journey-score-row:hover {
+      button.persona-card:hover {
         border-color: #b9d2ae;
         background: #eef7ea;
       }
@@ -589,35 +652,99 @@
       }
 
       .journey-score-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.55fr);
-        gap: 12px;
-        align-items: stretch;
+        display: block;
+        overflow-x: auto;
+        padding-bottom: 4px;
       }
 
-      .journey-score-list {
+      .journey-map {
+        min-width: 1180px;
+        display: grid;
+        grid-template-columns: repeat(7, minmax(150px, 1fr));
+        gap: 0;
+        border: 1px solid var(--line);
+        background: var(--surface);
+      }
+
+      .journey-touchpoint {
+        position: relative;
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        gap: 10px;
+        min-height: 390px;
+        padding: 14px 12px;
+        border-right: 1px solid var(--line);
+        background: var(--surface-2);
+        color: var(--text);
+        text-align: left;
+      }
+
+      .journey-touchpoint:last-child {
+        border-right: 0;
+      }
+
+      button.journey-touchpoint:hover {
+        background: #eef7ea;
+      }
+
+      .journey-score-rail {
         display: grid;
         gap: 8px;
-        min-width: 0;
+        min-height: 92px;
+        align-content: start;
       }
 
-      .journey-map-header,
-      .journey-score-row {
+      .journey-score-mark {
+        position: relative;
+        height: 58px;
+        border-left: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .journey-score-dot {
+        position: absolute;
+        left: 50%;
+        top: var(--score-y, 50%);
+        width: 14px;
+        height: 14px;
+        transform: translate(-50%, -50%);
+        border: 2px solid #fff;
+        background: var(--green);
+        box-shadow: 0 0 0 1px rgba(23, 53, 31, 0.2);
+      }
+
+      .journey-score-dot.warn {
+        background: var(--orange);
+      }
+
+      .journey-score-dot.risk {
+        background: var(--red);
+      }
+
+      .journey-score-dot.empty {
+        background: #9aa39a;
+      }
+
+      .journey-stage-title {
         display: grid;
-        grid-template-columns: minmax(120px, 1fr) minmax(120px, 1fr) minmax(150px, 1.15fr) minmax(150px, 1.2fr) 74px;
-        gap: 10px;
-        align-items: stretch;
+        gap: 5px;
       }
 
-      .journey-score-row {
-        min-height: 116px;
+      .journey-stage-title strong {
+        color: var(--ink);
+        font-size: 13px;
+        line-height: 1.3;
       }
 
-      .journey-map-header {
-        padding: 0 13px;
+      .journey-stage-title span {
         color: var(--muted);
         font-size: 11px;
         font-weight: 900;
+      }
+
+      .journey-map-body {
+        display: grid;
+        gap: 10px;
       }
 
       .journey-cell {
@@ -639,8 +766,7 @@
         line-height: 1.35;
       }
 
-      .journey-cell p,
-      .journey-score-row p {
+      .journey-cell p {
         color: var(--muted);
         font-size: 12px;
         line-height: 1.4;
@@ -649,40 +775,8 @@
       .journey-score-cell {
         display: grid;
         gap: 8px;
-        justify-items: end;
+        justify-items: start;
         align-content: start;
-      }
-
-      .journey-curve {
-        min-height: 342px;
-        display: grid;
-        gap: 12px;
-        align-content: stretch;
-        padding: 12px;
-        border: 1px solid var(--line);
-        background: var(--surface-2);
-      }
-
-      .journey-curve svg {
-        width: 100%;
-        min-height: 238px;
-        display: block;
-      }
-
-      .curve-labels {
-        display: grid;
-        grid-template-columns: repeat(7, minmax(0, 1fr));
-        gap: 6px;
-        color: var(--muted);
-        font-size: 10px;
-        line-height: 1.25;
-        text-align: center;
-      }
-
-      .curve-caption {
-        color: var(--muted);
-        font-size: 12px;
-        line-height: 1.45;
       }
 
       .list-row {
@@ -833,7 +927,7 @@
 
       table {
         width: 100%;
-        min-width: 2380px;
+        min-width: 2520px;
         border-collapse: collapse;
       }
 
@@ -987,16 +1081,11 @@
         .metric-grid,
         .panel-grid,
         .panel-grid.equal,
-        .journey-score-layout,
         .workflow-grid,
         .filter-grid,
         .filter-grid.extended,
         .form-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        .journey-score-layout {
-          grid-template-columns: 1fr;
         }
       }
 
@@ -1011,7 +1100,6 @@
         .metric-grid,
         .panel-grid,
         .panel-grid.equal,
-        .journey-score-layout,
         .workflow-grid,
         .filter-grid,
         .filter-grid.extended,
@@ -1023,16 +1111,8 @@
           grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
-        .journey-map-header {
-          display: none;
-        }
-
-        .journey-score-row {
-          grid-template-columns: 1fr;
-        }
-
-        .journey-score-cell {
-          justify-items: start;
+        .journey-map {
+          min-width: 1060px;
         }
       }
 
@@ -1111,9 +1191,9 @@
                   <em>已发现但未复盘 / Not reviewed yet</em>
                 </button>
                 <button class="metric" type="button" data-drill="validating">
-                  <span>验证中 / In Validation</span>
+                  <span>验证结果 / Validation Result</span>
                   <strong id="metricValidating">0</strong>
-                  <em>UR、UT 或 AB Test 中 / UR, UT, or AB Test</em>
+                  <em>已产生验证结论 / Result captured</em>
                 </button>
               </div>
             </section>
@@ -1123,7 +1203,7 @@
                 <div class="section-head">
                   <div>
                     <h2>闭环进展 / Insight Operating Loop</h2>
-                    <p>把第 03 页流程落到系统里：从原始 VOC 到用户分层、旅程定位、设计转化、验证和复盘。 / Tracks the operating loop from raw VOC to validated learning.</p>
+                    <p>把第 03 页流程落到系统里：从原始 VOC 到用户分层、旅程定位、设计转化、验证结果和复盘。 / Tracks the operating loop from raw VOC to validated learning.</p>
                   </div>
                 </div>
                 <div class="workflow-grid" id="workflowGrid"></div>
@@ -1131,21 +1211,15 @@
             </section>
 
             <section class="section">
-              <div class="panel-grid">
+              <div class="panel-grid equal">
                 <div class="panel">
                   <div class="section-head">
                     <div>
-                      <h2>VOC 趋势 / VOC Trend</h2>
-                      <p>按 VOC 日期聚合，优先使用来源发布时间，避免把老文章当作今日新反馈。 / Aggregates by VOC date, preferring source published date over collection date.</p>
-                    </div>
-                    <div class="trend-legend" aria-label="VOC trend legend">
-                      <span class="legend-item"><span class="legend-dot positive"></span>正向 / Positive</span>
-                      <span class="legend-item"><span class="legend-dot neutral"></span>中性 / Neutral</span>
-                      <span class="legend-item"><span class="legend-dot negative"></span>负向 / Negative</span>
-                      <span class="badge" id="trendWindowLabel">最近 7 天 / Last 7 days</span>
+                      <h2>数据变化 / Data Movement</h2>
+                      <p>以 mini trend 观察近期新增、负向占比、高影响问题和同步状态。 / Compact trend signals for recent movement and data freshness.</p>
                     </div>
                   </div>
-                  <div class="trend-chart" id="trendChart"></div>
+                  <div class="movement-grid" id="movementGrid"></div>
                 </div>
                 <div class="panel">
                   <div class="section-head">
@@ -1181,12 +1255,11 @@
                 <div class="section-head">
                   <div>
                     <h2>用户旅程触点评分 / Journey Touchpoint Score</h2>
-                    <p>每个关键节点展示 VOC 数量、问题数、情绪占比和满意度，曲线用于快速定位掉分触点。 / Scores each journey touchpoint and highlights where experience drops.</p>
+                    <p>动态用户旅程图：按触点展示活动、触点、痛点、期望、VOC 数量、情绪占比和满意度评分。 / Dynamic journey map by touchpoint, powered by VOC aggregation.</p>
                   </div>
                 </div>
                 <div class="journey-score-layout">
                   <div class="journey-score-list" id="journeyScoreList"></div>
-                  <div class="journey-curve" id="journeyScoreCurve"></div>
                 </div>
               </div>
             </section>
@@ -1229,7 +1302,7 @@
                   <div class="section-head">
                     <div>
                       <h2>洞察卡片 / Insight Cards</h2>
-                      <p>把多条 VOC 聚合为可行动洞察，连接用户类型、真实阻力、设计机会和验证方式。 / Turns recurring VOC patterns into actionable insight cards.</p>
+                      <p>把多条 VOC 聚合为可行动洞察，连接用户类型、真实阻力、设计机会和验证计划。 / Turns recurring VOC patterns into actionable insight cards.</p>
                     </div>
                   </div>
                   <div class="insight-list" id="insightList"></div>
@@ -1301,7 +1374,7 @@
                     <select id="statusFilter"></select>
                   </label>
                   <label>
-                    验证方式 / Validation
+                    建议验证 / Suggested Validation
                     <select id="verificationFilter"></select>
                   </label>
                 </div>
@@ -1366,12 +1439,16 @@
                     问题类型 / Issue Type
                     <select id="manualIssueType" required></select>
                   </label>
+                  <label class="wide">
+                    UR 归因 / Root Cause
+                    <input id="manualUrDiagnosis" placeholder="例如：用户不确定土壤用量，导致 PDP 决策阻力 / Unclear soil volume blocks PDP decision" />
+                  </label>
                   <label>
                     闭环状态 / Workflow Status
                     <select id="manualWorkflowStatus" required></select>
                   </label>
                   <label>
-                    验证方式 / Validation
+                    建议验证 / Suggested Validation
                     <select id="manualVerification" required></select>
                   </label>
                   <label>
@@ -1383,7 +1460,7 @@
                     <input id="manualLinkedProject" placeholder="例如：PDP soil calculator" />
                   </label>
                   <label>
-                    复盘结果 / Review Result
+                    验证结果 / Validation Result
                     <select id="manualReviewResult" required></select>
                   </label>
                   <label>
@@ -1434,8 +1511,9 @@
                       <th><button type="button" data-sort="userType">用户类型 / User Type <span id="sortUserType"></span></button></th>
                       <th><button type="button" data-sort="journeyStage">旅程 / Journey <span id="sortJourneyStage"></span></button></th>
                       <th><button type="button" data-sort="issueType">问题类型 / Issue Type <span id="sortIssueType"></span></button></th>
+                      <th><button type="button" data-sort="urDiagnosis">UR 归因 / Root Cause <span id="sortUrDiagnosis"></span></button></th>
                       <th><button type="button" data-sort="workflowStatus">闭环状态 / Status <span id="sortWorkflowStatus"></span></button></th>
-                      <th><button type="button" data-sort="verification">验证 / Validation <span id="sortVerification"></span></button></th>
+                      <th><button type="button" data-sort="verification">建议验证 / Suggested Validation <span id="sortVerification"></span></button></th>
                       <th><button type="button" data-sort="decisionStatus">决策状态 / Decision <span id="sortDecisionStatus"></span></button></th>
                       <th>证据 / Evidence</th>
                       <th>来源可信度 / Confidence</th>
@@ -1443,7 +1521,7 @@
                       <th>标签 / Tags</th>
                       <th>AI 建议动作 / AI Suggested Action</th>
                       <th>负责人 / Owner</th>
-                      <th>复盘 / Review</th>
+                      <th>验证结果 / Result</th>
                     </tr>
                   </thead>
                   <tbody id="vocTableBody"></tbody>
@@ -1530,10 +1608,10 @@
       ];
 
       const reviewResultOptions = [
-        { id: "pending", label: "待复盘 / Pending" },
-        { id: "effective", label: "有效 / Effective" },
-        { id: "ineffective", label: "无效 / Ineffective" },
-        { id: "watching", label: "待观察 / Watching" },
+        { id: "pending", label: "未验证 / Not validated" },
+        { id: "effective", label: "验证有效 / Effective" },
+        { id: "ineffective", label: "验证无效 / Ineffective" },
+        { id: "watching", label: "观察中 / Watching" },
       ];
 
       const decisionStatusOptions = [
@@ -1546,6 +1624,50 @@
       ];
 
       const ownerOptions = ["UX", "Content", "CX", "Ecommerce Ops", "SEO", "Marketplace", "Lifecycle", "Research"];
+
+      const topicLabelMap = {
+        accessibility: "无障碍 / Accessibility",
+        "accessory-clarity": "配件清晰度 / Accessory clarity",
+        accessories: "配件 / Accessories",
+        aesthetic: "外观审美 / Aesthetic",
+        aftercare: "售后养护 / Aftercare",
+        assembly: "安装组装 / Assembly",
+        beginner: "新手友好 / Beginner",
+        bundle: "组合套餐 / Bundle",
+        checkout: "结账转化 / Checkout",
+        color: "颜色外观 / Color",
+        comparison: "竞品比较 / Comparison",
+        confidence: "购买信心 / Confidence",
+        configuration: "配置选择 / Configuration",
+        "crop-fit": "作物适配 / Crop fit",
+        delivery: "配送交付 / Delivery",
+        depth: "深度选择 / Depth",
+        durability: "耐用性 / Durability",
+        "elevated-bed": "高架花床 / Elevated bed",
+        expansion: "扩展复购 / Expansion",
+        "food-safe": "食品安全 / Food-safe",
+        hardware: "五金配件 / Hardware",
+        instructions: "说明书 / Instructions",
+        layout: "庭院布局 / Layout",
+        modular: "模块化 / Modular",
+        "missing-parts": "缺件风险 / Missing parts",
+        packaging: "包装 / Packaging",
+        patio: "露台场景 / Patio",
+        placement: "摆放位置 / Placement",
+        price: "价格 / Price",
+        quality: "质量 / Quality",
+        shipping: "物流 / Shipping",
+        "small-space": "小空间 / Small space",
+        soil: "土壤用量 / Soil",
+        sturdiness: "稳固性 / Sturdiness",
+        support: "客服支持 / Support",
+        tomato: "番茄种植 / Tomato",
+        trellis: "爬藤架 / Trellis",
+        trust: "信任证明 / Trust",
+        "trust-risk": "信任风险 / Trust risk",
+        "value-proof": "价值证明 / Value proof",
+        watering: "浇水维护 / Watering",
+      };
 
       const defaultVoices = [
         {
@@ -1574,7 +1696,7 @@
         route: "dashboard",
         voices: loadStoredVoices(),
         dataMeta: { mode: "sample", generatedAt: null, sources: [], endpoint: "" },
-        filters: { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all" },
+        filters: { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all", reviewResult: "all" },
         sort: { key: "date", direction: "desc" },
         page: 1,
         pageSize: 12,
@@ -1649,6 +1771,7 @@
         const userType = normalizeOption(voice.userType || voice.persona || voice.segment || inferUserType(joinedTags, titleQuote), userTypeOptions, "unknown");
         const journeyStage = normalizeOption(voice.journeyStage || voice.journey || inferJourney(joinedTags, titleQuote), journeyOptions, "unknown");
         const issueType = normalizeOption(voice.issueType || voice.problemType || inferIssueType(joinedTags, titleQuote), issueTypeOptions, "unknown");
+        const urDiagnosis = voice.urDiagnosis || voice.ur_diagnosis || voice.rootCause || voice.root_cause || voice.diagnosis || "";
         const workflowStatus = normalizeOption(voice.workflowStatus || voice.status, statusOptions, "new");
         const verification = normalizeOption(voice.verification || voice.validation || inferVerification(issueType, impact), verificationOptions, "triage");
         const reviewResult = normalizeOption(voice.reviewResult || voice.result, reviewResultOptions, "pending");
@@ -1675,6 +1798,7 @@
           userType,
           journeyStage,
           issueType,
+          urDiagnosis,
           verification,
           owner: voice.owner || inferOwner(source, issueType),
           linkedProject: voice.linkedProject || voice.project || inferProject(issueType, joinedTags),
@@ -1698,6 +1822,10 @@
 
       function labelById(options, id) {
         return (options.find((option) => option.id === id) || options.find((option) => option.id === "unknown") || { label: id }).label;
+      }
+
+      function topicLabel(tag) {
+        return topicLabelMap[tag] || `${tag} / ${titleCase(tag.replaceAll("-", " "))}`;
       }
 
       function evidenceConfidence(voice) {
@@ -1905,7 +2033,7 @@
         const term = state.filters.search.trim().toLowerCase();
         return state.voices.filter((voice) => {
           const source = sourceById(voice.source);
-          const text = `${voice.date} ${voice.sourcePublishedDate} ${voice.collectedDate} ${freshnessLabel(getFreshnessLevel(voice))} ${voice.title} ${voice.quote} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction} ${voice.userType} ${voice.journeyStage} ${voice.issueType} ${voice.workflowStatus} ${voice.verification} ${voice.owner} ${voice.linkedProject}`.toLowerCase();
+          const text = `${voice.date} ${voice.sourcePublishedDate} ${voice.collectedDate} ${freshnessLabel(getFreshnessLevel(voice))} ${voice.title} ${voice.quote} ${voice.urDiagnosis} ${voice.tags.join(" ")} ${source.name} ${voice.recommendedAction} ${voice.userType} ${voice.journeyStage} ${voice.issueType} ${voice.workflowStatus} ${voice.verification} ${voice.reviewResult} ${labelById(reviewResultOptions, voice.reviewResult)} ${voice.owner} ${voice.linkedProject}`.toLowerCase();
           return (!term || text.includes(term))
             && (state.filters.source === "all" || voice.source === state.filters.source)
             && (state.filters.sentiment === "all" || voice.sentiment === state.filters.sentiment)
@@ -1915,7 +2043,8 @@
             && (state.filters.journeyStage === "all" || voice.journeyStage === state.filters.journeyStage)
             && (state.filters.issueType === "all" || voice.issueType === state.filters.issueType)
             && (state.filters.workflowStatus === "all" || voice.workflowStatus === state.filters.workflowStatus)
-            && (state.filters.verification === "all" || voice.verification === state.filters.verification);
+            && (state.filters.verification === "all" || voice.verification === state.filters.verification)
+            && (state.filters.reviewResult === "all" || (state.filters.reviewResult === "not-pending" ? voice.reviewResult !== "pending" : voice.reviewResult === state.filters.reviewResult));
         });
       }
 
@@ -1949,7 +2078,7 @@
         const negative = state.voices.filter((voice) => voice.sentiment === "negative").length;
         const high = state.voices.filter((voice) => voice.impact === "high").length;
         const openLoop = state.voices.filter((voice) => !["reviewed", "launched"].includes(voice.workflowStatus)).length;
-        const validating = state.voices.filter((voice) => ["ut", "ab-test"].includes(voice.workflowStatus) || ["ur", "ut", "ab-test"].includes(voice.verification)).length;
+        const validated = state.voices.filter((voice) => voice.reviewResult !== "pending").length;
         const { last7, previous7, delta } = getDateRangeCounts();
         const negativeRate = Math.round((negative / Math.max(1, total)) * 100);
 
@@ -1961,7 +2090,7 @@
         $("metricNew").textContent = last7;
         $("metricNewChange").textContent = `${delta >= 0 ? "+" : ""}${delta} vs 前 7 天 / previous 7 days`;
         $("metricOpenLoop").textContent = openLoop;
-        $("metricValidating").textContent = validating;
+        $("metricValidating").textContent = validated;
         $("navDashboardCount").textContent = total;
         $("navListCount").textContent = total;
       }
@@ -1970,11 +2099,11 @@
         const steps = [
           ["VOC", "all", (voice) => Boolean(voice.quote), "原始声音 / Raw voice"],
           ["用户分层", "userType", (voice) => voice.userType !== "unknown", "已识别用户类型 / Segmented"],
-          ["UR 归因", "diagnosed", (voice) => ["diagnosed", "design-ready", "ut", "ab-test", "launched", "reviewed"].includes(voice.workflowStatus), "已解释真实阻力 / Diagnosed"],
+          ["UR 归因", "diagnosed", (voice) => Boolean(voice.urDiagnosis), "已解释真实阻力 / Diagnosed"],
           ["Journey", "journeyStage", (voice) => voice.journeyStage !== "unknown", "已定位旅程阶段 / Journey mapped"],
           ["设计转化", "design-ready", (voice) => ["design-ready", "ut", "ab-test", "launched", "reviewed"].includes(voice.workflowStatus), "进入方案或项目 / Design backlog"],
-          ["验证", "validating", (voice) => ["ut", "ab-test"].includes(voice.workflowStatus) || ["ur", "ut", "ab-test"].includes(voice.verification), "UR、UT、AB Test / Validating"],
-          ["复盘沉淀", "reviewed", (voice) => voice.workflowStatus === "reviewed" || voice.reviewResult !== "pending", "已沉淀结果 / Learned"],
+          ["验证结果", "validated", (voice) => voice.reviewResult !== "pending", "已产生验证结论 / Result captured"],
+          ["复盘沉淀", "reviewed", (voice) => voice.workflowStatus === "reviewed", "已沉淀结果 / Learned"],
         ];
         $("workflowGrid").innerHTML = steps.map(([label, drill, predicate, caption]) => {
           const count = state.voices.filter(predicate).length;
@@ -1989,26 +2118,52 @@
         }).join("");
       }
 
-      function renderTrendChart() {
+      function renderDataMovement() {
         const days = Array.from({ length: 7 }, (_, index) => daysAgo(6 - index));
-        const max = Math.max(1, ...days.map((day) => state.voices.filter((voice) => voice.date === day).length));
-        $("trendChart").innerHTML = days.map((day) => {
-          const voices = state.voices.filter((voice) => voice.date === day);
-          const positive = voices.filter((voice) => voice.sentiment === "positive").length;
-          const neutral = voices.filter((voice) => voice.sentiment === "neutral").length;
-          const negative = voices.filter((voice) => voice.sentiment === "negative").length;
-          const height = (count) => `${Math.max(count ? 8 : 0, Math.round((count / max) * 122))}px`;
-          return `
-            <div class="trend-day" title="${day}: ${voices.length} 条 / ${voices.length} items">
-              <div class="trend-bars">
-                <span class="positive" style="height:${height(positive)}"></span>
-                <span class="neutral" style="height:${height(neutral)}"></span>
-                <span class="negative" style="height:${height(negative)}"></span>
-              </div>
-              <small>${formatDate(day)}</small>
-            </div>
-          `;
-        }).join("");
+        const previousDays = Array.from({ length: 7 }, (_, index) => daysAgo(13 - index));
+        const countFor = (range, predicate = () => true) => range.reduce((sum, day) => sum + state.voices.filter((voice) => voice.date === day && predicate(voice)).length, 0);
+        const dailyCounts = days.map((day) => state.voices.filter((voice) => voice.date === day).length);
+        const dailyNegative = days.map((day) => state.voices.filter((voice) => voice.date === day && voice.sentiment === "negative").length);
+        const dailyHigh = days.map((day) => state.voices.filter((voice) => voice.date === day && voice.impact === "high").length);
+        const last7 = countFor(days);
+        const previous7 = countFor(previousDays);
+        const last7Negative = countFor(days, (voice) => voice.sentiment === "negative");
+        const previous7Negative = countFor(previousDays, (voice) => voice.sentiment === "negative");
+        const last7High = countFor(days, (voice) => voice.impact === "high");
+        const previous7High = countFor(previousDays, (voice) => voice.impact === "high");
+        const negativeRate = Math.round((last7Negative / Math.max(1, last7)) * 100);
+        const previousNegativeRate = Math.round((previous7Negative / Math.max(1, previous7)) * 100);
+        const generated = state.dataMeta.generatedAt ? new Date(state.dataMeta.generatedAt).toLocaleString("zh-CN") : "尚未同步 / Not synced";
+        const deltaText = (current, previous, suffix = "") => `${current - previous >= 0 ? "+" : ""}${current - previous}${suffix} vs 前 7 天 / previous 7 days`;
+        const spark = (values, className = "") => {
+          const max = Math.max(1, ...values);
+          return `<div class="mini-trend">${values.map((value) => `<i class="${className}" style="height:${Math.max(value ? 4 : 3, Math.round((value / max) * 26))}px"></i>`).join("")}</div>`;
+        };
+        $("movementGrid").innerHTML = `
+          <button class="movement-card" type="button" data-drill-movement="new">
+            <span>近 7 天新增 VOC / New VOC in 7 days</span>
+            <strong>${last7}</strong>
+            ${spark(dailyCounts)}
+            <em class="${last7 - previous7 < 0 ? "warn" : ""}">${deltaText(last7, previous7)}</em>
+          </button>
+          <button class="movement-card" type="button" data-drill-movement="negative">
+            <span>负面占比变化 / Negative rate change</span>
+            <strong>${negativeRate}%</strong>
+            ${spark(dailyNegative, "negative")}
+            <em class="${negativeRate - previousNegativeRate > 0 ? "risk" : ""}">${deltaText(negativeRate, previousNegativeRate, "%")}</em>
+          </button>
+          <button class="movement-card" type="button" data-drill-movement="high">
+            <span>高影响问题变化 / High-impact change</span>
+            <strong>${last7High}</strong>
+            ${spark(dailyHigh, "high")}
+            <em class="${last7High - previous7High > 0 ? "risk" : ""}">${deltaText(last7High, previous7High)}</em>
+          </button>
+          <div class="movement-card">
+            <span>最近一次同步 / Latest sync</span>
+            <strong>${state.dataMeta.mode === "notion-api" ? "Notion" : state.dataMeta.mode}</strong>
+            <em>${generated}</em>
+          </div>
+        `;
       }
 
       function renderSyncList() {
@@ -2046,7 +2201,7 @@
           return `
             <button class="list-row" type="button" data-topic="${tag}">
               <div class="row-top">
-                <strong>${tag}</strong>
+                <strong>${topicLabel(tag)}</strong>
                 <span class="badge ${negative ? "warn" : "good"}">${count} 条 / ${count} items</span>
               </div>
               <div class="bar"><span style="width:${Math.max(8, percent)}%"></span></div>
@@ -2195,90 +2350,63 @@
       function renderJourneyScorePanel() {
         const rows = journeyHealthRows();
         $("journeyScoreList").innerHTML = `
-          <div class="journey-map-header" aria-hidden="true">
-            <span>活动 / Activity</span>
-            <span>触点 / Touchpoint</span>
-            <span>痛点 / Pain Point</span>
-            <span>期望 / Expectation</span>
-            <span>评分 / Score</span>
-          </div>
-          ${rows.map(({ option, related, health }) => {
+          <div class="journey-map" role="list" aria-label="Dynamic user journey map">
+          ${rows.map(({ option, related, health }, index) => {
             const template = journeyMapTemplates[option.id] || {
               activity: option.label,
               touchpoint: "待补充 / To be mapped",
               expectation: "待补充 / To be defined",
             };
+            const score = health.score;
+            const scoreY = score === null ? 50 : Math.max(8, Math.min(92, 100 - score));
+            const dotClass = scoreClass(score);
             return `
-          <button class="journey-score-row" type="button" data-journey-score="${option.id}">
-            <div class="journey-cell">
-              <span class="cell-label">活动 / Activity</span>
-              <strong>${template.activity}</strong>
-              <p>${health.total} 条 VOC / ${health.total} VOC</p>
-            </div>
-            <div class="journey-cell">
-              <span class="cell-label">触点 / Touchpoint</span>
-              <p>${template.touchpoint}</p>
-            </div>
-            <div class="journey-cell">
-              <span class="cell-label">痛点 / Pain Point</span>
-              <p>${getJourneyPain(related, health)}</p>
-            </div>
-            <div class="journey-cell">
-              <span class="cell-label">期望 / Expectation</span>
-              <p>${template.expectation}</p>
-              <div class="sentiment-stack" style="${sentimentStackStyle(health)}">
-                <span class="positive"></span>
-                <span class="neutral"></span>
-                <span class="negative"></span>
+          <button class="journey-touchpoint" type="button" data-journey-score="${option.id}" role="listitem">
+            <div class="journey-score-rail">
+              <div class="journey-stage-title">
+                <span>触点 ${index + 1} / Touchpoint ${index + 1}</span>
+                <strong>${option.label}</strong>
+              </div>
+              <div class="journey-score-mark" aria-label="Satisfaction score">
+                <span class="journey-score-dot ${dotClass}" style="--score-y:${scoreY}%"></span>
+              </div>
+              <div class="score-line">
+                <span class="score-pill ${dotClass}">${formatScore(score)}</span>
+                <p>${health.total} VOC<br>${health.issues} 问题 / Issues</p>
               </div>
             </div>
-            <div class="journey-score-cell">
-              <span class="score-pill ${scoreClass(health.score)}">${formatScore(health.score)}</span>
-              <p>正 ${health.positiveRate}%<br>中 ${health.neutralRate}%<br>负 ${health.negativeRate}%</p>
+            <div class="sentiment-stack" style="${sentimentStackStyle(health)}" aria-label="Sentiment mix">
+              <span class="positive"></span>
+              <span class="neutral"></span>
+              <span class="negative"></span>
+            </div>
+            <div class="journey-map-body">
+              <div class="journey-cell">
+                <span class="cell-label">活动 / Activity</span>
+                <p>${template.activity}</p>
+              </div>
+              <div class="journey-cell">
+                <span class="cell-label">触点 / Touchpoint</span>
+                <p>${template.touchpoint}</p>
+              </div>
+              <div class="journey-cell">
+                <span class="cell-label">痛点 / Pain Point</span>
+                <p>${getJourneyPain(related, health)}</p>
+              </div>
+              <div class="journey-cell">
+                <span class="cell-label">期望 / Expectation</span>
+                <p>${template.expectation}</p>
+              </div>
+              <div class="sentiment-meta">
+                <span>正向 ${health.positiveRate}%</span>
+                <span>中性 ${health.neutralRate}%</span>
+                <span>负向 ${health.negativeRate}%</span>
+              </div>
             </div>
           </button>
             `;
           }).join("")}
-        `;
-
-        renderJourneyScoreCurve(rows);
-      }
-
-      function renderJourneyScoreCurve(rows) {
-        const width = 520;
-        const height = 238;
-        const padX = 34;
-        const padY = 24;
-        const plotW = width - padX * 2;
-        const plotH = height - padY * 2;
-        const xFor = (index) => padX + (rows.length <= 1 ? plotW / 2 : (plotW / (rows.length - 1)) * index);
-        const yFor = (score) => padY + ((100 - score) / 100) * plotH;
-        const validPoints = rows
-          .map((row, index) => row.health.score === null ? null : { row, index, x: xFor(index), y: yFor(row.health.score) })
-          .filter(Boolean);
-        const line = validPoints.map((point) => `${point.x},${point.y}`).join(" ");
-        const area = validPoints.length
-          ? `${validPoints[0].x},${padY + plotH} ${line} ${validPoints.at(-1).x},${padY + plotH}`
-          : "";
-        const labels = rows.map(({ option }) => `<span>${option.label.split(" / ")[0]}</span>`).join("");
-        const lowest = validPoints.reduce((min, point) => !min || point.row.health.score < min.row.health.score ? point : min, null)?.row;
-
-        $("journeyScoreCurve").innerHTML = `
-          <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Journey satisfaction score curve">
-            <line x1="${padX}" y1="${yFor(80)}" x2="${padX + plotW}" y2="${yFor(80)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
-            <line x1="${padX}" y1="${yFor(60)}" x2="${padX + plotW}" y2="${yFor(60)}" stroke="#d9dec3" stroke-width="1" stroke-dasharray="5 5"></line>
-            ${area ? `<polygon points="${area}" fill="rgba(47, 102, 59, 0.12)"></polygon>` : ""}
-            ${line ? `<polyline points="${line}" fill="none" stroke="#2f663b" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"></polyline>` : ""}
-            ${validPoints.map(({ x, y, row }) => {
-              const score = row.health.score;
-              const fill = score < 55 ? "#b84b3f" : score < 72 ? "#ffad4f" : "#2f663b";
-              return `<g><circle cx="${x}" cy="${y}" r="7" fill="${fill}" stroke="#fff" stroke-width="2"></circle><text x="${x}" y="${Math.max(16, y - 12)}" text-anchor="middle" fill="#17351f" font-size="12" font-weight="800">${score}</text></g>`;
-            }).join("")}
-            <text x="${padX}" y="${yFor(80) - 6}" fill="#687a67" font-size="11">80</text>
-            <text x="${padX}" y="${yFor(60) - 6}" fill="#687a67" font-size="11">60</text>
-          </svg>
-          <div class="curve-labels">${labels}</div>
-          <p class="curve-caption">最低触点：${lowest ? lowest.option.label : "N/A"}，满意度 ${lowest ? `${lowest.health.score}/100` : "N/A"}。 / Touchpoints with no VOC show N/A and are not connected in the curve.</p>
+          </div>
         `;
       }
 
@@ -2309,7 +2437,7 @@
           const topJourney = countBy(related, "journeyStage")[0]?.[0] || "unknown";
           const topUserType = countBy(related, "userType")[0]?.[0] || "unknown";
           const highest = related.some((voice) => voice.priority === "P0") ? "P0" : related.some((voice) => voice.priority === "P1") ? "P1" : "P2";
-          const sample = related.find((voice) => voice.recommendedAction)?.recommendedAction || "进入洞察卡片后补充设计机会和验证方式 / Add design opportunity and validation method.";
+          const sample = related.find((voice) => voice.recommendedAction)?.recommendedAction || "进入洞察卡片后补充设计机会和验证计划 / Add design opportunity and validation plan.";
           return `
             <button class="list-row" type="button" data-issue-type="${issueType}">
               <div class="row-top">
@@ -2344,13 +2472,13 @@
         const sourceOptions = sourceConfig.map((source) => `<option value="${source.id}">${source.name}</option>`).join("");
         $("sourceFilter").innerHTML = `<option value="all">全部渠道 / All channels</option>${sourceOptions}`;
         $("manualSource").innerHTML = sourceOptions;
-        const tagOptions = getTagCounts().map(([tag]) => `<option value="${tag}">${tag}</option>`).join("");
+        const tagOptions = getTagCounts().map(([tag]) => `<option value="${tag}">${topicLabel(tag)}</option>`).join("");
         $("tagFilter").innerHTML = `<option value="all">全部标签 / All tags</option>${tagOptions}`;
         fillSelect("userTypeFilter", userTypeOptions, "全部用户类型 / All user types");
         fillSelect("journeyFilter", journeyOptions, "全部旅程阶段 / All journey stages");
         fillSelect("issueTypeFilter", issueTypeOptions, "全部问题类型 / All issue types");
         fillSelect("statusFilter", statusOptions, "全部闭环状态 / All statuses");
-        fillSelect("verificationFilter", verificationOptions, "全部验证方式 / All validation");
+        fillSelect("verificationFilter", verificationOptions, "全部建议验证 / All suggested validation");
         fillSelect("manualUserType", userTypeOptions);
         fillSelect("manualJourneyStage", journeyOptions);
         fillSelect("manualIssueType", issueTypeOptions);
@@ -2366,7 +2494,7 @@
       }
 
       function renderSortIndicators() {
-        ["Date", "SourcePublishedDate", "CollectedDate", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "WorkflowStatus", "Verification", "DecisionStatus"].forEach((name) => {
+        ["Date", "SourcePublishedDate", "CollectedDate", "Source", "Sentiment", "Impact", "Priority", "Title", "UserType", "JourneyStage", "IssueType", "UrDiagnosis", "WorkflowStatus", "Verification", "DecisionStatus"].forEach((name) => {
           $(`sort${name}`).textContent = "";
         });
         const id = `sort${state.sort.key.charAt(0).toUpperCase()}${state.sort.key.slice(1)}`;
@@ -2396,6 +2524,7 @@
               <td>${labelById(userTypeOptions, voice.userType)}</td>
               <td>${labelById(journeyOptions, voice.journeyStage)}</td>
               <td>${labelById(issueTypeOptions, voice.issueType)}</td>
+              <td class="action-cell">${voice.urDiagnosis || "待归因 / To diagnose"}</td>
               <td><span class="badge">${labelById(statusOptions, voice.workflowStatus)}</span></td>
               <td>${labelById(verificationOptions, voice.verification)}</td>
               <td>
@@ -2412,7 +2541,7 @@
               <td>${labelById(reviewResultOptions, voice.reviewResult)}${voice.insightLink ? `<br><a href="${voice.insightLink}" target="_blank" rel="noreferrer">Insight</a>` : ""}</td>
             </tr>
           `;
-        }).join("") || `<tr><td colspan="22">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
+        }).join("") || `<tr><td colspan="23">没有符合筛选条件的 VOC。 / No VOC items match the current filters.</td></tr>`;
         $("tableSummary").textContent = `${filtered.length} 条 VOC / ${filtered.length} VOC items, 第 ${state.page} / ${totalPages} 页 / page ${state.page} of ${totalPages}`;
         $("prevPageBtn").disabled = state.page <= 1;
         $("nextPageBtn").disabled = state.page >= totalPages;
@@ -2423,7 +2552,7 @@
         renderFilterOptions();
         renderMetrics();
         renderWorkflowGrid();
-        renderTrendChart();
+        renderDataMovement();
         renderSyncList();
         renderPersonaGrid();
         renderJourneyScorePanel();
@@ -2435,7 +2564,7 @@
       }
 
       function resetFilters() {
-        return { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all" };
+        return { search: "", source: "all", sentiment: "all", impact: "all", tag: "all", userType: "all", journeyStage: "all", issueType: "all", workflowStatus: "all", verification: "all", reviewResult: "all" };
       }
 
       function drillToList(filterPatch) {
@@ -2471,7 +2600,7 @@
 
       function exportCsv() {
         const rows = [
-          ["date", "source_published_date", "collected_date", "freshness", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "workflow_status", "verification", "decision_status", "source_url", "evidence_screenshot", "source_confidence", "owner", "linked_project", "review_result", "tags", "title", "quote", "ai_suggested_action", "insight_link"],
+          ["date", "source_published_date", "collected_date", "freshness", "source", "sentiment", "impact", "priority", "user_type", "journey_stage", "issue_type", "ur_diagnosis", "workflow_status", "suggested_validation", "decision_status", "source_url", "evidence_screenshot", "source_confidence", "owner", "linked_project", "validation_result", "tags", "title", "quote", "ai_suggested_action", "insight_link"],
           ...sortedVoices(filteredVoices()).map((voice) => [
             voice.date,
             voice.sourcePublishedDate,
@@ -2484,6 +2613,7 @@
             voice.userType,
             voice.journeyStage,
             voice.issueType,
+            voice.urDiagnosis,
             voice.workflowStatus,
             voice.verification,
             voice.decisionStatus,
@@ -2521,7 +2651,7 @@
             if (drill === "high") drillToList({ ...resetFilters(), impact: "high" });
             if (drill === "new") drillToList({ ...resetFilters(), search: daysAgo(0) });
             if (drill === "open-loop") drillToList({ ...resetFilters(), workflowStatus: "new" });
-            if (drill === "validating") drillToList({ ...resetFilters(), verification: "ut" });
+            if (drill === "validating") drillToList({ ...resetFilters(), reviewResult: "not-pending" });
             if (drill === "all") drillToList(resetFilters());
           });
         });
@@ -2534,8 +2664,16 @@
           if (drill === "journeyStage") drillToList({ ...resetFilters(), journeyStage: "unknown" });
           if (drill === "diagnosed") drillToList({ ...resetFilters(), workflowStatus: "diagnosed" });
           if (drill === "design-ready") drillToList({ ...resetFilters(), workflowStatus: "design-ready" });
-          if (drill === "validating") drillToList({ ...resetFilters(), verification: "ut" });
+          if (drill === "validated") drillToList({ ...resetFilters(), reviewResult: "not-pending" });
           if (drill === "reviewed") drillToList({ ...resetFilters(), workflowStatus: "reviewed" });
+        });
+        $("movementGrid").addEventListener("click", (event) => {
+          const row = event.target.closest("[data-drill-movement]");
+          if (!row) return;
+          const drill = row.dataset.drillMovement;
+          if (drill === "new") drillToList({ ...resetFilters(), search: daysAgo(0) });
+          if (drill === "negative") drillToList({ ...resetFilters(), sentiment: "negative" });
+          if (drill === "high") drillToList({ ...resetFilters(), impact: "high" });
         });
         $("topicList").addEventListener("click", (event) => {
           const row = event.target.closest("[data-topic]");
@@ -2624,6 +2762,7 @@
             userType: $("manualUserType").value,
             journeyStage: $("manualJourneyStage").value,
             issueType: $("manualIssueType").value,
+            urDiagnosis: $("manualUrDiagnosis").value.trim(),
             workflowStatus: $("manualWorkflowStatus").value,
             verification: $("manualVerification").value,
             owner: $("manualOwner").value.trim(),

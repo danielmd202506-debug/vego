@@ -112,6 +112,7 @@ function normalizeRecord(record, fallbackSource) {
   const evidenceScreenshot = pick(normalized, ["evidence_screenshot", "evidenceScreenshot", "screenshot", "screenshot_url", "screenshotUrl"]);
   const recommendedAction = pick(normalized, ["recommended_action", "recommendedAction", "action", "next_step"]);
   const evidenceType = pick(normalized, ["evidence_type", "evidenceType"], sourceUrl ? "public-source-synthesis" : "manual-note");
+  const urDiagnosis = pick(normalized, ["ur_diagnosis", "urDiagnosis", "root_cause", "rootCause", "diagnosis"]);
   const tags = normalizeTags(normalized.tags || normalized.tag || normalized.topic || normalized.topics);
 
   if (!quote) return null;
@@ -130,6 +131,7 @@ function normalizeRecord(record, fallbackSource) {
     evidenceScreenshot,
     recommendedAction,
     evidenceType,
+    urDiagnosis,
   };
 }
 
