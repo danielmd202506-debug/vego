@@ -1,0 +1,948 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VEGO PDP DS Demo</title>
+    <style>
+      :root {
+        --vego-color-brand-forest: #3A5B39;
+        --vego-color-brand-cream: #FEF9EB;
+        --vego-color-brand-mist: #FDF2D3;
+        --vego-color-commerce-cta: #FFDD81;
+        --vego-color-commerce-price-current: #1C1D1D;
+        --vego-color-commerce-price-sale: #CC6228;
+        --vego-color-commerce-price-original: #88937C;
+        --vego-color-promo-sale: #CC6228;
+        --vego-color-status-new: #3A5B39;
+        --vego-color-status-bestseller: #BFCD89;
+        --vego-color-surface-page: #FEF9EB;
+        --vego-color-surface-card: #ffffff;
+        --vego-color-border-default: #E8E8E1;
+        --vego-color-border-selected: #3A5B39;
+        --vego-radius-control: 4px;
+        --vego-radius-card: 6px;
+        --vego-radius-pill: 999px;
+        --vego-shadow-card: 0 1px 2px rgba(23, 53, 31, 0.08);
+        --vego-shadow-overlay: 0 12px 32px rgba(23, 53, 31, 0.16);
+        --vego-space-xs: 4px;
+        --vego-space-sm: 8px;
+        --vego-space-md: 16px;
+        --vego-space-lg: 24px;
+        --vego-space-xl: 40px;
+        --vego-font-display: Moret, Georgia, "Times New Roman", serif;
+        --vego-font-ui: Manrope, Arial, Helvetica, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--vego-color-surface-page);
+        color: #3A5B39;
+        font-family: var(--vego-font-ui);
+      }
+
+      img,
+      svg {
+        display: block;
+        max-width: 100%;
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .announcement {
+        display: flex;
+        justify-content: center;
+        padding: 9px 16px;
+        background: var(--vego-color-brand-forest);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+        min-height: 72px;
+        padding: 0 clamp(18px, 4vw, 56px);
+        background: rgba(251, 244, 223, 0.94);
+        border-bottom: 1px solid var(--vego-color-border-default);
+        backdrop-filter: blur(14px);
+      }
+
+      .logo {
+        width: 118px;
+        height: auto;
+      }
+
+      .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: clamp(16px, 3vw, 34px);
+        color: var(--vego-color-brand-forest);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .header-actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        color: var(--vego-color-brand-forest);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .icon-button {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-control);
+        background: var(--vego-color-surface-card);
+        color: var(--vego-color-brand-forest);
+      }
+
+      .pdp {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
+        gap: clamp(32px, 5vw, 72px);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: clamp(24px, 4vw, 56px);
+      }
+
+      .media-column {
+        display: grid;
+        gap: 16px;
+        align-content: start;
+      }
+
+      .media-main {
+        position: relative;
+        min-height: 590px;
+        overflow: hidden;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-card);
+        background:
+          radial-gradient(circle at 70% 18%, rgba(255, 215, 106, 0.26), transparent 28%),
+          linear-gradient(160deg, #f8edcf 0%, #edf4e9 100%);
+        box-shadow: var(--vego-shadow-card);
+      }
+
+      .media-main::before {
+        content: "";
+        position: absolute;
+        inset: 18px;
+        border: 1px solid rgba(23, 53, 31, 0.08);
+        border-radius: var(--vego-radius-card);
+      }
+
+      .badge-stack {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        z-index: 2;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .vego-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 6px 10px;
+        border-radius: var(--vego-radius-pill);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .vego-badge[data-tone="sale"] {
+        background: var(--vego-color-promo-sale);
+      }
+
+      .vego-badge[data-tone="discount"] {
+        background: var(--vego-color-promo-sale);
+      }
+
+      .vego-badge[data-tone="new"] {
+        background: var(--vego-color-status-new);
+      }
+
+      .vego-badge[data-tone="bestseller"] {
+        background: var(--vego-color-status-bestseller);
+        color: var(--vego-color-brand-forest);
+      }
+
+      .vego-badge[data-tone="guidance"] {
+        background: #86a971;
+        color: var(--vego-color-brand-forest);
+      }
+
+      .product-visual {
+        position: absolute;
+        left: 50%;
+        top: 52%;
+        width: min(84%, 650px);
+        transform: translate(-50%, -50%);
+      }
+
+      .bike-shadow {
+        position: absolute;
+        left: 17%;
+        right: 17%;
+        bottom: 72px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(23, 53, 31, 0.12);
+        filter: blur(12px);
+      }
+
+      .media-caption {
+        position: absolute;
+        right: 22px;
+        bottom: 22px;
+        width: min(280px, calc(100% - 44px));
+        padding: 14px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-card);
+        background: rgba(255, 255, 255, 0.86);
+        color: #3A5B39;
+        font-size: 13px;
+        line-height: 1.45;
+        box-shadow: var(--vego-shadow-card);
+      }
+
+      .thumb-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .thumb {
+        position: relative;
+        display: grid;
+        min-height: 112px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-card);
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .thumb[aria-current="true"] {
+        border-color: var(--vego-color-border-selected);
+        box-shadow: inset 0 0 0 1px var(--vego-color-border-selected);
+      }
+
+      .thumb span {
+        align-self: end;
+        padding: 10px;
+        color: #3A5B39;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .thumb::before {
+        content: "";
+        position: absolute;
+        inset: 14px 18px 42px;
+        border-radius: var(--vego-radius-card);
+        background: linear-gradient(135deg, #f5ead1, #eef5e8);
+      }
+
+      .info-column {
+        align-self: start;
+        position: sticky;
+        top: 112px;
+        display: grid;
+        gap: 22px;
+      }
+
+      .product-kicker {
+        color: var(--vego-color-commerce-price-sale);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--vego-color-brand-forest);
+        font-family: var(--vego-font-display);
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 400;
+        line-height: 1.02;
+        letter-spacing: 0;
+      }
+
+      .review-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--vego-color-brand-forest);
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .review-stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 1px;
+        color: #f0a63b;
+      }
+
+      .review-stars svg {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 15px;
+        fill: currentColor;
+        stroke: currentColor;
+      }
+
+      .review-average {
+        font-weight: 700;
+      }
+
+      .review-count {
+        color: var(--vego-color-brand-forest);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .lede {
+        max-width: 61ch;
+        margin: 0;
+        color: #526955;
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .price-current {
+        color: var(--vego-color-commerce-price-sale);
+        font-size: 28px;
+        font-weight: 900;
+      }
+
+      .price-original {
+        color: var(--vego-color-commerce-price-original);
+        font-size: 16px;
+        text-decoration: line-through;
+      }
+
+      .price-note {
+        width: 100%;
+        color: #526955;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .selector-group,
+      .guidance-card,
+      .purchase-card,
+      .accordion,
+      .trust-strip {
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-card);
+        background: var(--vego-color-surface-card);
+        box-shadow: var(--vego-shadow-card);
+      }
+
+      .selector-group {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+      }
+
+      .group-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        color: var(--vego-color-brand-forest);
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      .group-head a {
+        color: #526955;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .option-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .option {
+        min-height: 58px;
+        padding: 10px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-control);
+        background: var(--vego-color-surface-card);
+        color: var(--vego-color-brand-forest);
+        font-size: 13px;
+        font-weight: 900;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .option small {
+        display: block;
+        margin-top: 4px;
+        color: #6a7a68;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .option[aria-pressed="true"] {
+        border-color: var(--vego-color-border-selected);
+        box-shadow: inset 0 0 0 1px var(--vego-color-border-selected);
+      }
+
+      .swatches {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .swatch {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 8px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-control);
+        background: #fff;
+        color: var(--vego-color-brand-forest);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .swatch i {
+        width: 20px;
+        height: 20px;
+        border: 1px solid rgba(23, 53, 31, 0.22);
+        border-radius: 50%;
+      }
+
+      .swatch[aria-pressed="true"] {
+        border-color: var(--vego-color-border-selected);
+        box-shadow: inset 0 0 0 1px var(--vego-color-border-selected);
+      }
+
+      .purchase-card {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+      }
+
+      .purchase-row {
+        display: grid;
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .js-qty__wrapper {
+        display: grid;
+        grid-template-columns: 44px minmax(0, 64px) 44px;
+        height: 50px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-control);
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .js-qty__adjust,
+      .js-qty__num {
+        border: 0;
+        background: #fff;
+        color: var(--vego-color-brand-forest);
+        text-align: center;
+        font-weight: 900;
+      }
+
+      .js-qty__adjust {
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .js-qty__adjust svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .js-qty__num {
+        width: 100%;
+        border-inline: 1px solid var(--vego-color-border-default);
+      }
+
+      .vego-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 50px;
+        padding: 0 22px;
+        border: 1px solid transparent;
+        border-radius: var(--vego-radius-control);
+        color: var(--vego-color-brand-forest);
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .vego-button--primary {
+        background: var(--vego-color-commerce-cta);
+      }
+
+      .vego-button--secondary {
+        border-color: var(--vego-color-brand-forest);
+        background: #fff;
+      }
+
+      .payment-note {
+        color: #526955;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .guidance-card {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        background: var(--vego-color-brand-mist);
+      }
+
+      .guidance-icon {
+        display: grid;
+        place-items: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--vego-color-brand-forest);
+        color: #fff;
+        font-weight: 900;
+      }
+
+      .guidance-card strong {
+        display: block;
+        color: var(--vego-color-brand-forest);
+        font-size: 15px;
+      }
+
+      .guidance-card span {
+        display: block;
+        margin-top: 4px;
+        color: #526955;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .trust-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        overflow: hidden;
+        background: var(--vego-color-border-default);
+      }
+
+      .trust-item {
+        min-height: 92px;
+        padding: 16px;
+        background: #fff;
+      }
+
+      .trust-item strong {
+        display: block;
+        color: var(--vego-color-brand-forest);
+        font-size: 13px;
+      }
+
+      .trust-item span {
+        display: block;
+        margin-top: 6px;
+        color: #526955;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .accordion details {
+        padding: 0 18px;
+      }
+
+      .accordion details + details {
+        border-top: 1px solid var(--vego-color-border-default);
+      }
+
+      .accordion summary {
+        display: flex;
+        justify-content: space-between;
+        padding: 18px 0;
+        color: var(--vego-color-brand-forest);
+        font-weight: 900;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .accordion summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .accordion summary::after {
+        content: "+";
+        color: var(--vego-color-brand-forest);
+      }
+
+      .accordion details[open] summary::after {
+        content: "-";
+      }
+
+      .accordion p {
+        margin: 0 0 18px;
+        color: #526955;
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .related {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 8px clamp(24px, 4vw, 56px) 72px;
+      }
+
+      .related h2 {
+        margin: 0 0 22px;
+        color: var(--vego-color-brand-forest);
+        font-family: var(--vego-font-display);
+        font-size: clamp(30px, 4vw, 46px);
+        font-weight: 400;
+        line-height: 1.05;
+      }
+
+      .card-row {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .product-card {
+        display: grid;
+        gap: 13px;
+        padding: 14px;
+        border: 1px solid var(--vego-color-border-default);
+        border-radius: var(--vego-radius-card);
+        background: #fff;
+        box-shadow: var(--vego-shadow-card);
+      }
+
+      .product-card-media {
+        min-height: 180px;
+        border-radius: var(--vego-radius-control);
+        background: linear-gradient(135deg, #f5ead1, #eef5e8);
+      }
+
+      .product-card strong {
+        color: var(--vego-color-brand-forest);
+        font-size: 15px;
+      }
+
+      .product-card span {
+        color: #526955;
+        font-size: 13px;
+      }
+
+      @media (max-width: 980px) {
+        .site-header {
+          grid-template-columns: auto auto;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .pdp {
+          grid-template-columns: 1fr;
+        }
+
+        .info-column {
+          position: static;
+        }
+
+        .media-main {
+          min-height: 490px;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .announcement {
+          font-size: 12px;
+        }
+
+        .site-header {
+          min-height: 64px;
+          padding: 0 16px;
+        }
+
+        .header-actions span {
+          display: none;
+        }
+
+        .pdp {
+          padding: 18px 14px 40px;
+          gap: 28px;
+        }
+
+        .media-main {
+          min-height: 380px;
+        }
+
+        .media-caption {
+          position: static;
+          width: auto;
+          margin: 280px 14px 14px;
+        }
+
+        .thumb-grid,
+        .option-grid,
+        .swatches,
+        .card-row {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .trust-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .purchase-row,
+        .guidance-card {
+          grid-template-columns: 1fr;
+        }
+
+        .quantity {
+          width: 128px;
+        }
+
+        .related {
+          padding: 0 14px 52px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="announcement">Summer Sale: Save $300 on select utility e-bikes. Free shipping over $999.</div>
+
+    <header class="site-header" aria-label="Main navigation">
+      <a href="#" aria-label="VEGO home">
+        <img class="logo" src="assets/logo.png" alt="VEGO" />
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#">Shop</a>
+        <a href="#">Garden Beds</a>
+        <a href="#">E-Bikes</a>
+        <a href="#">Guides</a>
+        <a href="#">Support</a>
+      </nav>
+      <div class="header-actions">
+        <span>Search</span>
+        <button class="icon-button" aria-label="Cart">0</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="pdp" aria-label="Product detail">
+        <div class="media-column">
+          <div class="media-main">
+            <div class="badge-stack">
+              <span class="vego-badge" data-tone="new">New Arrival</span>
+              <span class="vego-badge" data-tone="discount">14% OFF</span>
+              <span class="vego-badge" data-tone="guidance">Best fit</span>
+            </div>
+            <svg class="product-visual" viewBox="0 0 840 430" role="img" aria-label="VEGO cargo utility e-bike side view">
+              <path d="M194 272h396c36 0 66-28 66-63v-28h-92l-38-80H360l-44 84H194z" fill="#EBECCE" stroke="#3A5B39" stroke-width="9" stroke-linejoin="round" />
+              <path d="M340 101h186l38 80H298z" fill="#FEF9EB" stroke="#3A5B39" stroke-width="8" stroke-linejoin="round" />
+              <path d="M222 272l86-86h160l91 86M308 186l78 86M468 186l-40 86" fill="none" stroke="#3A5B39" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="210" cy="286" r="75" fill="#FEF9EB" stroke="#3A5B39" stroke-width="12" />
+              <circle cx="210" cy="286" r="28" fill="#FFDD81" stroke="#3A5B39" stroke-width="8" />
+              <circle cx="628" cy="286" r="75" fill="#FEF9EB" stroke="#3A5B39" stroke-width="12" />
+              <circle cx="628" cy="286" r="28" fill="#FFDD81" stroke="#3A5B39" stroke-width="8" />
+              <path d="M526 101h58c28 0 50 22 50 50v29" fill="none" stroke="#3A5B39" stroke-width="10" stroke-linecap="round" />
+              <path d="M296 184l-28-72h-54" fill="none" stroke="#3A5B39" stroke-width="10" stroke-linecap="round" />
+              <path d="M185 111h118" stroke="#3A5B39" stroke-width="13" stroke-linecap="round" />
+              <path d="M586 118h86" stroke="#3A5B39" stroke-width="13" stroke-linecap="round" />
+              <rect x="395" y="69" width="118" height="42" rx="4" fill="#CC6228" />
+              <path d="M410 90h82" stroke="#FEF9EB" stroke-width="8" stroke-linecap="round" />
+            </svg>
+            <div class="bike-shadow"></div>
+            <p class="media-caption">DS note: media area keeps the current brand warmth, but separates promo badges from price and CTA roles.</p>
+          </div>
+
+          <div class="thumb-grid" aria-label="Product media thumbnails">
+            <button class="thumb" aria-current="true"><span>Main view</span></button>
+            <button class="thumb"><span>Front cargo</span></button>
+            <button class="thumb"><span>Battery</span></button>
+            <button class="thumb"><span>Fit guide</span></button>
+          </div>
+        </div>
+
+        <aside class="info-column" aria-label="Product purchase information">
+          <div>
+            <div class="product-kicker">VEGO Utility Series</div>
+            <h1>VEGO Cargo Utility E-Bike</h1>
+          </div>
+
+          <a class="review-row" href="#reviews" aria-label="4.9 out of 5 stars, 6309 reviews">
+            <span class="review-stars" aria-hidden="true">
+              <svg viewBox="0 0 18 18"><path d="M9 14.118L14.562 17.475L13.086 11.148L18 6.891L11.529 6.342L9 0.375L6.471 6.342L0 6.891L4.914 11.148L3.438 17.475L9 14.118Z" /></svg>
+              <svg viewBox="0 0 18 18"><path d="M9 14.118L14.562 17.475L13.086 11.148L18 6.891L11.529 6.342L9 0.375L6.471 6.342L0 6.891L4.914 11.148L3.438 17.475L9 14.118Z" /></svg>
+              <svg viewBox="0 0 18 18"><path d="M9 14.118L14.562 17.475L13.086 11.148L18 6.891L11.529 6.342L9 0.375L6.471 6.342L0 6.891L4.914 11.148L3.438 17.475L9 14.118Z" /></svg>
+              <svg viewBox="0 0 18 18"><path d="M9 14.118L14.562 17.475L13.086 11.148L18 6.891L11.529 6.342L9 0.375L6.471 6.342L0 6.891L4.914 11.148L3.438 17.475L9 14.118Z" /></svg>
+              <svg viewBox="0 0 18 18"><path d="M9 14.118L14.562 17.475L13.086 11.148L18 6.891L11.529 6.342L9 0.375L6.471 6.342L0 6.891L4.914 11.148L3.438 17.475L9 14.118Z" /></svg>
+            </span>
+            <span class="review-average">4.9</span>
+            <span class="review-count">6309 Reviews</span>
+          </a>
+
+          <p class="lede">Built for garden runs, weekend errands and everyday hauling, with a 750W motor, step-through geometry and a rear cargo platform tuned for practical utility.</p>
+
+          <div class="price-row" aria-label="Product price">
+            <span class="price-current">$1,499</span>
+            <span class="price-original">$1,799</span>
+            <span class="vego-badge" data-tone="discount">14% OFF</span>
+            <span class="price-note">Sale price uses commerce price token; promo badge stays visually separate.</span>
+          </div>
+
+          <section class="selector-group" aria-label="Choose frame size">
+            <div class="group-head">
+              <span>Frame size</span>
+              <a href="#">Size guide</a>
+            </div>
+            <div class="option-grid">
+              <button class="option">S <small>5'1" - 5'5"</small></button>
+              <button class="option" aria-pressed="true">M <small>5'6" - 5'10"</small></button>
+              <button class="option">L <small>5'11" - 6'4"</small></button>
+            </div>
+          </section>
+
+          <section class="selector-group" aria-label="Choose color">
+            <div class="group-head">
+              <span>Color</span>
+              <span>Garden Green</span>
+            </div>
+            <div class="swatches">
+              <button class="swatch" aria-pressed="true"><i style="background:#3A5B39"></i>Green</button>
+              <button class="swatch"><i style="background:#FDF2D3"></i>Oat</button>
+              <button class="swatch"><i style="background:#CC6228"></i>Clay</button>
+              <button class="swatch"><i style="background:#194B64"></i>Blue</button>
+            </div>
+          </section>
+
+          <section class="guidance-card" aria-label="Guidance">
+            <div class="guidance-icon">?</div>
+            <div>
+              <strong>Not sure if this fits your daily route?</strong>
+              <span>Answer three quick questions and get a fit recommendation before adding to cart.</span>
+            </div>
+            <button class="vego-button vego-button--secondary">Help Me Choose</button>
+          </section>
+
+          <section class="purchase-card" aria-label="Add product to cart">
+            <div class="purchase-row">
+              <div class="js-qty__wrapper" aria-label="Quantity">
+                <button type="button" class="js-qty__adjust js-qty__adjust--minus" aria-label="Reduce item quantity by one">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20"><path fill="currentColor" d="M17.543 11.029H2.1A1.032 1.032 0 0 1 1.071 10c0-.566.463-1.029 1.029-1.029h15.443c.566 0 1.029.463 1.029 1.029 0 .566-.463 1.029-1.029 1.029z"/></svg>
+                </button>
+                <input type="text" class="js-qty__num" value="1" min="1" pattern="[0-9]*" name="quantity" aria-label="quantity" />
+                <button type="button" class="js-qty__adjust js-qty__adjust--plus" aria-label="Increase item quantity by one">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 20 20"><path fill="currentColor" d="M17.409 8.929h-6.695V2.258c0-.566-.506-1.029-1.071-1.029s-1.071.463-1.071 1.029v6.671H1.967C1.401 8.929.938 9.435.938 10s.463 1.071 1.029 1.071h6.605V17.7c0 .566.506 1.029 1.071 1.029s1.071-.463 1.071-1.029v-6.629h6.695c.566 0 1.029-.506 1.029-1.071s-.463-1.071-1.029-1.071z"/></svg>
+                </button>
+              </div>
+              <button class="vego-button vego-button--primary">Add to Cart</button>
+            </div>
+            <button class="vego-button vego-button--secondary">Buy with Shop Pay</button>
+            <div class="payment-note">In stock. Ships in 2-4 business days. Financing available at checkout.</div>
+          </section>
+
+          <div class="trust-strip" aria-label="Trust benefits">
+            <div class="trust-item"><strong>Free shipping</strong><span>On qualified orders over $999.</span></div>
+            <div class="trust-item"><strong>2-year support</strong><span>Coverage for motor and battery.</span></div>
+            <div class="trust-item"><strong>Easy assembly</strong><span>Setup guide included in the box.</span></div>
+          </div>
+
+          <section class="accordion" aria-label="Product details">
+            <details open>
+              <summary>Specifications</summary>
+              <p>750W motor, 48V removable battery, integrated rear rack, puncture-resistant tires and hydraulic disc brakes.</p>
+            </details>
+            <details>
+              <summary>Shipping and returns</summary>
+              <p>Ships in protective packaging. Returns accepted within 30 days when unused and in original packaging.</p>
+            </details>
+            <details>
+              <summary>What is included</summary>
+              <p>E-bike, charger, toolkit, assembly guide and cargo rack hardware.</p>
+            </details>
+          </section>
+        </aside>
+      </section>
+
+      <section class="related" aria-label="Recommended products">
+        <h2>Pairs well with everyday garden work</h2>
+        <div class="card-row">
+          <article class="product-card">
+            <div class="product-card-media"></div>
+            <strong>Rear Cargo Basket</strong>
+            <span>$129 · Fits VEGO Utility Series</span>
+          </article>
+          <article class="product-card">
+            <div class="product-card-media"></div>
+            <strong>Weatherproof Pannier Set</strong>
+            <span>$89 · Best for tools and produce</span>
+          </article>
+          <article class="product-card">
+            <div class="product-card-media"></div>
+            <strong>Battery Fast Charger</strong>
+            <span>$149 · Optional upgrade</span>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

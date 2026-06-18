@@ -1,0 +1,67 @@
+:root {
+  --vego-color-brand-forest: #3A5B39;
+  --vego-color-brand-cream: #FEF9EB;
+  --vego-color-brand-mist: #FDF2D3;
+  --vego-color-brand-light-cream: #FEF6E1;
+
+  --vego-color-text-primary: #3A5B39;
+  --vego-color-text-price: #1C1D1D;
+  --vego-color-text-muted: #88937C;
+  --vego-color-text-inverse: #FFFFFF;
+
+  --vego-color-commerce-cta: #FFDD81;
+  --vego-color-commerce-cta-hover: #F7C15E;
+  --vego-color-commerce-price-current: #1C1D1D;
+  --vego-color-commerce-price-sale: #CC6228;
+  --vego-color-commerce-price-original: #88937C;
+
+  --vego-color-promo-announcement-orange: #F57219;
+  --vego-color-promo-sale: #CC6228;
+  --vego-color-promo-savings-red: #C20000;
+
+  --vego-color-guidance-sage: #BFCD89;
+  --vego-color-guidance-soft-surface: #EBECCE;
+  --vego-color-rating-yotpo-star: #F0A63B;
+
+  --vego-color-surface-page: #FEF9EB;
+  --vego-color-surface-card: #FFFFFF;
+  --vego-color-surface-dim: #FDF2D3;
+
+  --vego-color-border-default: #E8E8E1;
+  --vego-color-border-selected: #3A5B39;
+
+  --vego-font-display: Moret, Georgia, "Times New Roman", serif;
+  --vego-font-ui: Manrope, Arial, Helvetica, sans-serif;
+
+  --vego-radius-none: 0;
+  --vego-radius-xs: 2px;
+  --vego-radius-control: 4px;
+  --vego-radius-card: 6px;
+  --vego-radius-section: 8px;
+  --vego-radius-pill: 999px;
+
+  --vego-shadow-none: none;
+  --vego-shadow-hairline: 0 0 0 1px rgba(23, 53, 31, 0.08);
+  --vego-shadow-card: 0 1px 3px rgba(23, 53, 31, 0.10);
+  --vego-shadow-popover: 0 10px 24px rgba(23, 53, 31, 0.16);
+  --vego-shadow-drawer: 0 18px 48px rgba(23, 53, 31, 0.22);
+
+  --vego-space-2xs: 2px;
+  --vego-space-xs: 4px;
+  --vego-space-sm: 8px;
+  --vego-space-md: 16px;
+  --vego-space-lg: 24px;
+  --vego-space-xl: 40px;
+  --vego-space-2xl: 64px;
+
+  --vego-motion-duration-fast: 120ms;
+  --vego-motion-duration-base: 180ms;
+  --vego-motion-duration-slow: 240ms;
+  --vego-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --vego-z-header: 100;
+  --vego-z-drawer: 300;
+  --vego-z-modal: 400;
+  --vego-z-toast: 500;
+}
+
