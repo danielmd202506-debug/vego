@@ -2,7 +2,7 @@
 
 ## Visual System
 
-This workspace follows the current VEGO website/design-system direction captured in `outputs/manual-20260612-vego/presentations/vego-design-system/slides/theme.mjs` and the component library preview.
+This workspace follows the current VEGO website/design-system direction captured in the live Shopify theme and the component library preview.
 
 ## Workflow Rules
 
@@ -48,21 +48,24 @@ Figma frame names should follow numbered ranges: `00` cover, `01-08` foundations
 
 ## Color Tokens
 
-- Ink: `#17351f`
-- Text: `#31513a`
-- Muted: `#687a67`
-- Cream: `#fbf4df`
-- Oat: `#f4ead0`
-- Mist: `#f5f8ef`
-- Line: `#d9dec3`
-- Green: `#2f663b`
-- Forest: `#164d5d`
-- Sage: `#8aa970`
+- Baseline principle: DS color values should match the current live VEGO Shopify website during the initialization phase. Do not introduce "optimized" brand colors until the team explicitly approves a visual refresh.
+- Brand / Primary Green: `#3A5B39`
+- Brand / Cream Background: `#FEF9EB`
+- Brand / Body Dim: `#FDF2D3`
+- Brand / Light Cream: `#FEF6E1`
+- Border / Default: `#E8E8E1`
+- Text / Primary: `#3A5B39`
+- Text / Price: `#1C1D1D`
+- Text / Muted: `#88937C`
+- Commerce / CTA: `#FFDD81`
+- Commerce / CTA Hover: `#F7C15E`
+- Promo / Announcement Orange: `#F57219`
+- Promo / Sale: `#CC6228`
+- Promo / Savings Red: `#C20000`
+- Accent / Announcement Blue: `#194B64`
+- Guidance / Sage: `#BFCD89`
+- Guidance / Soft Surface: `#EBECCE`
 - Lime: `#d9e88b`
-- CTA: `#ffd976`
-- Sale / Clay: `#a9502e`
-- Orange: `#ffad4f`
-- Red: `#b84b3f`
 - White: `#ffffff`
 
 ## Typography
@@ -107,14 +110,24 @@ Figma frame names should follow numbered ranges: `00` cover, `01-08` foundations
 - Guidance layer owns decision support such as Help Me Choose, PDP fit explanations, scenario filters, comparison, and selection education.
 - Commerce layer owns prices, sale states, add-to-cart actions, product-card purchase paths, cart, and checkout-adjacent UI. These elements must remain visually stable.
 - Shopify theme settings may expose content, media, copy, campaign assets, and a small whitelist of controlled promo tokens. Core hierarchy, component behavior, CTA ownership, typography roles, and spacing rules should remain code-owned.
-- Primary commerce CTA uses `#ffd976` with dark text for persistent purchase actions such as Add to Cart and product-form submit.
-- Campaign / promo CTA uses `#ffad4f` with dark text for temporary promotion heroes such as Father's Day Sale. Do not replace this with green.
+- Primary commerce CTA uses `#FFDD81` with green text for persistent purchase actions such as Add to Cart and product-form submit.
+- Campaign / promo CTA uses the live campaign token, commonly `#F57219` for announcement/promo surfaces or `#FFDD81` for yellow campaign buttons, with text contrast checked per usage.
 - Green is for brand, selected states, navigation emphasis, and success states. Green is not the default fill for promo CTA or primary purchase CTA.
 - Secondary actions use white or mist surfaces with green text.
-- Promo badges use `#a9502e` or `#b84b3f` depending on urgency. They should not share the same token role as primary CTA.
+- Promo badges use sale/savings roles: `#CC6228` for sale/promo tags and `#C20000` only for strong savings/error emphasis. They should not share the same token role as primary CTA.
 - Selected states use green outlines and pale green backgrounds.
 - Swatches should show real color blocks, not text-only options.
 - Summary panels should be scannable and directly usable by cart or support.
+
+## Component Coverage Audit
+
+- Current initialization baseline is the live VEGO Shopify website, not a redesigned component language.
+- Done / has Figma component set: Button, Badge, Price, Product Card, Guidance Card, Swatch, Filter Chip, Promo Banner, Announcement Bar, Header, Trust Strip Item, Category Tile, Review Rating, Product Media Gallery, Product Option Group, Product Form, Quantity Stepper, Cart Line Item + Mini-cart, Drawer, Modal + Dialog, Toast, Footer, Search.
+- Quantity Stepper must follow the Shopify `js-qty__wrapper` contract on PDP and cart: `js-qty__adjust--minus`, `js-qty__num`, `js-qty__adjust--plus`, 44px minimum hit area, valid numeric input, variant/inventory constraints, and mobile quantity dropdown where the live theme uses `vego-select`.
+- Review Rating must mirror Yotpo output, not plain text stars: five 15px SVG stars in `#F0A63B`, average score, review-count link, and empty state. Production rendering remains owned by Yotpo/Shopify.
+- Former scaffold-only pages now have laid-out v1 component sets: Cart Line Item + Mini-cart, Drawer, Modal + Dialog, Toast, Footer, Search. Each page now separates documentation cards, component variants, and status notes; release still needs live Shopify screenshot comparison.
+- Needs visual QA against current website before release: Badge tones, Price sale/regular/sold-out states, Product Card height and CTA alignment, Swatch selected/focus states, Product Form available/sold-out/preorder states, Quantity Stepper desktop/mobile behavior, Cart Drawer line-item behavior, Search predictive results, Footer responsive accordion.
+- Third-party or Shopify-owned rendering should be documented as contract, not recreated as independent UI logic: Yotpo reviews, Shopify payment terms, dynamic checkout, cart drawer behavior, and theme variant selection.
 
 ## Homepage Hero Rules
 

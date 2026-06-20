@@ -2,3 +2,5 @@ node_modules/
 outputs/
 
 .vercel
+*.log
+*.zip
