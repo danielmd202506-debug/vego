@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>VEGO Button Dictionary</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Dictionary categories">
+        <div class="brand-block">
+          <p class="eyebrow">VEGO DS</p>
+          <h1>Button Dictionary</h1>
+        </div>
+        <nav class="category-list" id="categoryList"></nav>
+      </aside>
+
+      <section class="list-pane" aria-label="Dictionary term list">
+        <div class="search-bar">
+          <label for="searchInput">Search</label>
+          <input id="searchInput" type="search" placeholder="搜索 CTA / utility / 购买 / 焦点环..." autocomplete="off" />
+        </div>
+        <div class="meta-row">
+          <span id="resultCount">0 terms</span>
+          <button class="quiet-button" id="clearButton" type="button">Clear</button>
+        </div>
+        <div class="term-list" id="termList"></div>
+      </section>
+
+      <section class="detail-pane" aria-live="polite">
+        <div class="detail-card" id="detailCard">
+          <p class="eyebrow" id="detailCategory">业务词汇</p>
+          <div class="term-heading">
+            <div>
+              <h2 id="detailTerm">CTA</h2>
+              <p id="detailPronunciation">see-tee-ay</p>
+            </div>
+            <div class="speech-controls">
+              <button class="speak-button" id="speakButton" type="button" aria-label="Read term" aria-pressed="false">
+                <svg class="speaker-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 9v6h4l5 4V5L8 9H4Z"></path>
+                  <path d="M16 9.5c.8.7 1.2 1.5 1.2 2.5s-.4 1.8-1.2 2.5"></path>
+                  <path d="M18.5 7c1.4 1.3 2.2 3 2.2 5s-.8 3.7-2.2 5"></path>
+                </svg>
+                <span class="sound-wave" aria-hidden="true">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div class="section">
+            <h3>中文解释</h3>
+            <p id="detailMeaning"></p>
+          </div>
+
+          <div class="section">
+            <h3>VEGO 场景</h3>
+            <p id="detailUsage"></p>
+          </div>
+
+          <div class="section">
+            <h3>Example</h3>
+            <p class="example" id="detailExample"></p>
+          </div>
+
+          <div class="read-controls">
+            <button type="button" data-read="term">读词条</button>
+            <button type="button" data-read="meaning">读中文解释</button>
+            <button type="button" data-read="example">读例句</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./dictionary-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
